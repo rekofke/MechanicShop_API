@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_marshmallow import Marshmallow
+from marshmallow import ValidationError
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy import Integer, String, DateTime, ForeignKey, Date, Table, Column
@@ -12,8 +14,11 @@ db = SQLAlchemy(model_class=Base)
 # create the app
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:C%40ntget1n@localhost/mechanic_db'
+db = SQLAlchemy()
+ma = Marshmallow()
 
 db.init_app(app)
+ma.init_app(app)
 
 class Customer(Base):
     __tablename__ = 'customers'
@@ -70,6 +75,38 @@ class Service_Ticket(Base):
     customer: Mapped["Customer"] = relationship("Customer", back_populates="tickets")
     vehicle: Mapped["Vehicle"] = relationship("Vehicle", back_populates="tickets")
     mechanic: Mapped["Mechanic"] = relationship("Mechanic", back_populates="tickets")
+
+
+#* Schemas
+class CustomerSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Customer
+
+user_schema = CustomerSchema()
+users_schema = CustomerSchema(many=True)
+
+class VehicleSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Vehicle
+
+vehicle_schema = VehicleSchema()
+vehicles_schema = VehicleSchema(many=True)
+
+class MechanicSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Mechanic
+
+mechanic_schema = MechanicSchema()
+mechaincs_schema = MechanicSchema()
+
+class ServiceTicketSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Service_Ticket
+
+service_ticket_schema = ServiceTicketSchema()
+service_tickets_schema = ServiceTicketSchema(many=True)
+
+
 
 with app.app_context():
     db.create_all()
