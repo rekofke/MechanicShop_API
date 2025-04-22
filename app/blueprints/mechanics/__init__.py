@@ -1,5 +1,5 @@
-from flask import blueprint
+from flask import Blueprint
 
-mechanics_bp = blueprint('mechanics_bp', __name__)
+mechanics_bp = Blueprint('mechanics_bp', __name__)
 
-from . import routes
+from app.blueprints.mechanics import routes
