@@ -60,6 +60,6 @@ class Service_Ticket(Base):
     mechanic_id: Mapped[int] = mapped_column(Integer, ForeignKey('mechanics.id'))
     
     # Relationships
-    customer: Mapped["Customer"] = relationship("Customer", back_populates="tickets")
-    vehicle: Mapped["Vehicle"] = relationship("Vehicle", back_populates="tickets")
-    mechanic: Mapped["Mechanic"] = relationship("Mechanic", back_populates="tickets")
+    customer: Mapped["Customer"] = db.relationship(back_populates="tickets")
+    vehicle: Mapped["Vehicle"] = db.relationship("Vehicle", back_populates="tickets")
+    mechanic: Mapped[List["Mechanic"]] = db.relationship("Mechanic", back_populates="tickets")
