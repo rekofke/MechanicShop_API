@@ -4,11 +4,13 @@ from app.blueprints.vehicles.schemas import vehicle_schema, vehicles_schema
 from marshmallow import ValidationError
 from app.models import db, Vehicle
 from sqlalchemy import select, delete
+from app.extensions import limiter, cache
 
 
 # Vehicle endpoints
 # Add vehicle
 @vehicles_bp.route("/", methods=['POST'])
+@limiter.limit("3 per hour")  # no need to add more than 3 vehicles per hour
 def add_vehicle():
     try:
         # Deserialize and validate input data
@@ -31,6 +33,7 @@ def add_vehicle():
 
 # get all vehicles
 @vehicles_bp.route('/', methods=['GET'])
+@cache.cached(timeout=60)  # added caching because assessing vehicles is a common operation
 def get_vehicles():
     query = select(Vehicle)
     result = db.session.execute(query).scalars().all()
@@ -49,6 +52,7 @@ def get_vehicle(id):
 
 # update vehicle
 @vehicles_bp.route('/<int:id>', methods=['PUT'])
+@limiter.limit("3 per hour")  # Added additional limiting because no need to update > 3 vehicles per hour
 def update_vehicle(id):
     query = select(Vehicle).where(Vehicle.id == id)
     vehicle = db.session.execute(query).scalars().first()

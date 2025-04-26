@@ -4,6 +4,7 @@ from app.blueprints.customers.schemas import customer_schema, customers_schema
 from marshmallow import ValidationError
 from app.models import db, Customer
 from sqlalchemy import select, delete
+from app.extensions import limiter, cache
 
 
 
@@ -11,7 +12,9 @@ from sqlalchemy import select, delete
 
 # Customer endpoints
 # Add customer
+
 @customers_bp.route("/", methods=['POST'])
+@limiter.limit("3 per hour")
 def add_customer():
     try:
         print("Request JSON:", request.json)
@@ -35,6 +38,7 @@ def add_customer():
 
 # get all customers
 @customers_bp.route('/', methods=['GET'])
+@cache.cached(timeout=60) # aded caching because assessing customers is a common operation
 def get_customers():
     query = select(Customer)
     result = db.session.execute(query).scalars().all()
@@ -53,6 +57,7 @@ def get_customer(id):
 
 # update customer
 @customers_bp.route('/<int:id>', methods=['PUT'])
+@limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 customers per hour
 def update_customer(id):
     query = select(Customer).where(Customer.id == id)
     customer = db.session.execute(query).scalars().first()

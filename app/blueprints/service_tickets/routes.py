@@ -6,15 +6,14 @@ from marshmallow import ValidationError
 from app.models import db, Service_Ticket, Mechanic
 from sqlalchemy import select, delete
 from app.models import Customer
+from app.extensions import limiter, cache
 
-@service_tickets_bp.route('/test', methods=["GET"])
-def test():
-    return jsonify({"test": "test"})
 
 
 # Service Ticket endpoints
 # Add service_ticket
 @service_tickets_bp.route("/", methods=['POST'])
+@limiter.limit("3 per hour") # no need to add more than 3 service tickets per hour
 def add_ticket():
     try:
         # Deserialize and validate input data
@@ -45,6 +44,7 @@ def add_ticket():
 
 # get all tickets
 @service_tickets_bp.route('/', methods=['GET'])
+@cache.cached(timeout=60) # added caching because assessing tickets is a common operation
 def get_all_tickets():
     query = select(Service_Ticket)
     tickets = db.session.execute(query).scalars().all()
@@ -67,6 +67,7 @@ def get_ticket(service_ticket_id):
 
 # # Add mechanic to ticket
 @service_tickets_bp.route('/<int:ticket_id>/add-mechanic/<int:mechanic_id>', methods=["PUT"])
+@limiter.limit("3 per hour") # no need to add more than 3 mechanics to a ticket per hour
 def add_mechanic(ticket_id, mechanic_id):
     ticket = db.session.get(Service_Ticket, ticket_id)
     mechanic = db.session.get(Mechanic, mechanic_id)
@@ -111,6 +112,7 @@ def remove_mechanic(ticket_id, mechanic_id):
 
 # update ticket
 @service_tickets_bp.route('/<int:id>', methods=['PUT'])
+@limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 tickets per hour
 def update_service_ticket(id):
     query = select(Service_Ticket).where(Service_Ticket.id == id)
     ticket = db.session.execute(query).scalars().first()

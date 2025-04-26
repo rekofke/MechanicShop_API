@@ -4,11 +4,13 @@ from app.blueprints.mechanics.schemas import mechanic_schema, mechanics_schema
 from marshmallow import ValidationError
 from app.models import db, Mechanic
 from sqlalchemy import select, delete
+from app.extensions import limiter, cache
 
 
 # Mechanic endpoints
 # Add mechanic
 @mechanics_bp.route('/', methods=['POST'])
+@limiter.limit("3 per hour") # no need to add more than 3 mechanics per hour
 def create_mechanic():
     try:
         mechanic_data = mechanic_schema.load(request.json)
@@ -24,6 +26,7 @@ def create_mechanic():
 
 # get all mechanics
 @mechanics_bp.route('/', methods=['GET'])
+@cache.cached(timeout=60) # added caching because assessing mechanics is a common operation
 def get_mechanics():
     query = select(Mechanic)
     result = db.session.execute(query).scalars().all()
@@ -41,6 +44,7 @@ def get_mechanic(id):
 
 # update mechanic
 @mechanics_bp.route('/<int:id>', methods=['PUT'])
+@limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 mechanics per hour
 def update_mechanic(id):
     query = select(Mechanic).where(Mechanic.id == id)
     mechanic = db.session.execute(query).scalars().first()
