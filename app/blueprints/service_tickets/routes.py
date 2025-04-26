@@ -1,9 +1,15 @@
 from flask import request, jsonify
 from app.blueprints.service_tickets import service_tickets_bp
 from app.blueprints.service_tickets.schemas import service_ticket_schema, service_tickets_schema
+from app.blueprints.mechanics.schemas import mechanics_schema
 from marshmallow import ValidationError
 from app.models import db, Service_Ticket, Mechanic
 from sqlalchemy import select, delete
+from app.models import Customer
+
+@service_tickets_bp.route('/test', methods=["GET"])
+def test():
+    return jsonify({"test": "test"})
 
 
 # Service Ticket endpoints
@@ -16,7 +22,7 @@ def add_ticket():
     except ValidationError as e:
         return jsonify(e.messages), 400
     
-    customer = db.session.query(customer).filter_by(id=ticket_data['customer_id'])
+    customer = db.session.get(Customer, ticket_data.get("customer_id"))
 
     if customer:
         new_ticket = Service_Ticket(**ticket_data)   
@@ -26,8 +32,7 @@ def add_ticket():
         type=ticket_data['type'], 
         status=ticket_data['status'],
         customer_id=ticket_data.get('customer_id'),
-        vehicle_id=ticket_data.get('vehicle_id'),
-        mechanic_id=ticket_data.get('mechanic_id')
+        vehicle_id=ticket_data.get('vehicle_id')
     )
 
     # add the new ticket to the session
