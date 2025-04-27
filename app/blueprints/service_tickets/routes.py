@@ -7,6 +7,7 @@ from app.models import db, Service_Ticket, Mechanic
 from sqlalchemy import select, delete
 from app.models import Customer
 from app.extensions import limiter, cache
+from app.utils.utils import encode_token, token_required
 
 
 
@@ -111,7 +112,8 @@ def remove_mechanic(ticket_id, mechanic_id):
 
 
 # update ticket
-@service_tickets_bp.route('/<int:id>', methods=['PUT'])
+@service_tickets_bp.route('/', methods=['PUT'])
+@token_required
 @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 tickets per hour
 def update_service_ticket(id):
     query = select(Service_Ticket).where(Service_Ticket.id == id)
@@ -132,7 +134,8 @@ def update_service_ticket(id):
     return service_ticket_schema.jsonify(ticket), 200
 
 # delete ticket
-@service_tickets_bp.route('/<int:id>', methods=['DELETE'])
+@service_tickets_bp.route('/', methods=['DELETE'])
+@token_required
 def delete_ticket(id):
     query = select(Service_Ticket).where(Service_Ticket.id == id)
     ticket = db.session.execute(query).scalars().first()

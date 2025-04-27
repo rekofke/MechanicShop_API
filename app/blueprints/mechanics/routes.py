@@ -5,6 +5,7 @@ from marshmallow import ValidationError
 from app.models import db, Mechanic
 from sqlalchemy import select, delete
 from app.extensions import limiter, cache
+from app.utils.utils import encode_token, token_required
 
 
 # Mechanic endpoints
@@ -43,7 +44,8 @@ def get_mechanic(id):
     return mechanic_schema.jsonify(mechanic), 200
 
 # update mechanic
-@mechanics_bp.route('/<int:id>', methods=['PUT'])
+@mechanics_bp.route('/', methods=['PUT'])
+@token_required
 @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 mechanics per hour
 def update_mechanic(id):
     query = select(Mechanic).where(Mechanic.id == id)
@@ -64,7 +66,8 @@ def update_mechanic(id):
     return mechanic_schema.jsonify(mechanic), 200
     
 # delete mechanic
-@mechanics_bp.route('/<int:id>', methods=['DELETE'])
+@mechanics_bp.route('/', methods=['DELETE'])
+@token_required
 def delete_mechanic(id):
     query = select(Mechanic).where(Mechanic.id == id)
     mechanic = db.session.execute(query).scalars().first()

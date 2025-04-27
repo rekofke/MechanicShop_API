@@ -5,16 +5,37 @@ from marshmallow import ValidationError
 from app.models import db, Customer
 from sqlalchemy import select, delete
 from app.extensions import limiter, cache
-
-
-
+from app.utils.utils import encode_token, token_required
 
 
 # Customer endpoints
 # Add customer
 
-@customers_bp.route("/", methods=['POST'])
+@customers_bp.route("/login", methods=['POST'])
 @limiter.limit("3 per hour")
+def login():
+    try:
+        credentials = request.json
+        username = credentials['email']
+        password = credentials['password']
+    except KeyError:
+        return jsonify({'messages': "Invalid payload, expecting username and password"}), 400
+    
+    query = select(Customer).where(Customer.email == username) # LESSON 7 says (Customer.email == email) but throws error
+    user = db.session.execute(query).scalar_one_or_none() # Query user table for a user with this email
+
+    if user and user.password == password: # if we have a have a user associated with the username, validate the password
+        auth_token  = encode_token(user.id, user.role.role_name)
+
+        response = {
+            "status": "success",
+            "message": "Sucessfully Logged In",
+            "auth_token": auth_token
+        }
+        return jsonify(response), 200
+    else:
+        return jsonify({'messages': "invalid email orpassword"}), 401
+    
 def add_customer():
     try:
         print("Request JSON:", request.json)
@@ -56,7 +77,8 @@ def get_customer(id):
     return customer_schema.jsonify(customer), 200
 
 # update customer
-@customers_bp.route('/<int:id>', methods=['PUT'])
+@customers_bp.route('/', methods=['PUT'])
+@token_required
 @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 customers per hour
 def update_customer(id):
     query = select(Customer).where(Customer.id == id)
@@ -76,8 +98,9 @@ def update_customer(id):
     return customer_schema.jsonify(customer), 200
 
 # delete customer
-@customers_bp.route('/<int:id>', methods=['DELETE'])
-def delete_customer(id):
+@customers_bp.route('/', methods=['DELETE'])
+@token_required
+def delete_customer(customer_id): # recieves customer_id from the token
     query = select(Customer).where(Customer.id == id)
     customer = db.session.execute(query).scalars().first()
     
