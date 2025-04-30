@@ -8,3 +8,5 @@ class MechanicSchema(ma.SQLAlchemyAutoSchema):
 
 mechanic_schema = MechanicSchema()
 mechanics_schema = MechanicSchema(many=True)
+return_mechanic_schema = MechanicSchema()
+edit_mechanic_schema = MechanicSchema(partial=True)

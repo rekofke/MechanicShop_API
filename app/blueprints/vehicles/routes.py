@@ -11,7 +11,8 @@ from app.utils.utils import encode_token, token_required
 # Vehicle endpoints
 # Add vehicle
 @vehicles_bp.route("/", methods=['POST'])
-@limiter.limit("3 per hour")  # no need to add more than 3 vehicles per hour
+# @token_required
+# @limiter.limit("3 per hour")  # no need to add more than 3 vehicles per hour
 def add_vehicle():
     try:
         # Deserialize and validate input data
@@ -21,7 +22,7 @@ def add_vehicle():
     
     # use data to create an instance of vehicle
     new_vehicle = Vehicle(
-        make=vehicle_data['make'], 
+        make=vehicle_data['make'],
         model=vehicle_data['model'], 
         customer_id=vehicle_data['customer_id']
     )
@@ -34,8 +35,19 @@ def add_vehicle():
 
 # get all vehicles
 @vehicles_bp.route('/', methods=['GET'])
-@cache.cached(timeout=60)  # added caching because assessing vehicles is a common operation
+# @cache.cached(timeout=60)  # added caching because assessing vehicles is a common operation
 def get_vehicles():
+    # pagination (page/per_page)
+    try:
+        page = int(request.args.get('page'))
+        per_page = request.args.get('per_page')
+        query = select(Vehicle)
+        vehicles = db.paginate(query, page=page, per_page=per_page)
+        return vehicles_schema.jsonify(vehicles), 200
+    except:
+        query = select(Vehicle)     
+        vehicles = db.session.execute(query).scalars().all()
+        return vehicles_schema.jsonify(vehicles), 200
     query = select(Vehicle)
     result = db.session.execute(query).scalars().all()
     return vehicles_schema.jsonify(result), 200 
@@ -53,8 +65,8 @@ def get_vehicle(id):
 
 # update vehicle
 @vehicles_bp.route('/', methods=['PUT'])
-@token_required
-@limiter.limit("3 per hour")  # Added additional limiting because no need to update > 3 vehicles per hour
+# @token_required
+# @limiter.limit("3 per hour")  # Added additional limiting because no need to update > 3 vehicles per hour
 def update_vehicle(id):
     query = select(Vehicle).where(Vehicle.id == id)
     vehicle = db.session.execute(query).scalars().first()
@@ -74,7 +86,7 @@ def update_vehicle(id):
 
 # delete vehicle
 @vehicles_bp.route('/', methods=['DELETE'])
-@token_required
+# @token_required
 def delete_vehicle(id):
     query = select(Vehicle).where(Vehicle.id == id)
     vehicle = db.session.execute(query).scalars().first()
@@ -85,3 +97,25 @@ def delete_vehicle(id):
     db.session.delete(vehicle)
     db.session.commit()
     return jsonify({'message': f"Successfully deleted vehicle {id}"}), 200
+
+
+#lambda function to determine popularity by quantity of each vehicle make
+@vehicles_bp.route("/popular", methods=["GET"])
+def popular_vehicles():
+    query = select(Vehicle)
+    vehicles = db.session.execute(query).scalars().all()
+    
+    vehicles.sort(key=lambda vehicle : vehicle.make)
+    
+    for vehicle in vehicles:
+        print(vehicle.make, vehicle.model.count)
+    
+    return vehicles_schema.jsonify(vehicles), 200
+
+# query param to search for vehicles by make
+@vehicles_bp.route("/search", methods=["GET"])
+def search_vehicle():
+    make = request.args.get("make")
+    
+    # query param to search for vehicle phrases LIKE
+    query = select(Vehicle).where(Vehicle.make.like(make))

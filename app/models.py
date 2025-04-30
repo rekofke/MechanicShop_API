@@ -2,6 +2,8 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Integer, String, DateTime, ForeignKey, Table, Column
 from typing import List
+from app.extensions import db
+
 
 class Base(DeclarativeBase):
     pass
@@ -9,13 +11,13 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 
 # Association table for many-to-many relationship between vehicles and mechanics
-vehicle_mechanic_association = Table(
+vehicle_mechanic_association = db.Table(
     'vehicle_mechanic_association',
     Base.metadata,
     Column('vehicle_id', Integer, ForeignKey('vehicles.id')),
     Column('mechanic_id', Integer, ForeignKey('mechanics.id'))
 )
-service_mechanic = Table(
+service_mechanic = db.Table(
     'service_mechanic',
     Base.metadata,
     Column('service_id', Integer, ForeignKey('tickets.id')),
@@ -25,9 +27,10 @@ service_mechanic = Table(
 class Customer(Base):
     __tablename__ = 'customers'
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    name: Mapped[str] = mapped_column(String(125))
+    name: Mapped[str] = mapped_column(String(125), nullable=False)
     email: Mapped[str] = mapped_column(String(200), unique=True)
     phone: Mapped[str] = mapped_column(String(50))
+    password: Mapped[str] = mapped_column(String(200), nullable=False)
     
     # Relationships
     vehicles: Mapped[List["Vehicle"]] = relationship("Vehicle", back_populates="customer")

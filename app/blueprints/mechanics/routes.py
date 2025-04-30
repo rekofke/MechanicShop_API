@@ -11,7 +11,8 @@ from app.utils.utils import encode_token, token_required
 # Mechanic endpoints
 # Add mechanic
 @mechanics_bp.route('/', methods=['POST'])
-@limiter.limit("3 per hour") # no need to add more than 3 mechanics per hour
+# @token_required
+# @limiter.limit("3 per hour") # no need to add more than 3 mechanics per hour
 def create_mechanic():
     try:
         mechanic_data = mechanic_schema.load(request.json)
@@ -29,6 +30,19 @@ def create_mechanic():
 @mechanics_bp.route('/', methods=['GET'])
 @cache.cached(timeout=60) # added caching because assessing mechanics is a common operation
 def get_mechanics():
+    
+    # pagination (page/per_page)
+    try:
+        page = int(request.args.get('page'))
+        per_page = request.args.get('per_page')
+        query = select(Mechanic)
+        mechanics = db.paginate(query, page=page, per_page=per_page)
+        return mechanics_schema.jsonify(mechanics), 200
+    except:
+        query = select(Mechanic)     
+        vehicles = db.session.execute(query).scalars().all()
+        return mechanics_schema.jsonify(mechanics), 200
+    
     query = select(Mechanic)
     result = db.session.execute(query).scalars().all()
     return mechanics_schema.jsonify(result), 200
@@ -45,8 +59,8 @@ def get_mechanic(id):
 
 # update mechanic
 @mechanics_bp.route('/', methods=['PUT'])
-@token_required
-@limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 mechanics per hour
+# @token_required
+# @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 mechanics per hour
 def update_mechanic(id):
     query = select(Mechanic).where(Mechanic.id == id)
     mechanic = db.session.execute(query).scalars().first()
@@ -67,7 +81,7 @@ def update_mechanic(id):
     
 # delete mechanic
 @mechanics_bp.route('/', methods=['DELETE'])
-@token_required
+# @token_required
 def delete_mechanic(id):
     query = select(Mechanic).where(Mechanic.id == id)
     mechanic = db.session.execute(query).scalars().first()
