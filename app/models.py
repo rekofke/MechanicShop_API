@@ -30,7 +30,6 @@ class Customer(Base):
     name: Mapped[str] = mapped_column(String(125), nullable=False)
     email: Mapped[str] = mapped_column(String(200), unique=True)
     phone: Mapped[str] = mapped_column(String(50))
-    password: Mapped[str] = mapped_column(String(200), nullable=False)
     
     # Relationships
     vehicles: Mapped[List["Vehicle"]] = relationship("Vehicle", back_populates="customer")
@@ -53,6 +52,8 @@ class Mechanic(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(150))
     address: Mapped[str] = mapped_column(String(150))
+    email: Mapped[str] = mapped_column(String(200), unique=True)
+    password: Mapped[str] = mapped_column(String(200), nullable=False)
     
     # Relationships
     tickets: Mapped[List["Service_Ticket"]] = relationship(secondary=service_mechanic, back_populates="mechanic")

@@ -8,5 +8,6 @@ class MechanicSchema(ma.SQLAlchemyAutoSchema):
 
 mechanic_schema = MechanicSchema()
 mechanics_schema = MechanicSchema(many=True)
+login_schema = MechanicSchema(exclude=['name', 'address'])
 return_mechanic_schema = MechanicSchema()
 edit_mechanic_schema = MechanicSchema(partial=True)

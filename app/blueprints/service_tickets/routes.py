@@ -51,17 +51,17 @@ def get_all_tickets():
     query = select(Service_Ticket)
     tickets = db.session.execute(query).scalars().all()
     
-    # pagination (page/per_page)
-    try:
-        page = int(request.args.get('page'))
-        per_page = request.args.get('per_page')
-        query = select(Service_Ticket)
-        vehicles = db.paginate(query, page=page, per_page=per_page)
-        return service_ticket_schema.jsonify(tickets), 200
-    except:
-        query = select(Service_Ticket)     
-        vehicles = db.session.execute(query).scalars().all()
-        return service_tickets_schema.jsonify(tickets), 200
+    # # pagination (page/per_page)
+    # try:
+    #     page = int(request.args.get('page'))
+    #     per_page = request.args.get('per_page')
+    #     query = select(Service_Ticket)
+    #     vehicles = db.paginate(query, page=page, per_page=per_page)
+    #     return service_ticket_schema.jsonify(tickets), 200
+    # except:
+    #     query = select(Service_Ticket)     
+    #     vehicles = db.session.execute(query).scalars().all()
+    #     return service_tickets_schema.jsonify(tickets), 200
     
     if tickets:
         return service_tickets_schema.jsonify(tickets), 200 

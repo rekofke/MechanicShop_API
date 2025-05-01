@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from app.blueprints.mechanics import mechanics_bp
-from app.blueprints.mechanics.schemas import mechanic_schema, mechanics_schema
+from app.blueprints.mechanics.schemas import mechanic_schema, mechanics_schema, login_schema
 from marshmallow import ValidationError
 from app.models import db, Mechanic
 from sqlalchemy import select, delete
@@ -9,6 +9,26 @@ from app.utils.utils import encode_token, token_required
 
 
 # Mechanic endpoints
+@mechanics_bp.route('/login', methods=['POST'])
+def login():
+    try:
+        creds = login_schema.load(request.json)
+    except ValidationError as e:
+        return jsonify(e.messages), 400
+    
+    query = select(Mechanic).where(Mechanic.email == creds['email'])
+    mechanic = db.session.execute(query).scalars().first()
+    
+    if mechanic and mechanic.password == creds['password']:
+        token = encode_token(mechanic.id)
+        response = {
+            'status': 'success',
+            'message': 'Successfully Logged In.',
+            'token': token
+        }
+        return jsonify({'token': token}), 200
+        
+
 # Add mechanic
 @mechanics_bp.route('/', methods=['POST'])
 # @token_required
@@ -19,7 +39,7 @@ def create_mechanic():
     except ValidationError as e:
         return jsonify(e.messages), 400
     
-    new_mechanic = Mechanic(name=mechanic_data['name'], address=mechanic_data['address'])
+    new_mechanic = Mechanic(name=mechanic_data['name'], address=mechanic_data['address'],email=mechanic_data['email'], password=mechanic_data['password'])
 
     db.session.add(new_mechanic)
     db.session.commit()
@@ -31,17 +51,17 @@ def create_mechanic():
 @cache.cached(timeout=60) # added caching because assessing mechanics is a common operation
 def get_mechanics():
     
-    # pagination (page/per_page)
-    try:
-        page = int(request.args.get('page'))
-        per_page = request.args.get('per_page')
-        query = select(Mechanic)
-        mechanics = db.paginate(query, page=page, per_page=per_page)
-        return mechanics_schema.jsonify(mechanics), 200
-    except:
-        query = select(Mechanic)     
-        vehicles = db.session.execute(query).scalars().all()
-        return mechanics_schema.jsonify(mechanics), 200
+    # # pagination (page/per_page)
+    # try:
+    #     page = int(request.args.get('page'))
+    #     per_page = request.args.get('per_page')
+    #     query = select(Mechanic)
+    #     mechanics = db.paginate(query, page=page, per_page=per_page)
+    #     return mechanics_schema.jsonify(mechanics), 200
+    # except:
+    #     query = select(Mechanic)     
+    #     vehicles = db.session.execute(query).scalars().all()
+    #     return mechanics_schema.jsonify(mechanics), 200
     
     query = select(Mechanic)
     result = db.session.execute(query).scalars().all()
@@ -59,11 +79,11 @@ def get_mechanic(id):
 
 # update mechanic
 @mechanics_bp.route('/', methods=['PUT'])
-# @token_required
+@token_required
 # @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 mechanics per hour
-def update_mechanic(id):
+def update_mechanic():
     query = select(Mechanic).where(Mechanic.id == id)
-    mechanic = db.session.execute(query).scalars().first()
+    mechanic = db.session.get(Mechanic, request.mechanic_id)
 
     if mechanic is None:
         return jsonify({"message": "Invalid mechanic ID"}), 404
@@ -81,17 +101,17 @@ def update_mechanic(id):
     
 # delete mechanic
 @mechanics_bp.route('/', methods=['DELETE'])
-# @token_required
-def delete_mechanic(id):
+@token_required
+def delete_mechanic():
     query = select(Mechanic).where(Mechanic.id == id)
-    mechanic = db.session.execute(query).scalars().first()
+    mechanic = db.session.get(Mechanic, request.mechanic_id)
     
     if mechanic is None:
         return jsonify({"message": "Invalid mechanic ID"}), 404
 
     db.session.delete(mechanic)
     db.session.commit()
-    return jsonify({'message': f"Successfully deleted mechanic {id}"}), 200
+    return jsonify({'message': f"Successfully deleted mechanic."}), 200
 
 #lambda function to which mechanics have worked on the most tickets
 @mechanics_bp.route("/popular", methods=["GET"])

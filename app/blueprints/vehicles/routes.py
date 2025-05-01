@@ -38,16 +38,16 @@ def add_vehicle():
 # @cache.cached(timeout=60)  # added caching because assessing vehicles is a common operation
 def get_vehicles():
     # pagination (page/per_page)
-    try:
-        page = int(request.args.get('page'))
-        per_page = request.args.get('per_page')
-        query = select(Vehicle)
-        vehicles = db.paginate(query, page=page, per_page=per_page)
-        return vehicles_schema.jsonify(vehicles), 200
-    except:
-        query = select(Vehicle)     
-        vehicles = db.session.execute(query).scalars().all()
-        return vehicles_schema.jsonify(vehicles), 200
+    # try:
+    #     page = int(request.args.get('page'))
+    #     per_page = request.args.get('per_page')
+    #     query = select(Vehicle)
+    #     vehicles = db.paginate(query, page=page, per_page=per_page)
+    #     return vehicles_schema.jsonify(vehicles), 200
+    # except:
+    #     query = select(Vehicle)     
+    #     vehicles = db.session.execute(query).scalars().all()
+    #     return vehicles_schema.jsonify(vehicles), 200
     query = select(Vehicle)
     result = db.session.execute(query).scalars().all()
     return vehicles_schema.jsonify(result), 200 
