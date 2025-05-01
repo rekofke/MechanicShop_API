@@ -81,20 +81,20 @@ def get_ticket(service_ticket_id):
 
 # # Add mechanic to ticket
 @service_tickets_bp.route('/<int:ticket_id>/add-mechanic/<int:mechanic_id>', methods=["PUT"])
-# @token_required
+@token_required
 # @limiter.limit("3 per hour") # no need to add more than 3 mechanics to a ticket per hour
 def add_mechanic(ticket_id, mechanic_id):
     ticket = db.session.get(Service_Ticket, ticket_id)
     mechanic = db.session.get(Mechanic, mechanic_id)
 
     if ticket and mechanic:
-        if mechanic not in ticket.mechanics:
-            ticket.mechanics.append(mechanic)
+        if mechanic not in ticket.mechanic:
+            ticket.mechanic.append(mechanic)
             db.session.commit()
             return jsonify({
                 "message": f"successfully added {mechanic.name} to the ticket",
                 "ticket": service_ticket_schema.dump(ticket),
-                "mechanics": mechanics_schema.dump(ticket.mechanics)
+                "mechanics": mechanics_schema.dump(ticket.mechanic)
             }), 200
         
         return jsonify({"error": f"{mechanic.name} is already assigned to this ticket"})
@@ -104,7 +104,7 @@ def add_mechanic(ticket_id, mechanic_id):
     
 
 # remove mechanic from ticket
-# @token_required
+@token_required
 @service_tickets_bp.route('/<int:ticket_id>/remove-mechanic/<int:mechanic_id>', methods=["PUT"])
 def remove_mechanic(ticket_id, mechanic_id):
     ticket = db.session.get(Service_Ticket, ticket_id)
@@ -127,30 +127,30 @@ def remove_mechanic(ticket_id, mechanic_id):
 
 
 # # update ticket
-# @service_tickets_bp.route('/<int: ticket_id>', methods=['PUT'])
-# @token_required
-# @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 tickets per hour
-# def edit_ticket(id):
-#     query = select(Service_Ticket).where(Service_Ticket.id == id)
-#     ticket = db.session.execute(query).scalars().first()
+@service_tickets_bp.route('/<int:ticket_id>', methods=['PUT'])
+@token_required
+@limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 tickets per hour
+def edit_ticket(id):
+    query = select(Service_Ticket).where(Service_Ticket.id == id)
+    ticket = db.session.execute(query).scalars().first()
 
-#     if ticket is None:
-#         return jsonify({'message': "Invalid ticket ID"}), 404
+    if ticket is None:
+        return jsonify({'message': "Invalid ticket ID"}), 404
         
-#     try:
-#         ticket_data = service_ticket_schema.load(request.json)
-#     except ValidationError as e:
-#         return jsonify(e.messages), 400
+    try:
+        ticket_data = service_ticket_schema.load(request.json)
+    except ValidationError as e:
+        return jsonify(e.messages), 400
     
-#     for field, value in ticket_data.items():
-#         setattr(ticket, field, value)
+    for field, value in ticket_data.items():
+        setattr(ticket, field, value)
 
-#     db.session.commit()
-#     return service_ticket_schema.jsonify(ticket), 200
+    db.session.commit()
+    return service_ticket_schema.jsonify(ticket), 200
 
 # delete ticket
 @service_tickets_bp.route('/', methods=['DELETE'])
-# @token_required
+@token_required
 def delete_ticket(id):
     query = select(Service_Ticket).where(Service_Ticket.id == id)
     ticket = db.session.execute(query).scalars().first()
@@ -163,34 +163,34 @@ def delete_ticket(id):
     return jsonify({'message': f"Successfully deleted ticket {id}"}), 200
 
 # Edit Tickets
-@service_tickets_bp.route("/<int:ticket_id>", methods=["PUT"])
-def edit_ticket():
-    try:
-        mechanic_edits = edit_mechanic_schema(request.json)
-    except ValidationError as e:
-        return jsonify(e.messages), 400
+# @service_tickets_bp.route("/<int:ticket_id>", methods=["PUT"])
+# def edit_ticket():
+#     try:
+#         mechanic_edits = edit_mechanic_schema(request.json)
+#     except ValidationError as e:
+#         return jsonify(e.messages), 400
     
-    query = select(Mechanic).where(Mechanic.id == id)
-    ticket = db.session.execute(query).scalars().first()
+#     query = select(Mechanic).where(Mechanic.id == id)
+#     ticket = db.session.execute(query).scalars().first()
     
-    # ASK DYLAN IF THIS IS COORECT SETUP (NOT SURE HOW HIS LIBRARY TRANSLATES TO MY MECHANIC SHOP)
-    # set up for loop to edit tickets
-    for mechanic_id in mechanic_edits('add_mechanic_ids'):
-        query = select(Mechanic).where(Mechanic.id == mechanic_id)
-        mechanic = db.session.execute(query).scalars().first()
+#     # ASK DYLAN IF THIS IS COORECT SETUP (NOT SURE HOW HIS LIBRARY TRANSLATES TO MY MECHANIC SHOP)
+#     # set up for loop to edit tickets
+#     for mechanic_id in mechanic_edits('add_mechanic_ids'):
+#         query = select(Mechanic).where(Mechanic.id == mechanic_id)
+#         mechanic = db.session.execute(query).scalars().first()
         
-        if mechanic and mechanic not in ticket:
-            ticket.mechanics.append(mechanic)
+#         if mechanic and mechanic not in ticket:
+#             ticket.mechanics.append(mechanic)
             
-    for mechanic_id in mechanic_edits('delete_mechanic_ids'):
-        query = select(Mechanic).where(Mechanic.id == mechanic_id)
-        mechanic = db.session.execute(query).scalars().first()
+#     for mechanic_id in mechanic_edits('delete_mechanic_ids'):
+#         query = select(Mechanic).where(Mechanic.id == mechanic_id)
+#         mechanic = db.session.execute(query).scalars().first()
         
-        if mechanic and mechanic in ticket:
-            ticket.mechanics.remove(mechanic)
+#         if mechanic and mechanic in ticket:
+#             ticket.mechanics.remove(mechanic)
             
-    db.session.commit()
-    return return_mechanic_schema.jsonify(mechanic), 200
+#     db.session.commit()
+#     return return_mechanic_schema.jsonify(mechanic), 200
 
 # lambda to get all tickets and sort by most popular services on tickets
 # @service_tickets_bp.route("/popular", methods=["GET"])

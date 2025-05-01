@@ -66,7 +66,7 @@ def add_customer():
         name=customer_data["name"],
         email=customer_data["email"],
         phone=customer_data["phone"],
-        password=customer_data["password"],
+        
     )
 
     # add the new customer to the session
@@ -112,7 +112,7 @@ def get_customer(id):
 
 # update customer
 @customers_bp.route("/", methods=["PUT"])
-# @token_required
+@token_required
 # @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 customers per hour
 def update_customer(id):
     query = select(Customer).where(Customer.id == id)
@@ -136,7 +136,7 @@ def update_customer(id):
 
 # delete customer
 @customers_bp.route("/", methods=["DELETE"])
-# @token_required
+@token_required
 def delete_customer(customer_id):
     query = select(Customer).where(Customer.id == customer_id)
     customer = db.session.execute(query).scalars().first()

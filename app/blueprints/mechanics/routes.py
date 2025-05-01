@@ -114,14 +114,15 @@ def delete_mechanic():
     return jsonify({'message': f"Successfully deleted mechanic."}), 200
 
 #lambda function to which mechanics have worked on the most tickets
-@mechanics_bp.route("/popular", methods=["GET"])
-def popular_mechanics():
+@mechanics_bp.route("/popularity/", methods=["GET"])
+def popularity():
     query = select(Mechanic)
     mechanics = db.session.execute(query).scalars().all()
     
-    mechanics.sort(key=lambda mechanic : mechanic.tickets)
+    mechanics.sort(key=lambda mechanic : len(mechanic.tickets), reverse=True)
     
-    for mechanic in mechanics:
-        print(mechanic.id, mechanic.ticket.count)
+    return mechanics_schema.jsonify(mechanics)
+    # for mechanic in mechanics:
+    #     print(mechanic.id, mechanic.ticket.count)
     
-    return mechanics_schema.jsonify(mechanics), 200
+    # return mechanics_schema.jsonify(mechanics), 200

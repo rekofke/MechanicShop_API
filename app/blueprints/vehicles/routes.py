@@ -65,7 +65,7 @@ def get_vehicle(id):
 
 # update vehicle
 @vehicles_bp.route('/', methods=['PUT'])
-# @token_required
+@token_required
 # @limiter.limit("3 per hour")  # Added additional limiting because no need to update > 3 vehicles per hour
 def update_vehicle(id):
     query = select(Vehicle).where(Vehicle.id == id)
@@ -86,7 +86,7 @@ def update_vehicle(id):
 
 # delete vehicle
 @vehicles_bp.route('/', methods=['DELETE'])
-# @token_required
+@token_required
 def delete_vehicle(id):
     query = select(Vehicle).where(Vehicle.id == id)
     vehicle = db.session.execute(query).scalars().first()
