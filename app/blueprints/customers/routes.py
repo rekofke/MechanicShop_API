@@ -78,9 +78,7 @@ def add_customer():
 
 # get all customers
 @customers_bp.route("/", methods=["GET"])
-@cache.cached(
-    timeout=60
-)  # aded caching because assessing customers is a common operation
+@cache.cached(timeout=60)  # aded caching because assessing customers is a common operation
 def get_customers():
     # pagination (page/per_page)
     # try:
@@ -91,13 +89,16 @@ def get_customers():
     #     return customers_schema.jsonify(customers), 200
     # except:
     #     query = select(Customer)
-    #     vehicles = db.session.execute(query).scalars().all()
+    #     customers = db.session.execute(query).scalars().all()
     #     return customers_schema.jsonify(customers), 200
-    query = select(Customer)
-    result = db.session.execute(query).scalars().all()
-    return customers_schema.jsonify(result), 200
-
-
+    
+    
+    # Differnt way to paginate...
+    page = int(request.args.get('page'))
+    per_page = int(request.args.get('per_page'))
+    query =select (Customer)
+    customers = db.paginate(query, page=page, per_page=per_page)
+    return customers_schema.jsonify(customers)
 # get customer by id
 @customers_bp.route("/<int:id>", methods=["GET"])
 def get_customer(id):
@@ -147,3 +148,18 @@ def delete_customer(customer_id):
     db.session.delete(customer)
     db.session.commit()
     return jsonify({"message": f"Successfully deleted customer {customer_id}"}), 200
+
+# Query parameter to search customer by email
+@customers_bp.route("/search", methods=["GET"])
+def search_customers():
+    email = request.args.get("email")
+    
+    query = select(Customer).where(Customer.email.like(f"%{email}%"))
+    customer = db.session.execute(query).scalars().first()
+
+    if not customer:
+        return jsonify({"message": "No customer found"}), 404
+
+    return customer_schema.jsonify(customer), 200
+
+

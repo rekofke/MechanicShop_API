@@ -52,16 +52,16 @@ def create_mechanic():
 def get_mechanics():
     
     # # pagination (page/per_page)
-    # try:
-    #     page = int(request.args.get('page'))
-    #     per_page = request.args.get('per_page')
-    #     query = select(Mechanic)
-    #     mechanics = db.paginate(query, page=page, per_page=per_page)
-    #     return mechanics_schema.jsonify(mechanics), 200
-    # except:
-    #     query = select(Mechanic)     
-    #     vehicles = db.session.execute(query).scalars().all()
-    #     return mechanics_schema.jsonify(mechanics), 200
+    try:
+        page = int(request.args.get('page'))
+        per_page = request.args.get('per_page')
+        query = select(Mechanic)
+        mechanics = db.paginate(query, page=page, per_page=per_page)
+        return mechanics_schema.jsonify(mechanics), 200
+    except:
+        query = select(Mechanic)     
+        vehicles = db.session.execute(query).scalars().all()
+        return mechanics_schema.jsonify(mechanics), 200
     
     query = select(Mechanic)
     result = db.session.execute(query).scalars().all()
