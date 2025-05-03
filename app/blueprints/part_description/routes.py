@@ -52,7 +52,7 @@ def get_part_description(part_description_id):
 
 # update part_description
 @part_description_bp.route("/<int:part_description_id>", methods=["PUT"])
-@token_required
+# @token_required
 # @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 part_descriptions per hour
 def update_part_description(part_description_id):
     part_description = db.session.get(PartDescription, part_description_id)
@@ -74,7 +74,7 @@ def update_part_description(part_description_id):
 
 # delete part_description
 @part_description_bp.route("/<int:part_description_id>", methods=["DELETE"])
-@token_required
+# @token_required
 def delete_part_description(part_description_id):
     part_description = db.session.get(PartDescription, part_description_id)
 

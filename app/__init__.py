@@ -6,6 +6,7 @@ from app.blueprints.service_tickets import service_tickets_bp
 from app.blueprints.vehicles import vehicles_bp
 from app.blueprints.mechanics import mechanics_bp
 from app.blueprints.part_description import part_description_bp
+from app.blueprints.serialized_parts import serialized_part_bp
 
 
 def create_app(config_name):
@@ -25,5 +26,6 @@ def create_app(config_name):
     app.register_blueprint(vehicles_bp, url_prefix='/vehicles')
     app.register_blueprint(mechanics_bp, url_prefix='/mechanics')
     app.register_blueprint(part_description_bp, url_prefix='/part-description')
+    app.register_blueprint(serialized_part_bp, url_prefix='/serialized-parts')
     
     return app
