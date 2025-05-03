@@ -1,11 +1,10 @@
-from app.models import Customer
+from app.models import PartDescription
 from app.extensions import ma
 
-class CustomerSchema(ma.SQLAlchemyAutoSchema):
+class PartDescription_Schema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Customer
+        model = PartDescription
         include_relationships = True  # Optional, includes relationships if needed
 
-customer_schema = CustomerSchema()
-customers_schema = CustomerSchema(many=True)
-login_schema = CustomerSchema(exclude=("name", "phone"))
+part_description_schema = PartDescription_Schema()
+part_descriptions_schema = PartDescription_Schema(many=True)

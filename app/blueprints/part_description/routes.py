@@ -1,16 +1,16 @@
 from flask import request, jsonify
-from app.blueprints.part_description import part_description
-from app.blueprints.part_description.schemas import (partdescription_schema as part_description_schema, partdescriptions_schema as part_descriptions_schema)
 from marshmallow import ValidationError
-from app.models import db, PartDescription
 from sqlalchemy import select, delete
+from . import part_description_bp
+from .schemas import part_description_schema, part_descriptions_schema
+from app.models import db, PartDescription
 from app.extensions import limiter, cache
 from app.utils.utils import encode_token, token_required
 
 
 # part_description endpoints
 # Add part_description
-@part_description.bp.route("/", methods=["POST"])
+@part_description_bp.route("/", methods=["POST"])
 # @limiter.limit("3 per hour") # Added limiting because no need to add > 3 part_descriptions per hour
 def add_part_description():
     try:
@@ -29,7 +29,7 @@ def add_part_description():
 
 
 # get all part_descriptions
-@part_description.bp.route("/", methods=["GET"])
+@part_description_bp.route("/", methods=["GET"])
 @cache.cached(timeout=60)  # aded caching because assessing part_descriptions is a common operation
 def get_part_descriptions():
     # Differnt way to paginate...
@@ -40,7 +40,7 @@ def get_part_descriptions():
     return part_descriptions_schema.jsonify(part_descriptions)
 
 # get part_description by id
-@part_description.bp.route("/<int:part_description_id>", methods=["GET"])
+@part_description_bp.route("/<int:part_description_id>", methods=["GET"])
 def get_part_description(part_description_id):
     part_description = db.session.get(PartDescription, part_description_id)
 
@@ -51,7 +51,7 @@ def get_part_description(part_description_id):
 
 
 # update part_description
-@part_description.bp.route("/<int:part_description_id>", methods=["PUT"])
+@part_description_bp.route("/<int:part_description_id>", methods=["PUT"])
 @token_required
 # @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 part_descriptions per hour
 def update_part_description(part_description_id):
@@ -73,7 +73,7 @@ def update_part_description(part_description_id):
 
 
 # delete part_description
-@part_description.bp.route("/<int:part_description_id", methods=["DELETE"])
+@part_description_bp.route("/<int:part_description_id>", methods=["DELETE"])
 @token_required
 def delete_part_description(part_description_id):
     part_description = db.session.get(PartDescription, part_description_id)
@@ -84,6 +84,15 @@ def delete_part_description(part_description_id):
     db.session.delete(part_description)
     db.session.commit()
     return jsonify({"message": f"Successfully deleted part_description {part_description_id}"}), 200
+
+@part_description_bp.route("/search", methods=['GET'])
+def search_by_part_name():
+    name = request.args.get('name')
+    query = select(part_description).where(part_description.name.like(f"%{name}%"))
+    part_description = db.session.execute(query.scalars().first())
+    
+    return part_description_schema.jsonify(part_description), 200
+                            
 
 
 

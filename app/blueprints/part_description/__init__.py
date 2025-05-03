@@ -1,4 +1,4 @@
 from flask import Blueprint
 
-bp = Blueprint('[name]', __name__) 
+part_description_bp = Blueprint('part_description_bp', __name__)
 from . import routes  

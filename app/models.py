@@ -75,3 +75,23 @@ class Service_Ticket(Base):
     customer: Mapped["Customer"] = db.relationship(back_populates="tickets")
     vehicle: Mapped["Vehicle"] = db.relationship("Vehicle", back_populates="tickets")
     mechanic: Mapped[List["Mechanic"]] = db.relationship(secondary=service_mechanic, back_populates="tickets")
+    serialized_parts: Mapped[List['SerializedPart']] = db.relationship("SerializedPart", back_populates="ticket")
+    
+class PartDescription(Base):
+    __tablename__ = 'part_descriptions'
+    
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    part_name: Mapped[str] = mapped_column(String(200), nullable=False)
+    brand: Mapped[str] = mapped_column(String(200), nullable=False)
+    price: Mapped[float] = mapped_column(db.Float, nullable=False)
+    
+    serialized_parts: Mapped[List['SerializedPart']] = db.relationship("SerializedPart", back_populates="description")
+    
+class SerializedPart(Base):
+    __tablename__ = 'serialized_parts'
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    desc_id: Mapped[int] = mapped_column(ForeignKey('part_descriptions.id'), nullable=False)
+    ticket_id: Mapped[int] = mapped_column(ForeignKey('tickets.id'), nullable=True)
+    
+    description: Mapped["PartDescription"] = db.relationship("PartDescription", back_populates="serialized_parts")
+    ticket: Mapped["Service_Ticket"] = db.relationship(back_populates="serialized_parts")
