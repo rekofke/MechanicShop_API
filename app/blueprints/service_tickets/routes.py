@@ -1,22 +1,13 @@
 from flask import request, jsonify
-from app.blueprints.service_tickets import service_tickets_bp
-from app.blueprints.service_tickets.schemas import (
-    service_ticket_schema,
-    service_tickets_schema,
-    edit_service_tickets_schema,
-)
-from app.blueprints.mechanics.schemas import (
-    mechanics_schema,
-    mechanic_schema,
-    return_mechanic_schema,
-    edit_mechanic_schema,
-)
 from marshmallow import ValidationError
-from app.models import db, Service_Ticket, Mechanic
-from sqlalchemy import select, delete
-from app.models import Customer
+from sqlalchemy import select
+from . import service_tickets_bp
+from .schemas import service_ticket_schema, service_tickets_schema
+from app.models import Customer, db, Mechanic, PartDescription, SerializedPart, Service_Ticket
+from app.blueprints.mechanics.schemas import mechanics_schema
 from app.extensions import limiter, cache
-from app.utils.utils import encode_token, token_required
+from app.utils.utils import token_required
+from app.blueprints.serialized_parts.schemas import serialized_parts_schema
 
 
 # Service Ticket endpoints
@@ -73,6 +64,8 @@ def get_all_tickets():
     # query = select(Customer)
     # result = db.session.execute(query).scalars().all()
     # return customers_schema.jsonify(result), 200
+    
+    return service_tickets_schema.jsonify(tickets), 200
 
 
 # get ticket by id
@@ -88,10 +81,8 @@ def get_ticket(service_ticket_id):
 
 
 # # Add mechanic to ticket
-@service_tickets_bp.route(
-    "/<int:ticket_id>/add-mechanic/<int:mechanic_id>", methods=["PUT"]
-)
-@token_required
+@service_tickets_bp.route("/<int:ticket_id>/add-mechanic/<int:mechanic_id>", methods=["PUT"])
+# @token_required
 # @limiter.limit("3 per hour") # no need to add more than 3 mechanics to a ticket per hour
 def add_mechanic(ticket_id, mechanic_id):
     ticket = db.session.get(Service_Ticket, ticket_id)
@@ -114,10 +105,8 @@ def add_mechanic(ticket_id, mechanic_id):
 
 
 # remove mechanic from ticket
-@token_required
-@service_tickets_bp.route(
-    "/<int:ticket_id>/remove-mechanic/<int:mechanic_id>", methods=["PUT"]
-)
+# @token_required
+@service_tickets_bp.route("/<int:ticket_id>/remove-mechanic/<int:mechanic_id>", methods=["PUT"])
 def remove_mechanic(ticket_id, mechanic_id):
     ticket = db.session.get(Service_Ticket, ticket_id)
     mechanic = db.session.get(Mechanic, mechanic_id)
@@ -142,10 +131,8 @@ def remove_mechanic(ticket_id, mechanic_id):
 
 # # update ticket
 @service_tickets_bp.route("/<int:ticket_id>", methods=["PUT"])
-@token_required
-@limiter.limit(
-    "3 per hour"
-)  # Added additional limiting because no need to update > 3 tickets per hour
+# @token_required
+@limiter.limit("3 per hour")  # Added additional limiting because no need to update > 3 tickets per hour
 def edit_ticket(id):
     query = select(Service_Ticket).where(Service_Ticket.id == id)
     ticket = db.session.execute(query).scalars().first()
@@ -167,7 +154,7 @@ def edit_ticket(id):
 
 # delete ticket
 @service_tickets_bp.route("/", methods=["DELETE"])
-@token_required
+# @token_required
 def delete_ticket(id):
     query = select(Service_Ticket).where(Service_Ticket.id == id)
     ticket = db.session.execute(query).scalars().first()
@@ -220,3 +207,65 @@ def delete_ticket(id):
 #         print(ticket.type, ticket.vehicle)
 
 #     print(len(service_tickets))
+
+@service_tickets_bp.route("/<int:ticket_id>/add-part/<int:part_id>", methods=["PUT"])
+# @token_required
+# @limiter.limit("3 per hour") # no need to add more than 3 parts to a ticket per hour
+def add_part(ticket_id, part_id):
+    ticket = db.session.get(Service_Ticket, ticket_id)
+    part = db.session.get(SerializedPart, part_id)
+    
+    if ticket and part and part:
+        if not part.ticket_id:
+            ticket.serialized_parts.append(part)
+            db.session.commit()
+            return jsonify(
+                {
+                    "message": f"successfully added {part.description.part_name} to the ticket",
+                    "ticket": service_ticket_schema.dump(ticket),
+                    "parts": serialized_parts_schema.dump(ticket.serialized_parts),
+                }
+            ), 200
+        return jsonify({
+            "error": "this part is already assigned to a ticket" 
+                }), 400
+    return jsonify({"error": "Invalid ticket or part ID"}), 400
+
+
+# two routes to search for part not being used and apply to ticket
+@service_tickets_bp.route("/<int:ticket_id>/add-to-cart/<int:description_id>", methods=["PUT"])
+# @token_required
+# @limiter.limit("3 per hour") # no need to add more than 3 parts to a ticket per hour
+def add_to_cart(ticket_id, description_id):
+    ticket = db.session.get(Service_Ticket, ticket_id)     
+    description = db.session.get(PartDescription, description_id)
+    
+    #* Pythonic route
+    parts = description.serialized_parts
+    
+    for part in parts:
+        if not part.ticket_id:
+            ticket.serialized_parts.append(part)
+            db.session.commit()
+            return jsonify(
+                {
+                    "message": f"successfully added {part.description.part_name} to the ticket",
+                    "ticket": service_ticket_schema.dump(ticket),
+                    "parts": serialized_parts_schema.dump(ticket.serialized_parts),
+                }
+            ), 200
+    
+    
+    #* SQLAlcheymy route
+    # query = select(SerializedPart).where(SerializedPart.desc_id == description_id, SerializedPart.ticket_id == None)
+    # part = db.session.execute(query).scalars().first()
+    
+    # ticket.serialized_parts.append(part)
+    # db.session.commit()
+    # return jsonify(
+    #     {
+    #         "message": f"successfully added {part.description.part_name} to the ticket",
+    #         "ticket": service_ticket_schema.dump(ticket),
+    #         "parts": serialized_parts_schema.dump(ticket.serialized_parts),
+    #     }
+    # ), 200

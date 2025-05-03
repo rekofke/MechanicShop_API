@@ -3,13 +3,14 @@ from marshmallow import ValidationError
 from sqlalchemy import select, delete
 from . import serialized_part_bp
 from .schemas import serialized_part_schema, serialized_parts_schema
-from app.models import db, SerializedPart
-from app.extensions import limiter, cache
+import app.models
+from app.models import PartDescription
+from app.extensions import limiter, cache, db
 from app.utils.utils import encode_token, token_required
 
 
-# serialized_part endpoints
-# Add serialized_part
+#* serialized_part endpoints
+#* Add serialized_part
 @serialized_part_bp.route("/", methods=["POST"])
 # @limiter.limit("3 per hour") # Added limiting because no need to add > 3 serialized_parts per hour
 def add_serialized_part():
@@ -25,10 +26,14 @@ def add_serialized_part():
     db.session.add(new_serialized_part)
     db.session.commit()
 
-    return serialized_part_schema.jsonify(new_serialized_part), 201
+    return jsonify({
+            "message": f"Added new {new_serialized_part.description.brand} {new_serialized_part.description.part_name} to serialized_parts",
+            "part": serialized_part_schema.dump(new_serialized_part)
+    })
+            
 
 
-# get all serialized_parts
+#* get all serialized_parts
 @serialized_part_bp.route("/", methods=["GET"])
 @cache.cached(timeout=60)  # aded caching because assessing serialized_parts is a common operation
 def get_serialized_parts():
@@ -50,7 +55,7 @@ def get_serialized_part(serialized_part_id):
     return jsonify({"error": "Invalid part description ID"}), 404
 
 
-# update serialized_part
+#* update serialized_part
 @serialized_part_bp.route("/<int:serialized_part_id>", methods=["PUT"])
 # @token_required
 # @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 serialized_parts per hour
@@ -72,7 +77,7 @@ def update_serialized_part(serialized_part_id):
     return serialized_part_schema.jsonify(serialized_part), 200
 
 
-# delete serialized_part
+#* delete serialized_part
 @serialized_part_bp.route("/<int:serialized_part_id>", methods=["DELETE"])
 # @token_required
 def delete_serialized_part(serialized_part_id):
@@ -94,6 +99,22 @@ def search_by_part_name():
     return serialized_part_schema.jsonify(serialized_part), 200
                             
 
-
+#* search for total inventory by part description
+@serialized_part_bp.route("/stock/<int:description_id>", methods=["GET"])
+def get_individual_stock(description_id):
+    part_description = db.session.get(PartDescription, description_id)
+    
+    # get list of serialized parts
+    parts = part_description.serialized_parts
+    
+    count = 0
+    for part in parts:
+        if not part.ticket_id:
+            count += 1
+            
+    return jsonify({
+        "item": part_description.part_name,
+        "quantity": count
+    })
 
 

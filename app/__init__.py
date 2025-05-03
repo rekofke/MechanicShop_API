@@ -9,10 +9,10 @@ from app.blueprints.part_description import part_description_bp
 from app.blueprints.serialized_parts import serialized_part_bp
 
 
-def create_app(config_name):
+def create_app(config_class='DevelopmentConfig'):
 
     app = Flask(__name__)
-    app.config.from_object(f'config.{config_name}')
+    app.config.from_object(f'config.{config_class}')
 
 
     db.init_app(app)
