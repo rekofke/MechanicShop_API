@@ -12,7 +12,7 @@ from app.utils.utils import encode_token, token_required
 #* serialized_part endpoints
 #* Add serialized_part
 @serialized_part_bp.route("/", methods=["POST"])
-# @limiter.limit("3 per hour") # Added limiting because no need to add > 3 serialized_parts per hour
+@limiter.limit("3 per hour") # Added limiting because no need to add > 3 serialized_parts per hour
 def add_serialized_part():
     try:
         serialized_part_data = serialized_part_schema.load(request.json)
@@ -57,8 +57,8 @@ def get_serialized_part(serialized_part_id):
 
 #* update serialized_part
 @serialized_part_bp.route("/<int:serialized_part_id>", methods=["PUT"])
-# @token_required
-# @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 serialized_parts per hour
+@token_required
+@limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 serialized_parts per hour
 def update_serialized_part(serialized_part_id):
     serialized_part = db.session.get(SerializedPart, serialized_part_id)
 
@@ -79,7 +79,7 @@ def update_serialized_part(serialized_part_id):
 
 #* delete serialized_part
 @serialized_part_bp.route("/<int:serialized_part_id>", methods=["DELETE"])
-# @token_required
+@token_required
 def delete_serialized_part(serialized_part_id):
     serialized_part = db.session.get(SerializedPart, serialized_part_id)
 

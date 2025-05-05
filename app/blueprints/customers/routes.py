@@ -13,7 +13,7 @@ from app.utils.utils import encode_token, token_required
 
 
 @customers_bp.route("/login", methods=["POST"])
-# @limiter.limit("3 per hour")
+@limiter.limit("3 per hour")
 def login():
     try:
         creds = login_schema.load(request.json)
@@ -35,7 +35,8 @@ def login():
 
 # Add customer
 @customers_bp.route("/", methods=["POST"])
-# @limiter.limit("3 per hour") # Added limiting because no need to add > 3 customers per hour
+@token_required
+@limiter.limit("3 per hour") # Added limiting because no need to add > 3 customers per hour
 def add_customer():
     try:
         customer_data = customer_schema.load(request.json)
@@ -80,7 +81,7 @@ def get_customer(id):
 # update customer
 @customers_bp.route("/", methods=["PUT"])
 @token_required
-# @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 customers per hour
+@limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 customers per hour
 def update_customer(id):
     query = select(Customer).where(Customer.id == id)
     customer = db.session.execute(query).scalars().first()

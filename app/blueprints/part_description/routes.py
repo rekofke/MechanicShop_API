@@ -11,7 +11,7 @@ from app.utils.utils import encode_token, token_required
 # part_description endpoints
 # Add part_description
 @part_description_bp.route("/", methods=["POST"])
-# @limiter.limit("3 per hour") # Added limiting because no need to add > 3 part_descriptions per hour
+@limiter.limit("3 per hour") # Added limiting because no need to add > 3 part_descriptions per hour
 def add_part_description():
     try:
         part_description_data = part_description_schema.load(request.json)
@@ -32,7 +32,7 @@ def add_part_description():
 @part_description_bp.route("/", methods=["GET"])
 @cache.cached(timeout=60)  # aded caching because assessing part_descriptions is a common operation
 def get_part_descriptions():
-    # Differnt way to paginate...
+    # Pagination (page/per_page)
     page = int(request.args.get('page'))
     per_page = int(request.args.get('per_page'))
     query =select (PartDescription)
@@ -52,8 +52,8 @@ def get_part_description(part_description_id):
 
 # update part_description
 @part_description_bp.route("/<int:part_description_id>", methods=["PUT"])
-# @token_required
-# @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 part_descriptions per hour
+@token_required
+@limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 part_descriptions per hour
 def update_part_description(part_description_id):
     part_description = db.session.get(PartDescription, part_description_id)
 
@@ -74,7 +74,7 @@ def update_part_description(part_description_id):
 
 # delete part_description
 @part_description_bp.route("/<int:part_description_id>", methods=["DELETE"])
-# @token_required
+@token_required
 def delete_part_description(part_description_id):
     part_description = db.session.get(PartDescription, part_description_id)
 

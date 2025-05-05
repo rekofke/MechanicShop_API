@@ -31,8 +31,8 @@ def login():
 
 # Add mechanic
 @mechanics_bp.route('/', methods=['POST'])
-# @token_required
-# @limiter.limit("3 per hour") # no need to add more than 3 mechanics per hour
+@token_required
+@limiter.limit("3 per hour") # no need to add more than 3 mechanics per hour
 def create_mechanic():
     try:
         mechanic_data = mechanic_schema.load(request.json)
@@ -74,7 +74,7 @@ def get_mechanic(id):
 # update mechanic
 @mechanics_bp.route('/', methods=['PUT'])
 @token_required
-# @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 mechanics per hour
+@limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 mechanics per hour
 def update_mechanic():
     query = select(Mechanic).where(Mechanic.id == id)
     mechanic = db.session.get(Mechanic, request.mechanic_id)
