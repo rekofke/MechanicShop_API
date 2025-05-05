@@ -1,13 +1,9 @@
 from flask import request, jsonify
-from app.blueprints.customers import customers_bp
-from app.blueprints.customers.schemas import (
-    customer_schema,
-    customers_schema,
-    login_schema,
-)
 from marshmallow import ValidationError
-from app.models import db, Customer
 from sqlalchemy import select, delete
+from . import customers_bp
+from .schemas import customers_schema, customer_schema, login_schema
+from app.models import db, Customer
 from app.extensions import limiter, cache
 from app.utils.utils import encode_token, token_required
 
@@ -20,32 +16,21 @@ from app.utils.utils import encode_token, token_required
 # @limiter.limit("3 per hour")
 def login():
     try:
-        credentials = login_schema.load(request.json)
-        email = credentials["email"]
-        password = credentials["password"]
+        creds = login_schema.load(request.json)
     except ValidationError as e:
-        return jsonify(
-            {"messages": "Invalid payload, expecting username and password"}
-        ), 400
-
-    query = select(Customer).where(Customer.email == email)
-    customer = (
-        db.session.execute(query).scalars().first()
-    )  # lesson 7 says scalar_one_or_none
-
-    if (
-        customer and customer.password == password
-    ):  # if we have a have a user associated with the username, validate the password
+        return jsonify(e.messages), 400
+    
+    query = select(Customer).where(Customer.email == creds['email'])
+    customer = db.session.execute(query).scalars().first()
+    
+    if customer and customer.password == creds['password']:
         token = encode_token(customer.id)
-
         response = {
-            "status": "success",
-            "message": "Sucessfully Logged In.",
-            "token": token,
+            'status': 'success',
+            'message': 'Successfully Logged In.',
+            'token': token
         }
-        return jsonify(response), 200
-    else:
-        return jsonify({"messages": "invalid email or password"}), 401
+        return jsonify({'token': token}), 200
 
 
 # Add customer
@@ -53,23 +38,15 @@ def login():
 # @limiter.limit("3 per hour") # Added limiting because no need to add > 3 customers per hour
 def add_customer():
     try:
-        print("Request JSON:", request.json)
-        # Deserialize and validate input data
         customer_data = customer_schema.load(request.json)
-        print("Validated data:", customer_data)
     except ValidationError as e:
-        print("Validation error:", e.messages)
         return jsonify(e.messages), 400
+    
+    query = select(Customer).where(Customer.email == customer_data['email'])
+    existing_customer = db.session.execute(query).scalars().first()
+    
+    new_customer = Customer(**customer_data)
 
-    # use data to create an instance of Customer
-    new_customer = Customer(
-        name=customer_data["name"],
-        email=customer_data["email"],
-        phone=customer_data["phone"],
-        
-    )
-
-    # add the new customer to the session
     db.session.add(new_customer)
     db.session.commit()
 
@@ -81,24 +58,13 @@ def add_customer():
 @cache.cached(timeout=60)  # aded caching because assessing customers is a common operation
 def get_customers():
     # pagination (page/per_page)
-    # try:
-    #     page = int(request.args.get("page"))
-    #     per_page = request.args.get("per_page")
-    #     query = select(Customer)
-    #     customers = db.paginate(query, page=page, per_page=per_page)
-    #     return customers_schema.jsonify(customers), 200
-    # except:
-    #     query = select(Customer)
-    #     customers = db.session.execute(query).scalars().all()
-    #     return customers_schema.jsonify(customers), 200
     
-    
-    # Differnt way to paginate...
     page = int(request.args.get('page'))
     per_page = int(request.args.get('per_page'))
     query =select (Customer)
     customers = db.paginate(query, page=page, per_page=per_page)
     return customers_schema.jsonify(customers)
+
 # get customer by id
 @customers_bp.route("/<int:id>", methods=["GET"])
 def get_customer(id):

@@ -3,7 +3,7 @@ from marshmallow import ValidationError
 from sqlalchemy import select, delete
 from . import serialized_part_bp
 from .schemas import serialized_part_schema, serialized_parts_schema
-import app.models
+from app.models import SerializedPart
 from app.models import PartDescription
 from app.extensions import limiter, cache, db
 from app.utils.utils import encode_token, token_required

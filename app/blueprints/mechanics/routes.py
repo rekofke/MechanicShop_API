@@ -39,7 +39,10 @@ def create_mechanic():
     except ValidationError as e:
         return jsonify(e.messages), 400
     
-    new_mechanic = Mechanic(name=mechanic_data['name'], address=mechanic_data['address'],email=mechanic_data['email'], password=mechanic_data['password'])
+    query = select(Mechanic).where(Mechanic.email == mechanic_data['email'])
+    existing_mechanic = db.session.execute(query).scalars().first()
+    
+    new_mechanic = Mechanic(**mechanic_data)
 
     db.session.add(new_mechanic)
     db.session.commit()
@@ -52,20 +55,11 @@ def create_mechanic():
 def get_mechanics():
     
     # # pagination (page/per_page)
-    try:
-        page = int(request.args.get('page'))
-        per_page = request.args.get('per_page')
-        query = select(Mechanic)
-        mechanics = db.paginate(query, page=page, per_page=per_page)
-        return mechanics_schema.jsonify(mechanics), 200
-    except:
-        query = select(Mechanic)     
-        vehicles = db.session.execute(query).scalars().all()
-        return mechanics_schema.jsonify(mechanics), 200
-    
-    query = select(Mechanic)
-    result = db.session.execute(query).scalars().all()
-    return mechanics_schema.jsonify(result), 200
+    page = int(request.args.get('page'))
+    per_page = int(request.args.get('per_page'))
+    query =select (Mechanic)
+    serialized_parts = db.paginate(query, page=page, per_page=per_page)
+    return mechanic_schema.jsonify(serialized_parts)
 
 # get mechanic by id
 @mechanics_bp.route('/<int:id>', methods=['GET'])

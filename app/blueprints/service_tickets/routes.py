@@ -1,14 +1,13 @@
 from flask import request, jsonify
 from marshmallow import ValidationError
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from . import service_tickets_bp
-from .schemas import service_ticket_schema, service_tickets_schema
-from app.models import Customer, db, Mechanic, PartDescription, SerializedPart, Service_Ticket
-from app.blueprints.mechanics.schemas import mechanics_schema
+from .schemas import service_tickets_schema, service_ticket_schema
+from app.blueprints.mechanics.schemas import mechanics_schema, mechanic_schema
+from app.blueprints.serialized_parts.schemas import serialized_parts_schema, serialized_part_schema
+from app.models import db, Service_Ticket, Mechanic, SerializedPart, PartDescription
 from app.extensions import limiter, cache
-from app.utils.utils import token_required
-from app.blueprints.serialized_parts.schemas import serialized_parts_schema
-
+from app.utils.utils import encode_token, token_required
 
 # Service Ticket endpoints
 # Add service_ticket
@@ -17,30 +16,18 @@ from app.blueprints.serialized_parts.schemas import serialized_parts_schema
 # @limiter.limit("3 per hour") # no need to add more than 3 service tickets per hour
 def add_ticket():
     try:
-        # Deserialize and validate input data
-        ticket_data = service_ticket_schema.load(request.json)
+        service_ticket_data = service_ticket_schema.load(request.json)
     except ValidationError as e:
         return jsonify(e.messages), 400
 
-    customer = db.session.get(Customer, ticket_data.get("customer_id"))
-
-    if customer:
-        new_ticket = Service_Ticket(**ticket_data)
     # use data to create an instance of service_ticket
-    new_ticket = Service_Ticket(
-        date=ticket_data["date"],
-        type=ticket_data["type"],
-        status=ticket_data["status"],
-        customer_id=ticket_data.get("customer_id"),
-        vehicle_id=ticket_data.get("vehicle_id"),
-    )
+    new_service_ticket = Service_Ticket(**service_ticket_data)
 
-    # add the new ticket to the session
-    db.session.add(new_ticket)
+    # add the new service_ticket to the session
+    db.session.add(new_service_ticket)
     db.session.commit()
 
-    return service_ticket_schema.jsonify(new_ticket), 201
-    return jsonify({"message": "Customer not found"}), 404
+    return service_ticket_schema.jsonify(new_service_ticket), 201
 
 
 # get all tickets
@@ -51,23 +38,12 @@ def get_all_tickets():
     tickets = db.session.execute(query).scalars().all()
 
     # # pagination (page/per_page)
-    # try:
-    #     page = int(request.args.get("page"))
-    #     per_page = request.args.get("per_page")
-    #     query = select(Customer)
-    #     tickets = db.paginate(query, page=page, per_page=per_page)
-    #     return service_tickets_schema.jsonify(tickets), 200
-    # except:
-    #     query = select(Service_Ticket)
-    #     customers = db.session.execute(query).scalars().all()
-    #     return service_tickets_schema.jsonify(customers), 200
-    # query = select(Customer)
-    # result = db.session.execute(query).scalars().all()
-    # return customers_schema.jsonify(result), 200
+    page = int(request.args.get('page'))
+    per_page = int(request.args.get('per_page'))
+    query =select (Service_Ticket)
+    service_tickets = db.paginate(query, page=page, per_page=per_page)
+    return service_ticket_schema.jsonify(service_tickets), 200
     
-    return service_tickets_schema.jsonify(tickets), 200
-
-
 # get ticket by id
 @service_tickets_bp.route("/<int:service_ticket_id>", methods=["GET"])
 def get_ticket(service_ticket_id):
@@ -112,14 +88,14 @@ def remove_mechanic(ticket_id, mechanic_id):
     mechanic = db.session.get(Mechanic, mechanic_id)
 
     if ticket and mechanic:
-        if mechanic in ticket.mechanics:
-            ticket.mechanics.remove(mechanic)
+        if mechanic in ticket.mechanic:
+            ticket.mechanic.remove(mechanic)
             db.session.commit()
             return jsonify(
                 {
                     "message": f"successfully remove {mechanic.name} from the ticket",
                     "ticket": service_ticket_schema.dump(ticket),
-                    "mechanics": mechanics_schema.dump(ticket.mechanics),
+                    "mechanics": mechanics_schema.dump(ticket.mechanic),
                 }
             ), 200
 
@@ -204,7 +180,7 @@ def delete_ticket(id):
 #     service_tickets = db.session.execute(query).scalars().all()
 
 #     for ticket in service_tickets:
-#         print(ticket.type, ticket.vehicle)
+#         print(ticket.type, ticket.service_ticket)
 
 #     print(len(service_tickets))
 
