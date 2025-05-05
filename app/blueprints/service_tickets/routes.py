@@ -144,34 +144,34 @@ def delete_ticket(id):
 
 
 # Edit Tickets
-@service_tickets_bp.route("/<int:ticket_id>", methods=["PUT"])
-def edit_ticket():
-    try:
-        mechanic_edits = edit_mechanic_schema(request.json)
-    except ValidationError as e:
-        return jsonify(e.messages), 400
+# @service_tickets_bp.route("/<int:ticket_id>", methods=["PUT"])
+# def edit_ticket():
+#     try:
+#         mechanic_edits = edit_mechanic_schema(request.json)
+#     except ValidationError as e:
+#         return jsonify(e.messages), 400
 
-    query = select(Mechanic).where(Mechanic.id == id)
-    ticket = db.session.execute(query).scalars().first()
+#     query = select(Mechanic).where(Mechanic.id == id)
+#     ticket = db.session.execute(query).scalars().first()
 
-    # ASK DYLAN IF THIS IS COORECT SETUP (NOT SURE HOW HIS LIBRARY TRANSLATES TO MY MECHANIC SHOP)
-    # set up for loop to edit tickets
-    for mechanic_id in mechanic_edits('add_mechanic_ids'):
-        query = select(Mechanic).where(Mechanic.id == mechanic_id)
-        mechanic = db.session.execute(query).scalars().first()
+#     # ASK DYLAN IF THIS IS COORECT SETUP (NOT SURE HOW HIS LIBRARY TRANSLATES TO MY MECHANIC SHOP)
+#     # set up for loop to edit tickets
+#     for mechanic_id in mechanic_edits('add_mechanic_ids'):
+#         query = select(Mechanic).where(Mechanic.id == mechanic_id)
+#         mechanic = db.session.execute(query).scalars().first()
 
-        if mechanic and mechanic not in ticket:
-            ticket.mechanics.append(mechanic)
+#         if mechanic and mechanic not in ticket:
+#             ticket.mechanics.append(mechanic)
 
-    for mechanic_id in mechanic_edits('delete_mechanic_ids'):
-        query = select(Mechanic).where(Mechanic.id == mechanic_id)
-        mechanic = db.session.execute(query).scalars().first()
+#     for mechanic_id in mechanic_edits('delete_mechanic_ids'):
+#         query = select(Mechanic).where(Mechanic.id == mechanic_id)
+#         mechanic = db.session.execute(query).scalars().first()
 
-        if mechanic and mechanic in ticket:
-            ticket.mechanics.remove(mechanic)
+#         if mechanic and mechanic in ticket:
+#             ticket.mechanics.remove(mechanic)
 
-    db.session.commit()
-    return return_mechanic_schema.jsonify(mechanic), 200
+#     db.session.commit()
+#     return mechanic_schema.jsonify(mechanic), 200
 
 # lambda to get all tickets and sort by most popular services on tickets
 @service_tickets_bp.route("/popular", methods=["GET"])
