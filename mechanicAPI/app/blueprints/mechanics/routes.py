@@ -31,7 +31,7 @@ def login():
 
 # Add mechanic
 @mechanics_bp.route('/', methods=['POST'])
-@token_required
+# @token_required
 @limiter.limit("3 per hour") # no need to add more than 3 mechanics per hour
 def create_mechanic():
     try:

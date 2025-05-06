@@ -1,0 +1,119 @@
+swagger: '2.0'
+info:
+  title: "Library API"
+  description: "This is a API to manage a Library"
+  version: "1.0.0"
+host: "127.0.0.1:5000"
+schemes:
+  - "http"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+paths: 
+  /mechanics/login:
+    post:
+      tags:
+        - "Mechanics"
+      summary: "Login Endpoint, (generates token)"
+      description: "Validates member credentials, generates and returns a number specific token"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Login credentials"
+          required: true
+          schema:
+            $ref: "#/definitions/LoginCredentials"
+      responses:
+        200:
+          description: "Successful Login"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+          examples:
+            application/json:
+              token: "kjsbvpluahsenASDKLJASDKBASKDHI..."
+              message: "Login successful"
+              status: "success"
+
+  /mechanics:
+   post:
+      tags:
+        - "Mechanics"
+      summary: "Endpoint to create a new mechanic"
+      description: "Endpoint to create a new mechanic in our mechanic shop system, email must be unique"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Information to create a new mechanic"
+          required: true
+          schema:
+            $ref: "#/definitions/CreateMechanicPayload"
+      responses:
+        201:
+          description: "Successful Mechanic Creation"
+          schema:
+            $ref: "#/definitions/CreateMechanicResponse"
+          examples:
+            application/json:
+              id: 1
+              name: "John Doe"
+              address: "123 Main St"
+              email: "johndoe@gmail.com"
+              password: "password123"
+
+definitions: 
+  
+  
+
+  LoginCredentials:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+    required:
+      - email
+      - password
+    
+  LoginResponse:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+      message:
+        type: "string"
+      status:
+        type: "string"
+
+  CreateMechanicPayload:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      address:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+    required:
+      - name
+      - address
+      - email
+      - password
+
+  CreateMechanicResponse:
+    type: "object"
+    properties:
+      id:
+        type: "int"
+      name:
+        type: "string"
+      address:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+    

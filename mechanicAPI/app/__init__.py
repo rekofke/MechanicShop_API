@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_swagger_ui import get_swaggerui_blueprint
 from app.models import db
 from app.extensions import ma, limiter, cache
 from app.blueprints.customers import customers_bp, routes
@@ -7,6 +8,19 @@ from app.blueprints.vehicles import vehicles_bp
 from app.blueprints.mechanics import mechanics_bp
 from app.blueprints.part_description import part_description_bp
 from app.blueprints.serialized_parts import serialized_part_bp
+
+SWAGGER_URL = '/api/docs' # URL for exposing swagger UI (without trailing '/')
+API_URL = '/static/swagger.yaml' # our API URL (can be local resource)
+
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Mechanics API",
+        'doc_expansion': 'none',
+        'persistAuthorization': 'True',
+    }
+)
 
 
 def create_app(config_class='DevelopmentConfig'):
@@ -27,5 +41,6 @@ def create_app(config_class='DevelopmentConfig'):
     app.register_blueprint(mechanics_bp, url_prefix='/mechanics')
     app.register_blueprint(part_description_bp, url_prefix='/part-description')
     app.register_blueprint(serialized_part_bp, url_prefix='/serialized-parts')
+    app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL) # Registering our swagger blueprint
     
     return app
