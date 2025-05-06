@@ -10,6 +10,11 @@ consumes:
   - "application/json"
 produces:
   - "application/json"
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
 paths: 
 #* Login Mechanic
   /mechanics/login:
@@ -38,61 +43,87 @@ paths:
 
 #* Create Mechanics
   /mechanics:
-   post:
-      tags:
-        - "Mechanics"
-      summary: "Endpoint to create a new mechanic"
-      description: "Endpoint to create a new mechanic in our mechanic shop system, email must be unique"
-      parameters:
-        - in: "body"
-          name: "body"
-          description: "Information to create a new mechanic"
-          required: true
-          schema:
-            $ref: "#/definitions/CreateMechanicPayload"
-      responses:
-        201:
-          description: "Created Mechanics Successfully"
-          schema:
-            $ref: "#/definitions//AllMechanics"
-          examples:
-            application/json:
-              id: 1
-              name: "John Doe"
-              address: "123 Main St"
-              email: "johndoe@gmail.com"
-              password: "password123"
+    post:
+        tags:
+          - "Mechanics"
+        summary: "Endpoint to create a new mechanic"
+        description: "Endpoint to create a new mechanic in our mechanic shop system, email must be unique"
+        parameters:
+          - in: "body"
+            name: "body"
+            description: "Information to create a new mechanic"
+            required: true
+            schema:
+              $ref: "#/definitions/CreateMechanicPayload"
+        responses:
+          201:
+            description: "Created Mechanics Successfully"
+            schema:
+              $ref: "#/definitions//AllMechanics"
+            examples:
+              application/json:
+                id: 1
+                name: "John Doe"
+                address: "123 Main St"
+                email: "johndoe@gmail.com"
+                password: "password123"
 
 #* All Mechanics
 
-   get:
-      tags:
-        - "Mechanics"
-      summary: "Returns all Mechanics"
-      description: "Endpoint to retrieve an array of all mechanics in the system"
-      parameters:
-        - in: query
-          name: page
-          type: integer
-          description: "Page number for pagination (optional)"
-        - in: query
-          name: per_page
-          type: integer
-          default: 10
-          description: Items perpage (default 10)
-      responses:
-        201:
-          description: "Successful Mechanic Creation"
-          schema:
-            $ref: "#/definitions/AllMechanics"
-          examples:
-            application/json:
-              id: 1
-              name: "John Doe"
-              address: "123 Main St"
-              email: "johndoe@gmail.com"
-              password: "password123"
-
+    get:
+        tags:
+          - "Mechanics"
+        summary: "Returns all Mechanics"
+        description: "Endpoint to retrieve an array of all mechanics in the system"
+        parameters:
+          - in: query
+            name: page
+            type: integer
+            description: "Page number for pagination (optional)"
+          - in: query
+            name: per_page
+            type: integer
+            default: 10
+            description: Items perpage (default 10)
+        responses:
+          201:
+            description: "Successful Mechanic Creation"
+            schema:
+              $ref: "#/definitions/AllMechanics"
+            examples:
+              application/json:
+                id: 1
+                name: "John Doe"
+                address: "123 Main St"
+                email: "johndoe@gmail.com"
+                password: "password123"
+    put:
+        tags:
+          - "Mechanics"
+        summary: "Endpoit to update a mechanic"
+        description: "Endpoint to update a mechanic, this is a token authenticated route, and the mechanic must be logged in to update their account"
+        security:
+          - bearerAuth: []
+        parameters:
+          - in: 'body'
+            name: 'body'
+            type: integer
+            description: "information required to update a mechanic"
+            required: true
+            schema:
+              $ref: "#/definitions/UpdateMechanicPayload"
+        responses:
+          200:
+            description: "Successfully updated mechanic"
+            schema:
+              $ref: "#/definitions/UpdateMechanicResponse"
+            examples:
+              application/json:
+                id: 1
+                name: "John Doe"
+                address: "123 Main St"
+                email: "johndoe@gmail.com"
+                password: "password123"
 
 definitions: 
   
@@ -161,5 +192,35 @@ definitions:
         type: "string"
       password:
         type: "string"
+
+  UpdateMemberPayload:
+    type: "object"
+    properties:
+      name:
+        type: 'string'
+      address: 
+        type: 'string'
+      email:
+        type: 'string'
+      password:
+        type: 'string'
+    required:
+      - name
+      - address
+      - email
+      - password
+  UpdateMechanicResponse:
+    type: 'object'
+    properties:
+      id:
+        type: 'integer'
+      name:
+        type: 'string'
+      address:
+        type: 'string'
+      email:
+        type: 'string'
+      password:
+        type: 'string'
     
     
