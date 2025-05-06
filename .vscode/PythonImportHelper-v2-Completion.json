@@ -1049,7 +1049,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.customers.routes",
         "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def get_customers():\n    # pagination (page/per_page)\n    page = int(request.args.get('page'))\n    per_page = int(request.args.get('per_page'))\n    query =select (Customer)\n    customers = db.paginate(query, page=page, per_page=per_page)\n    return customers_schema.jsonify(customers)\n# get customer by id\n@customers_bp.route(\"/<int:id>\", methods=[\"GET\"])\ndef get_customer(id):",
+        "peekOfCode": "def get_customers():\n    page = request.args.get('page', type=int)\n    per_page = request.args.get('per_page', default=10, type=int)\n    if page:\n        pagination = db.paginate(select(Customer), page=page, per_page=per_page)\n        customers = pagination.items\n        if not customers:\n            return jsonify({\"message\": \"No customers found\"}), 404\n        return customers_schema.jsonify(customers)\n    else:",
         "detail": "mechanicAPI.app.blueprints.customers.routes",
         "documentation": {}
     },
@@ -1148,7 +1148,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.mechanics.routes",
         "description": "mechanicAPI.app.blueprints.mechanics.routes",
-        "peekOfCode": "def get_mechanics():\n    # # pagination (page/per_page)\n    page = int(request.args.get('page'))\n    per_page = int(request.args.get('per_page'))\n    query =select (Mechanic)\n    serialized_parts = db.paginate(query, page=page, per_page=per_page)\n    return mechanic_schema.jsonify(serialized_parts)\n# get mechanic by id\n@mechanics_bp.route('/<int:id>', methods=['GET'])\ndef get_mechanic(id):",
+        "peekOfCode": "def get_mechanics():\n    page = request.args.get('page', type=int)\n    per_page = request.args.get('per_page', default=10, type=int)\n    if page:\n        pagination = db.paginate(select(Mechanic), page=page, per_page=per_page)\n        mechanics = pagination.items\n        if not mechanics:\n            return jsonify({\"message\": \"No mechanics found\"}), 404\n        return mechanics_schema.jsonify(mechanics)\n    else:",
         "detail": "mechanicAPI.app.blueprints.mechanics.routes",
         "documentation": {}
     },

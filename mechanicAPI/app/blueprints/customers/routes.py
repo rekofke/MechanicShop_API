@@ -58,13 +58,24 @@ def add_customer():
 @customers_bp.route("/", methods=["GET"])
 @cache.cached(timeout=60)  # aded caching because assessing customers is a common operation
 def get_customers():
-    # pagination (page/per_page)
-    
-    page = int(request.args.get('page'))
-    per_page = int(request.args.get('per_page'))
-    query =select (Customer)
-    customers = db.paginate(query, page=page, per_page=per_page)
-    return customers_schema.jsonify(customers)
+    page = request.args.get('page', type=int)
+    per_page = request.args.get('per_page', default=10, type=int)
+
+
+    if page:
+        pagination = db.paginate(select(Customer), page=page, per_page=per_page)
+        customers = pagination.items
+
+        if not customers:
+            return jsonify({"message": "No customers found"}), 404
+        return customers_schema.jsonify(customers)
+    else:
+        customers = db.session.execute(select(Customer)). scalars().all()
+
+        if not customers:
+            return jsonify({"message": "No customers found"}), 404
+        
+        return customers_schema.jsonify(customers), 200
 
 # get customer by id
 @customers_bp.route("/<int:id>", methods=["GET"])

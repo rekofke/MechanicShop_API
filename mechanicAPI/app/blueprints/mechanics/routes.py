@@ -51,16 +51,26 @@ def create_mechanic():
 
 # get all mechanics
 @mechanics_bp.route('/', methods=['GET'])
-@cache.cached(timeout=60) # added caching because assessing mechanics is a common operation
+@cache.cached(timeout=60, query_string=True) # added caching because assessing mechanics is a common operation
 def get_mechanics():
-    
-    # # pagination (page/per_page)
-    page = int(request.args.get('page'))
-    per_page = int(request.args.get('per_page'))
-    query =select (Mechanic)
-    serialized_parts = db.paginate(query, page=page, per_page=per_page)
-    return mechanic_schema.jsonify(serialized_parts)
+    page = request.args.get('page', type=int)
+    per_page = request.args.get('per_page', default=10, type=int)
 
+
+    if page:
+        pagination = db.paginate(select(Mechanic), page=page, per_page=per_page)
+        mechanics = pagination.items
+
+        if not mechanics:
+            return jsonify({"message": "No mechanics found"}), 404
+        return mechanics_schema.jsonify(mechanics)
+    else:
+        mechanics = db.session.execute(select(Mechanic)). scalars().all()
+
+        if not mechanics:
+            return jsonify({"message": "No mechanics found"}), 404
+        
+        return mechanics_schema.jsonify(mechanics), 200
 # get mechanic by id
 @mechanics_bp.route('/<int:id>', methods=['GET'])
 def get_mechanic(id):

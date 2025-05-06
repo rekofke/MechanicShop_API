@@ -11,6 +11,7 @@ consumes:
 produces:
   - "application/json"
 paths: 
+#* Login Mechanic
   /mechanics/login:
     post:
       tags:
@@ -35,6 +36,7 @@ paths:
               message: "Login successful"
               status: "success"
 
+#* Create Mechanics
   /mechanics:
    post:
       tags:
@@ -50,9 +52,9 @@ paths:
             $ref: "#/definitions/CreateMechanicPayload"
       responses:
         201:
-          description: "Successful Mechanic Creation"
+          description: "Created Mechanics Successfully"
           schema:
-            $ref: "#/definitions/CreateMechanicResponse"
+            $ref: "#/definitions//AllMechanics"
           examples:
             application/json:
               id: 1
@@ -61,10 +63,39 @@ paths:
               email: "johndoe@gmail.com"
               password: "password123"
 
+#* All Mechanics
+
+   get:
+      tags:
+        - "Mechanics"
+      summary: "Returns all Mechanics"
+      description: "Endpoint to retrieve an array of all mechanics in the system"
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          description: "Page number for pagination (optional)"
+        - in: query
+          name: per_page
+          type: integer
+          default: 10
+          description: Items perpage (default 10)
+      responses:
+        201:
+          description: "Successful Mechanic Creation"
+          schema:
+            $ref: "#/definitions/AllMechanics"
+          examples:
+            application/json:
+              id: 1
+              name: "John Doe"
+              address: "123 Main St"
+              email: "johndoe@gmail.com"
+              password: "password123"
+
+
 definitions: 
   
-  
-
   LoginCredentials:
     type: "object"
     properties:
@@ -107,7 +138,7 @@ definitions:
     type: "object"
     properties:
       id:
-        type: "int"
+        type: "integer"
       name:
         type: "string"
       address:
@@ -116,4 +147,19 @@ definitions:
         type: "string"
       password:
         type: "string"
+
+  AllMechanics:
+    type: "array"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      address:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+    
     
