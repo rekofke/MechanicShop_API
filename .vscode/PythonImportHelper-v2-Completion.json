@@ -889,23 +889,6 @@
         "documentation": {}
     },
     {
-        "label": "jose",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "jose",
-        "description": "jose",
-        "detail": "jose",
-        "documentation": {}
-    },
-    {
-        "label": "jwt",
-        "importPath": "jose",
-        "description": "jose",
-        "isExtraImport": true,
-        "detail": "jose",
-        "documentation": {}
-    },
-    {
         "label": "wraps",
         "importPath": "functools",
         "description": "functools",
@@ -1670,7 +1653,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.utils.utils",
         "description": "mechanicAPI.app.utils.utils",
-        "peekOfCode": "def token_required(f):  # token required decorator: takes (f) usually route handler function as an argument and uses it to check if request has valid token\n    @wraps(f)\n    def decorated(*args, **kwargs):  # ensures the wrapped function (decorated) retains name and docstring of the original function (f)\n        token = None  # initalizes token to none and checks if authorization header is present in request. if so splits header to extract actual token\n        #look for token in the request headers\n        if \"Authorization\" in request.headers:\n            token = request.headers[\"Authorization\"].split(\" \")[1]\n            if not token: # if no token found returns JSON response with an error message and 401\n                return jsonify({\"message\": \"Token is missing!\"}), 401\n            try:  # tries to decode token using secret_key and specific algorithm, if successful it extracts user id from decoded data",
+        "peekOfCode": "def token_required(f):  # token required decorator: takes (f) usually route handler function as an argument and uses it to check if request has valid token\n    @wraps(f)\n    def decorated(*args, **kwargs):  # ensures the wrapped function (decorated) retains name and docstring of the original function (f)\n        token = None # initalizes token to none and checks if authorization header is present in request. if so splits header to extract actual token\n        auth_header = request.headers.get(\"Authorization\") \n        #look for token in the request headers\n        if \"Authorization\" in request.headers:\n            token = request.headers[\"Authorization\"].split(\" \")[1]\n            if not token: # if no token found returns JSON response with an error message and 401\n                return jsonify({\"message\": \"Token is missing!\"}), 401",
         "detail": "mechanicAPI.app.utils.utils",
         "documentation": {}
     },

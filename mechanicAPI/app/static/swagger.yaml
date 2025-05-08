@@ -15,8 +15,8 @@ securityDefinitions:
     type: apiKey
     name: Authorization
     in: header
+
 paths: 
-#* Login Mechanic
   /mechanics/login:
     post:
       tags:
@@ -41,7 +41,6 @@ paths:
               message: "Login successful"
               status: "success"
 
-#* Create Mechanics
   /mechanics:
     post:
         tags:
@@ -59,7 +58,7 @@ paths:
           201:
             description: "Created Mechanics Successfully"
             schema:
-              $ref: "#/definitions//AllMechanics"
+              $ref: "#/definitions/AllMechanics"
             examples:
               application/json:
                 id: 1
@@ -67,8 +66,6 @@ paths:
                 address: "123 Main St"
                 email: "johndoe@gmail.com"
                 password: "password123"
-
-#* All Mechanics
 
     get:
         tags:
@@ -107,7 +104,6 @@ paths:
         parameters:
           - in: 'body'
             name: 'body'
-            type: integer
             description: "information required to update a mechanic"
             required: true
             schema:
@@ -120,10 +116,26 @@ paths:
             examples:
               application/json:
                 id: 1
-                name: "John Doe"
-                address: "123 Main St"
-                email: "johndoe@gmail.com"
+                name: "Dohn Joe"
+                address: "321 Main St"
+                email: "dohnjoe@gmail.com"
                 password: "password123"
+
+    delete:
+        tags:
+          - "Mechanics"
+        summary: "Endpoint to delete a mechanic"
+        description: "Endpoint to delete a mechanic, Requires token authentication, mechanic must be logged in to delete their account"
+        security:
+          - bearerAuth: []
+        responses:
+          201:
+            description: "Mechanic Successfully Deleted"
+            schema:
+              $ref: "#/definitions/DeleteMemberResponse"
+            examples:
+              application/json:
+                message: "Successfully deleted mechanic <mechanic_id>"
 
 definitions: 
   
@@ -148,6 +160,7 @@ definitions:
       status:
         type: "string"
 
+
   CreateMechanicPayload:
     type: "object"
     properties:
@@ -165,6 +178,7 @@ definitions:
       - email
       - password
 
+
   CreateMechanicResponse:
     type: "object"
     properties:
@@ -178,6 +192,7 @@ definitions:
         type: "string"
       password:
         type: "string"
+
 
   AllMechanics:
     type: "array"
@@ -193,7 +208,8 @@ definitions:
       password:
         type: "string"
 
-  UpdateMemberPayload:
+
+  UpdateMechanicPayload:
     type: "object"
     properties:
       name:
@@ -204,11 +220,14 @@ definitions:
         type: 'string'
       password:
         type: 'string'
+
     required:
       - name
       - address
       - email
       - password
+
+
   UpdateMechanicResponse:
     type: 'object'
     properties:
@@ -222,5 +241,10 @@ definitions:
         type: 'string'
       password:
         type: 'string'
+
     
-    
+DeleteMechanic:
+  type: 'object'
+  properties:
+    message:
+      type: "string"
