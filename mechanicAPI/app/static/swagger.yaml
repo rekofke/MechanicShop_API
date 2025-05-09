@@ -181,7 +181,7 @@ paths:
             description: Items perpage (default 10)
         responses:
           201:
-            description: "Successful Customers Creation"
+            description: "Successful Reterival of Customers"
             schema:
               $ref: "#/definitions/AllCustomers"
             examples:
@@ -231,33 +231,105 @@ paths:
             examples:
               application/json:
                 message: "Successfully deleted customer <customer_id>"
- 
+
+#* Part Description Endpoints
+  /part-descriptions:
+    post:
+        tags:
+          - "Part Descriptions"
+        summary: "Endpoint to create a new part description"
+        description: "Endpoint to create a new part description in our mechanic shop system."
+        parameters:
+          - in: "body"
+            name: "body"
+            description: "Information to create a new part description"
+            required: true
+            schema:
+              $ref: "#/definitions/CreatePart_DescriptionPayload"
+        responses:
+          201:
+            description: "Created Part Description Successfully"
+            schema:
+              $ref: "#/definitions/AllPart_Descriptions"
+            examples:
+              application/json:
+                id: 1
+                part name: "After Market Exhaust"
+                brand: "Flowmaster"
+                price: "599.99"
+
+    get:
+        tags:
+          - "Part Descriptions"
+        summary: "Returns all Part Descriptions"
+        description: "Endpoint to retrieve an array of all part descriptions in the system"
+        parameters:
+          - in: query
+            name: page
+            type: integer
+            description: "Page number for pagination (optional)"
+          - in: query
+            name: per_page
+            type: integer
+            default: 10
+            description: Items perpage (default 10)
+        responses:
+          201:
+            description: "Successful reterival of Part Descriptions"
+            schema:
+              $ref: "#/definitions/AllPart_Descriptions"
+            examples:
+              application/json:
+                id: 1
+                part name: "After Market Exhaust"
+                brand: "Flowmaster"
+                price: "599.99"
+    put:
+        tags:
+          - "Part Descriptions"
+        summary: "Endpoit to update a part description"
+        description: "Endpoint to update a part description."
+        security:
+          - bearerAuth: []
+        parameters:
+          - in: 'body'
+            name: 'body'
+            description: "information required to update a part description"
+            required: true
+            schema:
+              $ref: "#/definitions/UpdatePart_DescriptionPayload"
+        responses:
+          200:
+            description: "Successfully updated part description"
+            schema:
+              $ref: "#/definitions/UpdatePart_DescriptionResponse"
+            examples:
+              application/json:
+                id: 1
+                part name: "After Market Exhaust"
+                brand: "Evil Energy"
+                price: "34.99"
+
+    delete:
+        tags:
+          - "Part Descriptions"
+        summary: "Endpoint to delete a part description"
+        description: "Endpoint to delete a part description."
+        security:
+          - bearerAuth: []
+        responses:
+          201:
+            description: "Part Description Successfully Deleted"
+            schema:
+              $ref: "#/definitions/DeletePart_DescriptionResponse"
+            examples:
+              application/json:
+                message: "Successfully deleted part description"
 
 
 definitions: 
-  
-  LoginCredentials:
-    type: "object"
-    properties:
-      email:
-        type: "string"
-      password:
-        type: "string"
-    required:
-      - email
-      - password
-    
-  LoginResponse:
-    type: "object"
-    properties:
-      token:
-        type: "string"
-      message:
-        type: "string"
-      status:
-        type: "string"
 
-
+#* Mechanics
   CreateMechanicPayload:
     type: "object"
     properties:
@@ -274,7 +346,6 @@ definitions:
       - address
       - email
       - password
-
 
   CreateMechanicResponse:
     type: "object"
@@ -310,13 +381,13 @@ definitions:
     type: "object"
     properties:
       name:
-        type: 'string'
-      address: 
-        type: 'string'
+        type: "string"
+      address:
+        type: "string"
       email:
-        type: 'string'
+        type: "string"
       password:
-        type: 'string'
+        type: "string"
 
     required:
       - name
@@ -331,13 +402,13 @@ definitions:
       id:
         type: 'integer'
       name:
-        type: 'string'
+        type: "string"
       address:
-        type: 'string'
+        type: "string"
       email:
-        type: 'string'
+        type: "string"
       password:
-        type: 'string'
+        type: "string"
 
     
   DeleteMechanic:
@@ -423,3 +494,79 @@ definitions:
       message:
         type: "string"
 
+#* Part Description
+  CreatePart_DescriptionPayload:
+    type: "object"
+    properties:
+      part name:
+        type: "string"
+      brand:
+        type: "string"
+      price:
+        type: "string"
+    required:
+      - part name
+      - brand
+      - price
+
+
+  CreatePart_DescriptionResponse:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      part name:
+        type: "string"
+      brand:
+        type: "string"
+      price:
+        type: "string"
+
+
+  AllPart_Descriptions:
+    type: "array"
+    properties:
+      id:
+        type: "integer"
+      part name:
+        type: "string"
+      brand:
+        type: "string"
+      price:
+        type: "string"
+
+
+  UpdatePart_DescriptionPayload:
+    type: "object"
+    properties:
+      part name:
+        type: "string"
+      brand:
+        type: "string"
+      price:
+        type: "string"
+
+    required:
+      - part name
+      - brand
+      - price
+
+
+  UpdatePart_DescriptionResponse:
+    type: 'object'
+    properties:
+      id:
+        type: 'integer'
+      part name:
+        type: "string"
+      brand:
+        type: "string"
+      price:
+        type: "string"
+
+    
+  DeletePart_Description:
+    type: 'object'
+    properties:
+      message:
+        type: "string"
