@@ -1041,7 +1041,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.customers.routes",
         "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def get_customer(id):\n    query = select(Customer).where(Customer.id == id)\n    customer = db.session.execute(query).scalars().first()\n    if customer is None:\n        return jsonify({\"message\": \"Invalid user ID\"}), 404\n    return customer_schema.jsonify(customer), 200\n# update customer\n@customers_bp.route(\"/\", methods=[\"PUT\"])\n@token_required\n@limiter.limit(\"3 per hour\") # Added additional limiting because no need to update > 3 customers per hour",
+        "peekOfCode": "def get_customer(id):\n    query = select(Customer).where(Customer.id == id)\n    customer = db.session.execute(query).scalars().first()\n    if customer is None:\n        return jsonify({\"message\": \"Invalid user ID\"}), 404\n    return customer_schema.jsonify(customer), 200\n# update customer\n@customers_bp.route(\"/\", methods=[\"PUT\"])\n# @token_required\n@limiter.limit(\"3 per hour\") # Added additional limiting because no need to update > 3 customers per hour",
         "detail": "mechanicAPI.app.blueprints.customers.routes",
         "documentation": {}
     },
@@ -1050,7 +1050,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.customers.routes",
         "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def update_customer(id):\n    query = select(Customer).where(Customer.id == id)\n    customer = db.session.execute(query).scalars().first()\n    if customer is None:\n        return jsonify({\"message\": \"Invalid user ID\"}), 404\n    try:\n        customer_data = customer_schema.load(request.json)\n    except ValidationError as e:\n        return jsonify(e.messages), 400\n    for field, value in customer_data.items():  # unpacks customer_data dictionary",
+        "peekOfCode": "def update_customer(id):\n    customer = db.session.get(Customer, id)\n    if customer is None:\n        return jsonify({\"message\": \"Invalid user ID\"}), 404\n    try:\n        customer_data = customer_schema.load(request.json)\n    except ValidationError as e:\n        return jsonify(e.messages), 400\n    for field, value in customer_data.items():  # unpacks customer_data dictionary\n        setattr(",
         "detail": "mechanicAPI.app.blueprints.customers.routes",
         "documentation": {}
     },
@@ -1059,7 +1059,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.customers.routes",
         "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def delete_customer(customer_id):\n    query = select(Customer).where(Customer.id == customer_id)\n    customer = db.session.execute(query).scalars().first()\n    if not customer:\n        return jsonify({\"message\": \"Customer not found\"}), 404\n    db.session.delete(customer)\n    db.session.commit()\n    return jsonify({\"message\": f\"Successfully deleted customer {customer_id}\"}), 200\n# Query parameter to search customer by email\n@customers_bp.route(\"/search\", methods=[\"GET\"])",
+        "peekOfCode": "def delete_customer(customer_id):\n    customer = db.session.get(Customer, customer_id)\n    if not customer:\n        return jsonify({\"message\": \"Customer not found\"}), 404\n    db.session.delete(customer)\n    db.session.commit()\n    return jsonify({\"message\": f\"Successfully deleted customer\"}), 200\n# Query parameter to search customer by email\n@customers_bp.route(\"/search\", methods=[\"GET\"])\ndef search_customers():",
         "detail": "mechanicAPI.app.blueprints.customers.routes",
         "documentation": {}
     },
@@ -1716,7 +1716,7 @@
         "kind": 6,
         "importPath": "mechanicAPI.app.models",
         "description": "mechanicAPI.app.models",
-        "peekOfCode": "class Customer(Base):\n    __tablename__ = 'customers'\n    id: Mapped[int] = mapped_column(Integer, primary_key=True)\n    name: Mapped[str] = mapped_column(String(125), nullable=False)\n    email: Mapped[str] = mapped_column(String(200), unique=True)\n    password: Mapped[str] = mapped_column(String(200), nullable=False)\n    phone: Mapped[str] = mapped_column(String(50))\n    # Relationships\n    vehicles: Mapped[List[\"Vehicle\"]] = relationship(\"Vehicle\", back_populates=\"customer\")\n    tickets: Mapped[List[\"Service_Ticket\"]] = relationship(\"Service_Ticket\", back_populates=\"customer\")",
+        "peekOfCode": "class Customer(Base):\n    __tablename__ = 'customers'\n    id: Mapped[int] = mapped_column(Integer, primary_key=True)\n    name: Mapped[str] = mapped_column(String(125), nullable=False)\n    email: Mapped[str] = mapped_column(String(200), unique=True)\n    phone: Mapped[str] = mapped_column(String(50))\n    # Relationships\n    vehicles: Mapped[List[\"Vehicle\"]] = relationship(\"Vehicle\", back_populates=\"customer\")\n    tickets: Mapped[List[\"Service_Ticket\"]] = relationship(\"Service_Ticket\", back_populates=\"customer\")\nclass Vehicle(Base):",
         "detail": "mechanicAPI.app.models",
         "documentation": {}
     },

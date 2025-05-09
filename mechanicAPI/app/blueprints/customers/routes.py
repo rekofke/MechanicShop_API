@@ -35,7 +35,7 @@ def login():
 
 # Add customer
 @customers_bp.route("/", methods=["POST"])
-@token_required
+# @token_required
 @limiter.limit("3 per hour") # Added limiting because no need to add > 3 customers per hour
 def add_customer():
     try:
@@ -91,11 +91,11 @@ def get_customer(id):
 
 # update customer
 @customers_bp.route("/", methods=["PUT"])
-@token_required
+# @token_required
 @limiter.limit("3 per hour") # Added additional limiting because no need to update > 3 customers per hour
 def update_customer(id):
-    query = select(Customer).where(Customer.id == id)
-    customer = db.session.execute(query).scalars().first()
+    customer = db.session.get(Customer, id)
+
 
     if customer is None:
         return jsonify({"message": "Invalid user ID"}), 404
@@ -115,17 +115,16 @@ def update_customer(id):
 
 # delete customer
 @customers_bp.route("/", methods=["DELETE"])
-@token_required
+# @token_required
 def delete_customer(customer_id):
-    query = select(Customer).where(Customer.id == customer_id)
-    customer = db.session.execute(query).scalars().first()
+    customer = db.session.get(Customer, customer_id)
 
     if not customer:
         return jsonify({"message": "Customer not found"}), 404
 
     db.session.delete(customer)
     db.session.commit()
-    return jsonify({"message": f"Successfully deleted customer {customer_id}"}), 200
+    return jsonify({"message": f"Successfully deleted customer"}), 200
 
 # Query parameter to search customer by email
 @customers_bp.route("/search", methods=["GET"])

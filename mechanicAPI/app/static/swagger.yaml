@@ -16,13 +16,14 @@ securityDefinitions:
     name: Authorization
     in: header
 
+#* Mechanics Endpoints
 paths: 
   /mechanics/login:
     post:
       tags:
         - "Mechanics"
       summary: "Login Endpoint, (generates token)"
-      description: "Validates member credentials, generates and returns a number specific token"
+      description: "Validates mechanic credentials, generates and returns a number specific token"
       parameters:
         - in: "body"
           name: "body"
@@ -132,10 +133,106 @@ paths:
           201:
             description: "Mechanic Successfully Deleted"
             schema:
-              $ref: "#/definitions/DeleteMemberResponse"
+              $ref: "#/definitions/DeleteMechanicResponse"
             examples:
               application/json:
                 message: "Successfully deleted mechanic <mechanic_id>"
+#* Customers Endpoints
+
+  /customers:
+    post:
+        tags:
+          - "Customers"
+        summary: "Endpoint to create a new customer"
+        description: "Endpoint to create a new customer in our mechanic shop system, email must be unique"
+        parameters:
+          - in: "body"
+            name: "body"
+            description: "Information to create a new customer"
+            required: true
+            schema:
+              $ref: "#/definitions/CreateCustomerPayload"
+        responses:
+          201:
+            description: "Created Customer Successfully"
+            schema:
+              $ref: "#/definitions/AllCustomers"
+            examples:
+              application/json:
+                id: 1
+                name: "John Doe"
+                email: "johndoe@gmail.com"
+                phone: "1234567890"
+
+    get:
+        tags:
+          - "Customers"
+        summary: "Returns all Customers"
+        description: "Endpoint to retrieve an array of all customers in the system"
+        parameters:
+          - in: query
+            name: page
+            type: integer
+            description: "Page number for pagination (optional)"
+          - in: query
+            name: per_page
+            type: integer
+            default: 10
+            description: Items perpage (default 10)
+        responses:
+          201:
+            description: "Successful Customers Creation"
+            schema:
+              $ref: "#/definitions/AllCustomers"
+            examples:
+              application/json:
+                id: 1
+                name: "John Doe"
+                email: "johndoe@gmail.com"
+                phone: "1234567890"
+    put:
+        tags:
+          - "Customers"
+        summary: "Endpoit to update a customer"
+        description: "Endpoint to update a customer."
+        security:
+          - bearerAuth: []
+        parameters:
+          - in: 'body'
+            name: 'body'
+            description: "information required to update a customer"
+            required: true
+            schema:
+              $ref: "#/definitions/UpdateCustomerPayload"
+        responses:
+          200:
+            description: "Successfully updated customer"
+            schema:
+              $ref: "#/definitions/UpdateCustomerResponse"
+            examples:
+              application/json:
+                id: 1
+                name: "Dohn Joe"
+                email: "dohnjoe@gmail.com"
+                phone: "0987654321"
+
+    delete:
+        tags:
+          - "Customers"
+        summary: "Endpoint to delete a customer"
+        description: "Endpoint to delete a custoner."
+        security:
+          - bearerAuth: []
+        responses:
+          201:
+            description: "Customer Successfully Deleted"
+            schema:
+              $ref: "#/definitions/DeleteCustomerResponse"
+            examples:
+              application/json:
+                message: "Successfully deleted customer <customer_id>"
+ 
+
 
 definitions: 
   
@@ -243,8 +340,86 @@ definitions:
         type: 'string'
 
     
-DeleteMechanic:
-  type: 'object'
-  properties:
-    message:
-      type: "string"
+  DeleteMechanic:
+    type: 'object'
+    properties:
+      message:
+        type: "string"
+
+#* Customers
+  CreateCustomerPayload:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      phone:
+        type: "string"
+    required:
+      - name
+      - email
+      - phone
+
+
+  CreateCustomerResponse:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      phone:
+        type: "string"
+    required:
+      - name
+      - email
+      - phone
+
+
+  AllCustomers:
+    type: "array"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      phone:
+        type: "string"  
+
+
+  UpdateCustomerPayload:
+    type: "object"
+    properties:
+      name:
+        type: 'string'
+      email:
+        type: 'string'
+      phone:
+        type: 'string'
+
+    required:
+      - name
+      - email
+      - phone
+
+
+  UpdateCustomerResponse:
+    type: "object"
+    properties:
+      name:
+        type: 'string'
+      email:
+        type: 'string'
+      phone:
+        type: 'string'
+
+    
+  DeleteCustomer:
+    type: 'object'
+    properties:
+      message:
+        type: "string"
+
