@@ -48,6 +48,7 @@ paths:
           - "Mechanics"
         summary: "Endpoint to create a new mechanic"
         description: "Endpoint to create a new mechanic in our mechanic shop system, email must be unique"
+        security: []
         parameters:
           - in: "body"
             name: "body"
@@ -73,6 +74,7 @@ paths:
           - "Mechanics"
         summary: "Returns all Mechanics"
         description: "Endpoint to retrieve an array of all mechanics in the system"
+        security: []
         parameters:
           - in: query
             name: page
@@ -145,6 +147,7 @@ paths:
           - "Customers"
         summary: "Endpoint to create a new customer"
         description: "Endpoint to create a new customer in our mechanic shop system, email must be unique"
+        security: []
         parameters:
           - in: "body"
             name: "body"
@@ -169,6 +172,7 @@ paths:
           - "Customers"
         summary: "Returns all Customers"
         description: "Endpoint to retrieve an array of all customers in the system"
+        security: []
         parameters:
           - in: query
             name: page
@@ -239,6 +243,7 @@ paths:
           - "Part Descriptions"
         summary: "Endpoint to create a new part description"
         description: "Endpoint to create a new part description in our mechanic shop system."
+        security: []
         parameters:
           - in: "body"
             name: "body"
@@ -263,6 +268,7 @@ paths:
           - "Part Descriptions"
         summary: "Returns all Part Descriptions"
         description: "Endpoint to retrieve an array of all part descriptions in the system"
+        security: []
         parameters:
           - in: query
             name: page
@@ -326,6 +332,102 @@ paths:
               application/json:
                 message: "Successfully deleted part description"
 
+#* Serialized Parts Endpoints
+  /serialized-parts:
+    post:
+        tags:
+          - "Serialized Parts"
+        summary: "Endpoint to create a new serialized part"
+        description: "Endpoint to create a new serialized part in our mechanic shop system."
+        security: []
+        parameters:
+          - in: "body"
+            name: "body"
+            description: "Information to create a new serialized part"
+            required: true
+            schema:
+              $ref: "#/definitions/CreateSerialized_PartPayload"
+        responses:
+          201:
+            description: "Created Serialized Part Successfully"
+            schema:
+              $ref: "#/definitions/AllSerialized_Parts"
+            examples:
+              application/json:
+                id: 1
+                desc id: 1
+                ticket id: 1
+    get:
+        tags:
+          - "Serialized Parts"
+        summary: "Returns all Serialized Parts"
+        description: "Endpoint to retrieve an array of all serialized parts in the system"
+        security: []
+        parameters:
+          - in: query
+            name: page
+            type: integer
+            description: "Page number for pagination (optional)"
+          - in: query
+            name: per_page
+            type: integer
+            default: 10
+            description: Items perpage (default 10)
+        responses:
+          201:
+            description: "Successful reterival of serialized parts"
+            schema:
+              $ref: "#/definitions/AllSerialized_Parts"
+            examples:
+              application/json:
+                id: 1
+                desc id: 1
+                ticket id: 1 
+    put:
+        tags:
+          - "Serialized Parts"
+        summary: "Endpoit to update a serialized part"
+        description: "Endpoint to update a serialized part."
+        security:
+          - bearerAuth: []
+        parameters:
+          - in: 'body'
+            name: 'body'
+            description: "information required to update a serialized part"
+            required: true
+            schema:
+              $ref: "#/definitions/UpdateSerialized_PartPayload"
+        responses:
+          200:
+            description: "Successfully updated serialized part"
+            schema:
+              $ref: "#/definitions/UpdateSerialized_PartResponse"
+            examples:
+              application/json:
+                id: 2
+                desc id: 2
+                ticket id: 1 
+
+    delete:
+        tags:
+          - "Serialized Parts"
+        summary: "Endpoint to delete a serialized part"
+        description: "Endpoint to delete a serialized part."
+        security:
+          - bearerAuth: []
+        responses:
+          201:
+            description: "Serialized Part Successfully Deleted"
+            schema:
+              $ref: "#/definitions/DeleteSerialized_PartResponse"
+            examples:
+              application/json:
+                message: "Successfully deleted serialized part"
+
+#* Service Tickets Endpoints
+
+
+#* Vehicles Endpoints
 
 definitions: 
 
@@ -333,6 +435,8 @@ definitions:
   CreateMechanicPayload:
     type: "object"
     properties:
+      id:
+        type: "integer"
       name:
         type: "string"
       address:
@@ -341,11 +445,6 @@ definitions:
         type: "string"
       password:
         type: "string"
-    required:
-      - name
-      - address
-      - email
-      - password
 
   CreateMechanicResponse:
     type: "object"
@@ -380,6 +479,8 @@ definitions:
   UpdateMechanicPayload:
     type: "object"
     properties:
+      id:
+        type: "integer"
       name:
         type: "string"
       address:
@@ -390,6 +491,7 @@ definitions:
         type: "string"
 
     required:
+      - id
       - name
       - address
       - email
@@ -400,7 +502,7 @@ definitions:
     type: 'object'
     properties:
       id:
-        type: 'integer'
+        type: "integer"
       name:
         type: "string"
       address:
@@ -570,3 +672,82 @@ definitions:
     properties:
       message:
         type: "string"
+
+#* Serialized Parts
+  CreateSerialized_PartPayload:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      desc id:
+        type: "integer"
+      ticket id:
+        type: "integer"
+    required:
+      - id
+      - desc id
+      - ticket id
+
+  CreateSerialized_PartResponse:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      desc id:
+        type: "integer"
+      ticket id:
+        type: "integer"
+    required:
+      - id
+      - desc id
+      - ticket id
+
+
+  AllSerialized_Parts:
+    type: "array"
+    properties:
+      id:
+        type: "integer"
+      desc id:
+        type: "integer"
+      ticket id:
+        type: "integer"
+
+
+  UpdateSerialized_PartPayload:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      desc id:
+        type: "integer"
+      ticket id:
+        type: "integer"
+
+    required:
+      - id
+      - desc id
+      - ticket id
+
+
+  UpdateSerialized_PartResponse:
+    type: 'object'
+    properties:
+      id:
+        type: "integer"
+      desc id:
+        type: "integer"
+      ticket id:
+        type: "integer"
+
+    
+  DeleteSerialized_Part:
+    type: 'object'
+    properties:
+      message:
+        type: "string"
+
+#* Service Tickets
+
+
+#* Vehicles
