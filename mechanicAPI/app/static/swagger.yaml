@@ -425,9 +425,203 @@ paths:
                 message: "Successfully deleted serialized part"
 
 #* Service Tickets Endpoints
+  /Service-Tickets:
+    post:
+        tags:
+          - "Service_Tickets"
+        summary: "Endpoint to create a new service ticket"
+        description: "Endpoint to create a new service ticket in our mechanic shop system, email must be unique"
+        security: []
+        parameters:
+          - in: "body"
+            name: "body"
+            description: "Information to create a new service ticket"
+            required: true
+            schema:
+              $ref: "#/definitions/CreateService_TicketPayload"
+        responses:
+          201:
+            description: "Created Service Ticket Successfully"
+            schema:
+              $ref: "#/definitions/AllService_Tickets"
+            examples:
+              application/json:
+                id: 1
+                date: "2023-10-01"
+                type: "Oil Change"
+                status: "Completed"
+                customer_id: 1
+                vehicle_id: 1
+
+    get:
+        tags:
+          - "Service_Tickets"
+        summary: "Returns all Service Tickets"
+        description: "Endpoint to retrieve an array of all service tickets in the system"
+        security: []
+        parameters:
+          - in: query
+            name: page
+            type: integer
+            description: "Page number for pagination (optional)"
+          - in: query
+            name: per_page
+            type: integer
+            default: 10
+            description: Items perpage (default 10)
+        responses:
+          201:
+            description: "Successful Reterival of Service Tickets"
+            schema:
+              $ref: "#/definitions/AllService_Tickets"
+            examples:
+              application/json:
+                id: 1
+                date: "2023-10-01"
+                type: "Oil Change"
+                status: "Completed"
+                customer_id: 1
+                vehicle_id: 1
+    put:
+        tags:
+          - "Service_Tickets"
+        summary: "Endpoit to update a service ticket"
+        description: "Endpoint to update a service ticket."
+        security:
+          - bearerAuth: []
+        parameters:
+          - in: 'body'
+            name: 'body'
+            description: "information required to update a service ticket"
+            required: true
+            schema:
+              $ref: "#/definitions/UpdateService_TicketPayload"
+        responses:
+          200:
+            description: "Successfully updated servie ticket"
+            schema:
+              $ref: "#/definitions/UpdateService_TicketResponse"
+            examples:
+              application/json:
+                id: 1
+                date: "2023-10-01"
+                type: "Oil Change"
+                status: "Completed"
+                customer_id: 1
+                vehicle_id: 1
+
+    delete:
+        tags:
+          - "Service_Tickets"
+        summary: "Endpoint to delete a service ticket"
+        description: "Endpoint to delete a service ticket."
+        security:
+          - bearerAuth: []
+        responses:
+          201:
+            description: "Service Ticket Successfully Deleted"
+            schema:
+              $ref: "#/definitions/DeleteService_TicketResponse"
+            examples:
+              application/json:
+                message: "Successfully deleted service ticket."
 
 
 #* Vehicles Endpoints
+  /vehicles:
+    post:
+        tags:
+          - "Vehicles"
+        summary: "Endpoint to create a new vehicle"
+        description: "Endpoint to create a new vechile in our mechanic shop system, email must be unique"
+        security: []
+        parameters:
+          - in: "body"
+            name: "body"
+            description: "Information to create a new vehicle"
+            required: true
+            schema:
+              $ref: "#/definitions/CreateVehiclePayload"
+        responses:
+          201:
+            description: "Created Vehicle Successfully"
+            schema:
+              $ref: "#/definitions/AllVehicles"
+            examples:
+              application/json:
+                id: 1
+                make: "Toyota"
+                model: "Camry"
+                customer_id: 1
+
+    get:
+        tags:
+          - "Vehicles"
+        summary: "Returns all Vehicles"
+        description: "Endpoint to retrieve an array of all vehicles in the system"
+        security: []
+        parameters:
+          - in: query
+            name: page
+            type: integer
+            description: "Page number for pagination (optional)"
+          - in: query
+            name: per_page
+            type: integer
+            default: 10
+            description: Items perpage (default 10)
+        responses:
+          201:
+            description: "Successful Reterival of Vehicles"
+            schema:
+              $ref: "#/definitions/AllVehicles"
+            examples:
+              application/json:
+                id: 1
+                make: "Toyota"
+                model: "Camry"
+                customer_id: 1
+    put:
+        tags:
+          - "Vehicles"
+        summary: "Endpoit to update a vehicle"
+        description: "Endpoint to update a vehicle."
+        security:
+          - bearerAuth: []
+        parameters:
+          - in: 'body'
+            name: 'body'
+            description: "information required to update a vehicle"
+            required: true
+            schema:
+              $ref: "#/definitions/UpdateVehiclePayload"
+        responses:
+          200:
+            description: "Successfully updated vehicle"
+            schema:
+              $ref: "#/definitions/UpdateVehicleResponse"
+            examples:
+              application/json:
+                id: 1
+                make: "Toyota"
+                model: "Camry"
+                customer_id: 1
+
+    delete:
+        tags:
+          - "Vehicles"
+        summary: "Endpoint to delete a vehicle"
+        description: "Endpoint to delete a vechicle."
+        security:
+          - bearerAuth: []
+        responses:
+          201:
+            description: "Vehicle Successfully Deleted"
+            schema:
+              $ref: "#/definitions/DeleteVehicleResponse"
+            examples:
+              application/json:
+                message: "Successfully deleted vehicle."
 
 definitions: 
 
@@ -456,7 +650,7 @@ definitions:
       - token
       - message
       - status
-      
+
   CreateMechanicPayload:
     type: "object"
     properties:
@@ -774,6 +968,177 @@ definitions:
         type: "string"
 
 #* Service Tickets
+  CreateService_TicketPayload:
+    type: "object"
+    properties:
+      date:
+        type: "string"
+      type:
+        type: "string"
+      status:
+        type: "string"
+      customer_id:
+        type: "integer"
+      vehicle_id:
+        type: "integer"
 
+  CreateService_TicketResponse:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      date:
+        type: "string"
+      type:
+        type: "string"
+      status:
+        type: "string"
+      customer_id:
+        type: "integer"
+      vehicle_id:
+        type: "integer"
+      
+
+  AllService_Tickets:
+    type: "array"
+    properties:
+      id:
+        type: "integer"
+      date:
+        type: "string"
+      type:
+        type: "string"
+      status:
+        type: "string"
+      customer_id:
+        type: "integer"
+      vehicle_id:
+        type: "integer"
+
+
+
+  UpdateService_TicketPayload:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      date:
+        type: "string"
+      type:
+        type: "string"
+      status:
+        type: "string"
+      customer_id:
+        type: "integer"
+      vehicle_id:
+        type: "integer"
+      
+
+    required:
+      - id
+      - date
+      - type
+      - status
+      - customer_id
+      - vehicle_id
+
+
+  UpdateService_TicketResponse:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      date:
+        type: "string"
+      type:
+        type: "string"
+      status:
+        type: "string"
+      customer_id:
+        type: "integer"
+      vehicle_id:
+        type: "integer"
+      
+    
+  DeleteService_Ticket:
+    type: 'object'
+    properties:
+      message:
+        type: "string"
 
 #* Vehicles
+  CreateVehiclePayload:
+    type: "object"
+    properties:
+      make:
+        type: "string"
+      model:
+        type: "string"
+      customer_id:
+        type: "integer"
+
+  CreateVehicleResponse:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      make:
+        type: "string"
+      model:
+        type: "string"
+      customer_id:
+        type: "integer"
+      
+
+  AllVehicles:
+    type: "array"
+    properties:
+      id:
+        type: "integer"
+      make:
+        type: "string"
+      model:
+        type: "string"
+      customer_id:
+        type: "integer"
+
+
+
+  UpdateVehiclePayload:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      make:
+        type: "string"
+      model:
+        type: "string"
+      customer_id:
+        type: "integer"
+      
+
+    required:
+      - id
+      - make
+      - model
+      - customer_id
+
+
+  UpdateVehicleResponse:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      make:
+        type: "string"
+      model:
+        type: "string"
+      customer_id:
+        type: "integer"
+      
+    
+  DeleteVehicle:
+    type: 'object'
+    properties:
+      message:
+        type: "string"
