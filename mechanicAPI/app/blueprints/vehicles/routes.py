@@ -19,9 +19,6 @@ def add_vehicle():
     except ValidationError as e:
         return jsonify(e.messages), 400
     
-    query = select(Vehicle).where(Vehicle.email == vehicle_data['email'])
-    existing_vehicle = db.session.execute(query).scalars().first()
-    
     new_vehicle = Vehicle(**vehicle_data)
 
     db.session.add(new_vehicle)

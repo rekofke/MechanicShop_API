@@ -39,7 +39,7 @@ def create_app(config_class='DevelopmentConfig'):
     app.register_blueprint(service_tickets_bp, url_prefix='/service-tickets')
     app.register_blueprint(vehicles_bp, url_prefix='/vehicles')
     app.register_blueprint(mechanics_bp, url_prefix='/mechanics')
-    app.register_blueprint(part_description_bp, url_prefix='/part-description')
+    app.register_blueprint(part_description_bp, url_prefix='/part-descriptions')
     app.register_blueprint(serialized_part_bp, url_prefix='/serialized-parts')
     app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL) # Registering our swagger blueprint
     

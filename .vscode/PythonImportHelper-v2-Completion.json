@@ -1010,20 +1010,11 @@
         "documentation": {}
     },
     {
-        "label": "login",
-        "kind": 2,
-        "importPath": "mechanicAPI.app.blueprints.customers.routes",
-        "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def login():\n    try:\n        creds = login_schema.load(request.json)\n    except ValidationError as e:\n        return jsonify(e.messages), 400\n    query = select(Customer).where(Customer.email == creds['email'])\n    customer = db.session.execute(query).scalars().first()\n    if customer and customer.password == creds['password']:\n        token = encode_token(customer.id)\n        response = {",
-        "detail": "mechanicAPI.app.blueprints.customers.routes",
-        "documentation": {}
-    },
-    {
         "label": "add_customer",
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.customers.routes",
         "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def add_customer():\n    try:\n        customer_data = customer_schema.load(request.json)\n    except ValidationError as e:\n        return jsonify(e.messages), 400\n    query = select(Customer).where(Customer.email == customer_data['email'])\n    existing_customer = db.session.execute(query).scalars().first()\n    new_customer = Customer(**customer_data)\n    db.session.add(new_customer)\n    db.session.commit()",
+        "peekOfCode": "def add_customer():\n    try:\n        customer_data = customer_schema.load(request.json)\n    except ValidationError as e:\n        return jsonify(e.messages), 400\n    # use data to create an instance of customer\n    new_customer = Customer(**customer_data)\n    # add the new customer to the session\n    db.session.add(new_customer)\n    db.session.commit()",
         "detail": "mechanicAPI.app.blueprints.customers.routes",
         "documentation": {}
     },
@@ -1037,20 +1028,11 @@
         "documentation": {}
     },
     {
-        "label": "get_customer",
-        "kind": 2,
-        "importPath": "mechanicAPI.app.blueprints.customers.routes",
-        "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def get_customer(id):\n    query = select(Customer).where(Customer.id == id)\n    customer = db.session.execute(query).scalars().first()\n    if customer is None:\n        return jsonify({\"message\": \"Invalid user ID\"}), 404\n    return customer_schema.jsonify(customer), 200\n# update customer\n@customers_bp.route(\"/\", methods=[\"PUT\"])\n# @token_required\n@limiter.limit(\"3 per hour\") # Added additional limiting because no need to update > 3 customers per hour",
-        "detail": "mechanicAPI.app.blueprints.customers.routes",
-        "documentation": {}
-    },
-    {
         "label": "update_customer",
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.customers.routes",
         "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def update_customer(id):\n    customer = db.session.get(Customer, id)\n    if customer is None:\n        return jsonify({\"message\": \"Invalid user ID\"}), 404\n    try:\n        customer_data = customer_schema.load(request.json)\n    except ValidationError as e:\n        return jsonify(e.messages), 400\n    for field, value in customer_data.items():  # unpacks customer_data dictionary\n        setattr(",
+        "peekOfCode": "def update_customer(customer_id):\n    customer = db.session.get(Customer, customer_id)\n    if not customer:\n        return jsonify({\"error\": \"Invalid part description ID\"}), 404\n    try:\n        customer_data = customer_schema.load(request.json)\n    except ValidationError as e:\n        return jsonify(e.messages), 400\n    for field, value in customer_data.items():\n        setattr(customer, field, value)",
         "detail": "mechanicAPI.app.blueprints.customers.routes",
         "documentation": {}
     },
@@ -1059,16 +1041,16 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.customers.routes",
         "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def delete_customer(customer_id):\n    customer = db.session.get(Customer, customer_id)\n    if not customer:\n        return jsonify({\"message\": \"Customer not found\"}), 404\n    db.session.delete(customer)\n    db.session.commit()\n    return jsonify({\"message\": f\"Successfully deleted customer\"}), 200\n# Query parameter to search customer by email\n@customers_bp.route(\"/search\", methods=[\"GET\"])\ndef search_customers():",
+        "peekOfCode": "def delete_customer(customer_id):\n    customer = db.session.get(Customer, customer_id)\n    if not customer:\n        return jsonify({\"message\": \"Invalid part id\"}), 404\n    db.session.delete(customer)\n    db.session.commit()\n    return jsonify({\"message\": f\"Successfully deleted customer {customer_id}\"}), 200\n@customers_bp.route(\"/search\", methods=['GET'])\ndef search_by_part_name():\n    name = request.args.get('name')",
         "detail": "mechanicAPI.app.blueprints.customers.routes",
         "documentation": {}
     },
     {
-        "label": "search_customers",
+        "label": "search_by_part_name",
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.customers.routes",
         "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def search_customers():\n    email = request.args.get(\"email\")\n    query = select(Customer).where(Customer.email.like(f\"%{email}%\"))\n    customer = db.session.execute(query).scalars().first()\n    if not customer:\n        return jsonify({\"message\": \"No customer found\"}), 404\n    return customer_schema.jsonify(customer), 200",
+        "peekOfCode": "def search_by_part_name():\n    name = request.args.get('name')\n    query = select(customer).where(customer.name.like(f\"%{name}%\"))\n    customer = db.session.execute(query.scalars().first())\n    return customer_schema.jsonify(customer), 200",
         "detail": "mechanicAPI.app.blueprints.customers.routes",
         "documentation": {}
     },
@@ -1239,7 +1221,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.part_description.routes",
         "description": "mechanicAPI.app.blueprints.part_description.routes",
-        "peekOfCode": "def get_part_descriptions():\n    # Pagination (page/per_page)\n    page = int(request.args.get('page'))\n    per_page = int(request.args.get('per_page'))\n    query =select (PartDescription)\n    part_descriptions = db.paginate(query, page=page, per_page=per_page)\n    return part_descriptions_schema.jsonify(part_descriptions)\n# get part_description by id\n@part_description_bp.route(\"/<int:part_description_id>\", methods=[\"GET\"])\ndef get_part_description(part_description_id):",
+        "peekOfCode": "def get_part_descriptions():\n    # Pagination (page/per_page)\n    page = int(request.args.get('page', 1))\n    per_page = int(request.args.get('per_page', 10))\n    query =select (PartDescription)\n    part_descriptions = db.paginate(query, page=page, per_page=per_page)\n    return part_descriptions_schema.jsonify(part_descriptions)\n# get part_description by id\n@part_description_bp.route(\"/<int:part_description_id>\", methods=[\"GET\"])\ndef get_part_description(part_description_id):",
         "detail": "mechanicAPI.app.blueprints.part_description.routes",
         "documentation": {}
     },
@@ -1275,7 +1257,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.part_description.routes",
         "description": "mechanicAPI.app.blueprints.part_description.routes",
-        "peekOfCode": "def search_by_part_name():\n    name = request.args.get('name')\n    query = select(part_description).where(part_description.name.like(f\"%{name}%\"))\n    part_description = db.session.execute(query.scalars().first())\n    return part_description_schema.jsonify(part_description), 200",
+        "peekOfCode": "def search_by_part_name():\n    name = request.args.get('name')\n    query = select(PartDescription).where(PartDescription.part_name.ilike(f\"%{name}%\"))\n    results = db.session.execute(query).scalars().all()\n    return part_descriptions_schema.jsonify(results)",
         "detail": "mechanicAPI.app.blueprints.part_description.routes",
         "documentation": {}
     },
@@ -1554,7 +1536,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.vehicles.routes",
         "description": "mechanicAPI.app.blueprints.vehicles.routes",
-        "peekOfCode": "def add_vehicle():\n    try:\n        vehicle_data = vehicle_schema.load(request.json)\n    except ValidationError as e:\n        return jsonify(e.messages), 400\n    query = select(Vehicle).where(Vehicle.email == vehicle_data['email'])\n    existing_vehicle = db.session.execute(query).scalars().first()\n    new_vehicle = Vehicle(**vehicle_data)\n    db.session.add(new_vehicle)\n    db.session.commit()",
+        "peekOfCode": "def add_vehicle():\n    try:\n        vehicle_data = vehicle_schema.load(request.json)\n    except ValidationError as e:\n        return jsonify(e.messages), 400\n    new_vehicle = Vehicle(**vehicle_data)\n    db.session.add(new_vehicle)\n    db.session.commit()\n    return vehicle_schema.jsonify(new_vehicle), 201\n# get all vehicles",
         "detail": "mechanicAPI.app.blueprints.vehicles.routes",
         "documentation": {}
     },

@@ -33,8 +33,8 @@ def add_part_description():
 @cache.cached(timeout=60)  # aded caching because assessing part_descriptions is a common operation
 def get_part_descriptions():
     # Pagination (page/per_page)
-    page = int(request.args.get('page'))
-    per_page = int(request.args.get('per_page'))
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
     query =select (PartDescription)
     part_descriptions = db.paginate(query, page=page, per_page=per_page)
     return part_descriptions_schema.jsonify(part_descriptions)
@@ -88,10 +88,9 @@ def delete_part_description(part_description_id):
 @part_description_bp.route("/search", methods=['GET'])
 def search_by_part_name():
     name = request.args.get('name')
-    query = select(part_description).where(part_description.name.like(f"%{name}%"))
-    part_description = db.session.execute(query.scalars().first())
-    
-    return part_description_schema.jsonify(part_description), 200
+    query = select(PartDescription).where(PartDescription.part_name.ilike(f"%{name}%"))
+    results = db.session.execute(query).scalars().all()
+    return part_descriptions_schema.jsonify(results)
                             
 
 

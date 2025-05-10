@@ -20,27 +20,27 @@ securityDefinitions:
 paths: 
   /mechanics/login:
     post:
-      tags:
-        - "Mechanics"
-      summary: "Login Endpoint, (generates token)"
-      description: "Validates mechanic credentials, generates and returns a number specific token"
-      parameters:
-        - in: "body"
-          name: "body"
-          description: "Login credentials"
-          required: true
-          schema:
-            $ref: "#/definitions/LoginCredentials"
-      responses:
-        200:
-          description: "Successful Login"
-          schema:
-            $ref: "#/definitions/LoginResponse"
-          examples:
-            application/json:
-              token: "kjsbvpluahsenASDKLJASDKBASKDHI..."
-              message: "Login successful"
-              status: "success"
+        tags:
+          - "Mechanics"
+        summary: "Login Endpoint, (generates token)"
+        description: "Validates mechanic credentials, generates and returns a number specific token"
+        parameters:
+          - in: "body"
+            name: "body"
+            description: "Login credentials"
+            required: true
+            schema:
+              $ref: "#/definitions/LoginCredentials"
+        responses:
+          200:
+            description: "Successful Login"
+            schema:
+              $ref: "#/definitions/LoginResponse"
+            examples:
+              application/json:
+                token: "kjsbvpluahsenASDKLJASDKBASKDHI..."
+                message: "Login successful"
+                status: "success"
 
   /mechanics:
     post:
@@ -432,11 +432,34 @@ paths:
 definitions: 
 
 #* Mechanics
+  LoginCredentials:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+    required:
+      - email
+      - password
+  
+  LoginResponse:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+      message:
+        type: "string"
+      status:
+        type: "string"
+    required:
+      - token
+      - message
+      - status
+      
   CreateMechanicPayload:
     type: "object"
     properties:
-      id:
-        type: "integer"
       name:
         type: "string"
       address:
@@ -445,6 +468,11 @@ definitions:
         type: "string"
       password:
         type: "string"
+    required:
+      - name
+      - address
+      - email
+      - password
 
   CreateMechanicResponse:
     type: "object"
@@ -479,8 +507,6 @@ definitions:
   UpdateMechanicPayload:
     type: "object"
     properties:
-      id:
-        type: "integer"
       name:
         type: "string"
       address:
@@ -491,7 +517,6 @@ definitions:
         type: "string"
 
     required:
-      - id
       - name
       - address
       - email
@@ -538,6 +563,8 @@ definitions:
   CreateCustomerResponse:
     type: "object"
     properties:
+      id:
+        type: "integer"
       name:
         type: "string"
       email:
@@ -566,6 +593,8 @@ definitions:
   UpdateCustomerPayload:
     type: "object"
     properties:
+      id:
+        type: "integer"
       name:
         type: 'string'
       email:
@@ -574,6 +603,7 @@ definitions:
         type: 'string'
 
     required:
+      - id
       - name
       - email
       - phone
@@ -582,6 +612,8 @@ definitions:
   UpdateCustomerResponse:
     type: "object"
     properties:
+      id:
+        type: "integer"
       name:
         type: 'string'
       email:
@@ -600,7 +632,7 @@ definitions:
   CreatePart_DescriptionPayload:
     type: "object"
     properties:
-      part name:
+      part_name:
         type: "string"
       brand:
         type: "string"
@@ -617,7 +649,7 @@ definitions:
     properties:
       id:
         type: "integer"
-      part name:
+      part_name:
         type: "string"
       brand:
         type: "string"
@@ -641,7 +673,7 @@ definitions:
   UpdatePart_DescriptionPayload:
     type: "object"
     properties:
-      part name:
+      part_name:
         type: "string"
       brand:
         type: "string"
@@ -677,14 +709,11 @@ definitions:
   CreateSerialized_PartPayload:
     type: "object"
     properties:
-      id:
-        type: "integer"
       desc id:
         type: "integer"
       ticket id:
         type: "integer"
     required:
-      - id
       - desc id
       - ticket id
 
@@ -717,15 +746,12 @@ definitions:
   UpdateSerialized_PartPayload:
     type: "object"
     properties:
-      id:
-        type: "integer"
       desc id:
         type: "integer"
       ticket id:
         type: "integer"
 
     required:
-      - id
       - desc id
       - ticket id
 
