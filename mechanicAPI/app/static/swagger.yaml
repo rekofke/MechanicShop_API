@@ -57,7 +57,7 @@ paths:
             schema:
               $ref: "#/definitions/CreateMechanicPayload"
         responses:
-          201:
+          200:
             description: "Created Mechanics Successfully"
             schema:
               $ref: "#/definitions/AllMechanics"
@@ -86,7 +86,7 @@ paths:
             default: 10
             description: Items perpage (default 10)
         responses:
-          201:
+          200:
             description: "Successful Mechanic Creation"
             schema:
               $ref: "#/definitions/AllMechanics"
@@ -132,7 +132,7 @@ paths:
         security:
           - bearerAuth: []
         responses:
-          201:
+          200:
             description: "Mechanic Successfully Deleted"
             schema:
               $ref: "#/definitions/DeleteMechanicResponse"
@@ -156,7 +156,7 @@ paths:
             schema:
               $ref: "#/definitions/CreateCustomerPayload"
         responses:
-          201:
+          200:
             description: "Created Customer Successfully"
             schema:
               $ref: "#/definitions/AllCustomers"
@@ -184,7 +184,7 @@ paths:
             default: 10
             description: Items perpage (default 10)
         responses:
-          201:
+          200:
             description: "Successful Reterival of Customers"
             schema:
               $ref: "#/definitions/AllCustomers"
@@ -228,7 +228,7 @@ paths:
         security:
           - bearerAuth: []
         responses:
-          201:
+          200:
             description: "Customer Successfully Deleted"
             schema:
               $ref: "#/definitions/DeleteCustomerResponse"
@@ -237,7 +237,7 @@ paths:
                 message: "Successfully deleted customer <customer_id>"
 
 #* Part Description Endpoints
-  /part-descriptions:
+  /part-descriptions/{id}:
     post:
         tags:
           - "Part Descriptions"
@@ -252,7 +252,7 @@ paths:
             schema:
               $ref: "#/definitions/CreatePart_DescriptionPayload"
         responses:
-          201:
+          200:
             description: "Created Part Description Successfully"
             schema:
               $ref: "#/definitions/AllPart_Descriptions"
@@ -280,7 +280,7 @@ paths:
             default: 10
             description: Items perpage (default 10)
         responses:
-          201:
+          200:
             description: "Successful reterival of Part Descriptions"
             schema:
               $ref: "#/definitions/AllPart_Descriptions"
@@ -324,7 +324,7 @@ paths:
         security:
           - bearerAuth: []
         responses:
-          201:
+          200:
             description: "Part Description Successfully Deleted"
             schema:
               $ref: "#/definitions/DeletePart_DescriptionResponse"
@@ -333,7 +333,7 @@ paths:
                 message: "Successfully deleted part description"
 
 #* Serialized Parts Endpoints
-  /serialized-parts:
+  /serialized-parts/{id}:
     post:
         tags:
           - "Serialized Parts"
@@ -348,7 +348,7 @@ paths:
             schema:
               $ref: "#/definitions/CreateSerialized_PartPayload"
         responses:
-          201:
+          200:
             description: "Created Serialized Part Successfully"
             schema:
               $ref: "#/definitions/AllSerialized_Parts"
@@ -374,7 +374,7 @@ paths:
             default: 10
             description: Items perpage (default 10)
         responses:
-          201:
+          200:
             description: "Successful reterival of serialized parts"
             schema:
               $ref: "#/definitions/AllSerialized_Parts"
@@ -416,7 +416,7 @@ paths:
         security:
           - bearerAuth: []
         responses:
-          201:
+          200:
             description: "Serialized Part Successfully Deleted"
             schema:
               $ref: "#/definitions/DeleteSerialized_PartResponse"
@@ -425,7 +425,7 @@ paths:
                 message: "Successfully deleted serialized part"
 
 #* Service Tickets Endpoints
-  /Service-Tickets:
+  /service-tickets/{id}:
     post:
         tags:
           - "Service_Tickets"
@@ -440,7 +440,7 @@ paths:
             schema:
               $ref: "#/definitions/CreateService_TicketPayload"
         responses:
-          201:
+          200:
             description: "Created Service Ticket Successfully"
             schema:
               $ref: "#/definitions/AllService_Tickets"
@@ -470,7 +470,7 @@ paths:
             default: 10
             description: Items perpage (default 10)
         responses:
-          201:
+          200:
             description: "Successful Reterival of Service Tickets"
             schema:
               $ref: "#/definitions/AllService_Tickets"
@@ -518,7 +518,7 @@ paths:
         security:
           - bearerAuth: []
         responses:
-          201:
+          200:
             description: "Service Ticket Successfully Deleted"
             schema:
               $ref: "#/definitions/DeleteService_TicketResponse"
@@ -528,12 +528,12 @@ paths:
 
 
 #* Vehicles Endpoints
-  /vehicles:
+  /vehicles/{id}:
     post:
         tags:
           - "Vehicles"
         summary: "Endpoint to create a new vehicle"
-        description: "Endpoint to create a new vechile in our mechanic shop system, email must be unique"
+        description: "Endpoint to create a new vehicle in our mechanic shop system, email must be unique"
         security: []
         parameters:
           - in: "body"
@@ -543,7 +543,7 @@ paths:
             schema:
               $ref: "#/definitions/CreateVehiclePayload"
         responses:
-          201:
+          200:
             description: "Created Vehicle Successfully"
             schema:
               $ref: "#/definitions/AllVehicles"
@@ -571,7 +571,7 @@ paths:
             default: 10
             description: Items perpage (default 10)
         responses:
-          201:
+          200:
             description: "Successful Reterival of Vehicles"
             schema:
               $ref: "#/definitions/AllVehicles"
@@ -615,7 +615,7 @@ paths:
         security:
           - bearerAuth: []
         responses:
-          201:
+          200:
             description: "Vehicle Successfully Deleted"
             schema:
               $ref: "#/definitions/DeleteVehicleResponse"
@@ -856,7 +856,7 @@ definitions:
     properties:
       id:
         type: "integer"
-      part name:
+      part_name:
         type: "string"
       brand:
         type: "string"
@@ -885,7 +885,7 @@ definitions:
     properties:
       id:
         type: 'integer'
-      part name:
+      part_name:
         type: "string"
       brand:
         type: "string"
@@ -903,9 +903,9 @@ definitions:
   CreateSerialized_PartPayload:
     type: "object"
     properties:
-      desc id:
+      desc_id:
         type: "integer"
-      ticket id:
+      ticket_id:
         type: "integer"
     required:
       - desc id
@@ -916,9 +916,9 @@ definitions:
     properties:
       id:
         type: "integer"
-      desc id:
+      desc_id:
         type: "integer"
-      ticket id:
+      ticket_id:
         type: "integer"
     required:
       - id
@@ -931,18 +931,18 @@ definitions:
     properties:
       id:
         type: "integer"
-      desc id:
+      desc_id:
         type: "integer"
-      ticket id:
+      ticket_id:
         type: "integer"
 
 
   UpdateSerialized_PartPayload:
     type: "object"
     properties:
-      desc id:
+      desc_id:
         type: "integer"
-      ticket id:
+      ticket_id:
         type: "integer"
 
     required:
@@ -955,9 +955,9 @@ definitions:
     properties:
       id:
         type: "integer"
-      desc id:
+      desc_id:
         type: "integer"
-      ticket id:
+      ticket_id:
         type: "integer"
 
     
