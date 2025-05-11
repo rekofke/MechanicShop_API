@@ -4,6 +4,7 @@ class DevelopmentConfig:
     CACHE_TYPE = "SimpleCache"
 
     class TestingConfig:
-        pass
+        SQLALCHEMY_DATABASE_URI = 'sqlite://testing.db'
+        DEBUG = TrueCACHE_TYPE = 'SimpleCache'
     class ProductionConfig:
         pass

@@ -12,7 +12,7 @@ from app.utils.utils import encode_token, token_required
 # Service Ticket endpoints
 # Add service_ticket
 @service_tickets_bp.route("/", methods=["POST"])
-@token_required
+# @token_required
 @limiter.limit("3 per hour") # no need to add more than 3 service tickets per hour
 def add_ticket():
     try:
@@ -35,11 +35,11 @@ def add_ticket():
 @cache.cached(timeout=60)  # added caching because assessing tickets is a common operation
 def get_all_tickets():
     query = select(Service_Ticket)
-    tickets = db.session.execute(query).scalars().all()
+    service_tickets = db.session.execute(query).scalars().all()
 
     # # pagination (page/per_page)
-    page = int(request.args.get('page'))
-    per_page = int(request.args.get('per_page'))
+    page = int(request.args.get('page', default=1, type=int))
+    per_page = int(request.args.get('per_page', default=10, type=int))
     query =select (Service_Ticket)
     service_tickets = db.paginate(query, page=page, per_page=per_page)
     return service_ticket_schema.jsonify(service_tickets), 200
@@ -48,12 +48,12 @@ def get_all_tickets():
 @service_tickets_bp.route("/<int:service_ticket_id>", methods=["GET"])
 def get_ticket(service_ticket_id):
     query = select(Service_Ticket).where(Service_Ticket.id == id)
-    ticket = db.session.get(Service_Ticket, service_ticket_id)
+    service_tickets = db.session.get(Service_Ticket, service_ticket_id)
 
-    if ticket is None:
+    if service_tickets is None:
         return jsonify({"message": "Invalid ticket ID"}), 404
 
-    return service_ticket_schema.jsonify(ticket), 200
+    return service_ticket_schema.jsonify(service_tickets), 200
 
 
 # # Add mechanic to ticket

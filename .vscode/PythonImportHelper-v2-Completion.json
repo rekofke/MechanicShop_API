@@ -144,6 +144,14 @@
         "documentation": {}
     },
     {
+        "label": "fields",
+        "importPath": "marshmallow",
+        "description": "marshmallow",
+        "isExtraImport": true,
+        "detail": "marshmallow",
+        "documentation": {}
+    },
+    {
         "label": "ValidationError",
         "importPath": "marshmallow",
         "description": "marshmallow",
@@ -497,6 +505,22 @@
     },
     {
         "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Mechanic",
         "importPath": "app.models",
         "description": "app.models",
         "isExtraImport": true,
@@ -889,6 +913,14 @@
         "documentation": {}
     },
     {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "wraps",
         "importPath": "functools",
         "description": "functools",
@@ -1007,6 +1039,39 @@
         "description": "app",
         "isExtraImport": true,
         "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "utils.utils",
+        "description": "utils.utils",
+        "isExtraImport": true,
+        "detail": "utils.utils",
+        "documentation": {}
+    },
+    {
+        "label": "token_required",
+        "importPath": "utils.utils",
+        "description": "utils.utils",
+        "isExtraImport": true,
+        "detail": "utils.utils",
+        "documentation": {}
+    },
+    {
+        "label": "unittest",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "unittest",
+        "description": "unittest",
+        "detail": "unittest",
         "documentation": {}
     },
     {
@@ -1221,7 +1286,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.part_description.routes",
         "description": "mechanicAPI.app.blueprints.part_description.routes",
-        "peekOfCode": "def get_part_descriptions():\n    # Pagination (page/per_page)\n    page = int(request.args.get('page', 1))\n    per_page = int(request.args.get('per_page', 10))\n    query =select (PartDescription)\n    part_descriptions = db.paginate(query, page=page, per_page=per_page)\n    return part_descriptions_schema.jsonify(part_descriptions)\n# get part_description by id\n@part_description_bp.route(\"/<int:part_description_id>\", methods=[\"GET\"])\ndef get_part_description(part_description_id):",
+        "peekOfCode": "def get_part_descriptions():  \n    page = request.args.get('page', type=int)\n    per_page = request.args.get('per_page', default=10, type=int)\n    if page:\n        pagination = db.paginate(select(PartDescription), page=page, per_page=per_page)\n        part_description = pagination.items\n        if not part_description:\n            return jsonify({\"message\": \"No part_descriptions found\"}), 404\n        return part_descriptions_schema.jsonify(part_description)\n    else:",
         "detail": "mechanicAPI.app.blueprints.part_description.routes",
         "documentation": {}
     },
@@ -1302,7 +1367,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.serialized_parts.routes",
         "description": "mechanicAPI.app.blueprints.serialized_parts.routes",
-        "peekOfCode": "def get_serialized_parts():\n    # Differnt way to paginate...\n    page = int(request.args.get('page'))\n    per_page = int(request.args.get('per_page'))\n    query =select (SerializedPart)\n    serialized_parts = db.paginate(query, page=page, per_page=per_page)\n    return serialized_parts_schema.jsonify(serialized_parts)\n# get serialized_part by id\n@serialized_part_bp.route(\"/<int:serialized_part_id>\", methods=[\"GET\"])\ndef get_serialized_part(serialized_part_id):",
+        "peekOfCode": "def get_serialized_parts():\n    # Differnt way to paginate...\n    page = request.args.get('page', type=int)\n    per_page = request.args.get('per_page', default=10, type=int)\n    if page:\n        pagination = db.paginate(select(SerializedPart), page=page, per_page=per_page)\n        serialized_part = pagination.items\n        if not serialized_part:\n            return jsonify({\"message\": \"No serialized_parts found\"}), 404\n        return serialized_parts_schema.jsonify(serialized_part)",
         "detail": "mechanicAPI.app.blueprints.serialized_parts.routes",
         "documentation": {}
     },
@@ -1338,7 +1403,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.serialized_parts.routes",
         "description": "mechanicAPI.app.blueprints.serialized_parts.routes",
-        "peekOfCode": "def search_by_part_name():\n    name = request.args.get('name')\n    query = select(serialized_part).where(serialized_part.name.like(f\"%{name}%\"))\n    serialized_part = db.session.execute(query.scalars().first())\n    return serialized_part_schema.jsonify(serialized_part), 200\n#* search for total inventory by part description\n@serialized_part_bp.route(\"/stock/<int:description_id>\", methods=[\"GET\"])\ndef get_individual_stock(description_id):\n    part_description = db.session.get(PartDescription, description_id)\n    # get list of serialized parts",
+        "peekOfCode": "def search_by_part_name():\n    name = request.args.get('name')\n    query = select(serialized_part).where(serialized_part.name.like(f\"%{name}%\"))\n    serialized_part = db.session.execute(query.scalars().first())\n    return serialized_part_schema.jsonify(serialized_part), 200\n#* search for total inventory by part description\n@serialized_part_bp.route(\"/stock/<int:description_id>\", methods=[\"GET\"])\ndef get_individual_stock(description_id):\n    serialized_part = db.session.get(PartDescription, description_id)\n    # get list of serialized parts",
         "detail": "mechanicAPI.app.blueprints.serialized_parts.routes",
         "documentation": {}
     },
@@ -1347,7 +1412,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.serialized_parts.routes",
         "description": "mechanicAPI.app.blueprints.serialized_parts.routes",
-        "peekOfCode": "def get_individual_stock(description_id):\n    part_description = db.session.get(PartDescription, description_id)\n    # get list of serialized parts\n    parts = part_description.serialized_parts\n    count = 0\n    for part in parts:\n        if not part.ticket_id:\n            count += 1\n    return jsonify({\n        \"item\": part_description.part_name,",
+        "peekOfCode": "def get_individual_stock(description_id):\n    serialized_part = db.session.get(PartDescription, description_id)\n    # get list of serialized parts\n    parts = serialized_part.serialized_parts\n    count = 0\n    for part in parts:\n        if not part.ticket_id:\n            count += 1\n    return jsonify({\n        \"item\": serialized_part.part_name,",
         "detail": "mechanicAPI.app.blueprints.serialized_parts.routes",
         "documentation": {}
     },
@@ -1356,7 +1421,16 @@
         "kind": 6,
         "importPath": "mechanicAPI.app.blueprints.serialized_parts.schemas",
         "description": "mechanicAPI.app.blueprints.serialized_parts.schemas",
-        "peekOfCode": "class SerializedPart_Schema(ma.SQLAlchemyAutoSchema):\n    class Meta:\n        model = SerializedPart\n        include_fk = True\nserialized_part_schema = SerializedPart_Schema()\nserialized_parts_schema = SerializedPart_Schema(many=True)",
+        "peekOfCode": "class SerializedPart_Schema(ma.SQLAlchemyAutoSchema):\n    class Meta:\n        model = SerializedPart\n        include_fk = True\nserialized_part_schema = SerializedPart_Schema()\nserialized_parts_schema = SerializedPart_Schema(many=True)\nclass ResponseSerializedPartSchema(ma.SQLAlchemyAutoSchema):\n    description = fields.Nested(\"PartDescriptionSchema\")\n    class Meta:\n        model = SerializedPart",
+        "detail": "mechanicAPI.app.blueprints.serialized_parts.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "ResponseSerializedPartSchema",
+        "kind": 6,
+        "importPath": "mechanicAPI.app.blueprints.serialized_parts.schemas",
+        "description": "mechanicAPI.app.blueprints.serialized_parts.schemas",
+        "peekOfCode": "class ResponseSerializedPartSchema(ma.SQLAlchemyAutoSchema):\n    description = fields.Nested(\"PartDescriptionSchema\")\n    class Meta:\n        model = SerializedPart\nresponse_schema = ResponseSerializedPartSchema()\nresponses_schema = ResponseSerializedPartSchema(many=True)",
         "detail": "mechanicAPI.app.blueprints.serialized_parts.schemas",
         "documentation": {}
     },
@@ -1365,7 +1439,7 @@
         "kind": 5,
         "importPath": "mechanicAPI.app.blueprints.serialized_parts.schemas",
         "description": "mechanicAPI.app.blueprints.serialized_parts.schemas",
-        "peekOfCode": "serialized_part_schema = SerializedPart_Schema()\nserialized_parts_schema = SerializedPart_Schema(many=True)",
+        "peekOfCode": "serialized_part_schema = SerializedPart_Schema()\nserialized_parts_schema = SerializedPart_Schema(many=True)\nclass ResponseSerializedPartSchema(ma.SQLAlchemyAutoSchema):\n    description = fields.Nested(\"PartDescriptionSchema\")\n    class Meta:\n        model = SerializedPart\nresponse_schema = ResponseSerializedPartSchema()\nresponses_schema = ResponseSerializedPartSchema(many=True)",
         "detail": "mechanicAPI.app.blueprints.serialized_parts.schemas",
         "documentation": {}
     },
@@ -1374,7 +1448,25 @@
         "kind": 5,
         "importPath": "mechanicAPI.app.blueprints.serialized_parts.schemas",
         "description": "mechanicAPI.app.blueprints.serialized_parts.schemas",
-        "peekOfCode": "serialized_parts_schema = SerializedPart_Schema(many=True)",
+        "peekOfCode": "serialized_parts_schema = SerializedPart_Schema(many=True)\nclass ResponseSerializedPartSchema(ma.SQLAlchemyAutoSchema):\n    description = fields.Nested(\"PartDescriptionSchema\")\n    class Meta:\n        model = SerializedPart\nresponse_schema = ResponseSerializedPartSchema()\nresponses_schema = ResponseSerializedPartSchema(many=True)",
+        "detail": "mechanicAPI.app.blueprints.serialized_parts.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "response_schema",
+        "kind": 5,
+        "importPath": "mechanicAPI.app.blueprints.serialized_parts.schemas",
+        "description": "mechanicAPI.app.blueprints.serialized_parts.schemas",
+        "peekOfCode": "response_schema = ResponseSerializedPartSchema()\nresponses_schema = ResponseSerializedPartSchema(many=True)",
+        "detail": "mechanicAPI.app.blueprints.serialized_parts.schemas",
+        "documentation": {}
+    },
+    {
+        "label": "responses_schema",
+        "kind": 5,
+        "importPath": "mechanicAPI.app.blueprints.serialized_parts.schemas",
+        "description": "mechanicAPI.app.blueprints.serialized_parts.schemas",
+        "peekOfCode": "responses_schema = ResponseSerializedPartSchema(many=True)",
         "detail": "mechanicAPI.app.blueprints.serialized_parts.schemas",
         "documentation": {}
     },
@@ -1392,7 +1484,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.service_tickets.routes",
         "description": "mechanicAPI.app.blueprints.service_tickets.routes",
-        "peekOfCode": "def get_all_tickets():\n    query = select(Service_Ticket)\n    tickets = db.session.execute(query).scalars().all()\n    # # pagination (page/per_page)\n    page = int(request.args.get('page'))\n    per_page = int(request.args.get('per_page'))\n    query =select (Service_Ticket)\n    service_tickets = db.paginate(query, page=page, per_page=per_page)\n    return service_ticket_schema.jsonify(service_tickets), 200\n# get ticket by id",
+        "peekOfCode": "def get_all_tickets():\n    query = select(Service_Ticket)\n    service_tickets = db.session.execute(query).scalars().all()\n    # # pagination (page/per_page)\n    page = int(request.args.get('page', default=1, type=int))\n    per_page = int(request.args.get('per_page', default=10, type=int))\n    query =select (Service_Ticket)\n    service_tickets = db.paginate(query, page=page, per_page=per_page)\n    return service_ticket_schema.jsonify(service_tickets), 200\n# get ticket by id",
         "detail": "mechanicAPI.app.blueprints.service_tickets.routes",
         "documentation": {}
     },
@@ -1401,7 +1493,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.service_tickets.routes",
         "description": "mechanicAPI.app.blueprints.service_tickets.routes",
-        "peekOfCode": "def get_ticket(service_ticket_id):\n    query = select(Service_Ticket).where(Service_Ticket.id == id)\n    ticket = db.session.get(Service_Ticket, service_ticket_id)\n    if ticket is None:\n        return jsonify({\"message\": \"Invalid ticket ID\"}), 404\n    return service_ticket_schema.jsonify(ticket), 200\n# # Add mechanic to ticket\n@service_tickets_bp.route(\"/<int:ticket_id>/add-mechanic/<int:mechanic_id>\", methods=[\"PUT\"])\n@token_required\n@limiter.limit(\"3 per hour\") # no need to add more than 3 mechanics to a ticket per hour",
+        "peekOfCode": "def get_ticket(service_ticket_id):\n    query = select(Service_Ticket).where(Service_Ticket.id == id)\n    service_tickets = db.session.get(Service_Ticket, service_ticket_id)\n    if service_tickets is None:\n        return jsonify({\"message\": \"Invalid ticket ID\"}), 404\n    return service_ticket_schema.jsonify(service_tickets), 200\n# # Add mechanic to ticket\n@service_tickets_bp.route(\"/<int:ticket_id>/add-mechanic/<int:mechanic_id>\", methods=[\"PUT\"])\n@token_required\n@limiter.limit(\"3 per hour\") # no need to add more than 3 mechanics to a ticket per hour",
         "detail": "mechanicAPI.app.blueprints.service_tickets.routes",
         "documentation": {}
     },
@@ -1545,7 +1637,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.vehicles.routes",
         "description": "mechanicAPI.app.blueprints.vehicles.routes",
-        "peekOfCode": "def get_vehicles():\n    # pagination (page/per_page)\n    page = int(request.args.get('page'))\n    per_page = int(request.args.get('per_page'))\n    query =select (Vehicle)\n    customers = db.paginate(query, page=page, per_page=per_page)\n    return vehicles_schema.jsonify(customers)\n# get vehicle by id\n@vehicles_bp.route('/<int:id>', methods=['GET'])\ndef get_vehicle(id):",
+        "peekOfCode": "def get_vehicles():\n    # pagination (page/per_page)\n    page = request.args.get('page', type=int)\n    per_page = request.args.get('per_page', default=10, type=int)\n    if page:\n        pagination = db.paginate(select(Vehicle), page=page, per_page=per_page)\n        vehicle = pagination.items\n        if not vehicle:\n            return jsonify({\"message\": \"No vehicles found\"}), 404\n        return vehicles_schema.jsonify(vehicle)",
         "detail": "mechanicAPI.app.blueprints.vehicles.routes",
         "documentation": {}
     },
@@ -1788,7 +1880,7 @@
         "kind": 6,
         "importPath": "mechanicAPI.config",
         "description": "mechanicAPI.config",
-        "peekOfCode": "class DevelopmentConfig:\n    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:C%40ntget1n@127.0.0.1/mechanic_db'\n    DEBUG = True\n    CACHE_TYPE = \"SimpleCache\"\n    class TestingConfig:\n        pass\n    class ProductionConfig:\n        pass",
+        "peekOfCode": "class DevelopmentConfig:\n    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:C%40ntget1n@127.0.0.1/mechanic_db'\n    DEBUG = True\n    CACHE_TYPE = \"SimpleCache\"\n    class TestingConfig:\n        SQLALCHEMY_DATABASE_URI = 'sqlite://testing.db'\n        DEBUG = TrueCACHE_TYPE = 'SimpleCache'\n    class ProductionConfig:\n        pass",
         "detail": "mechanicAPI.config",
         "documentation": {}
     },
@@ -1799,6 +1891,33 @@
         "description": "mechanicAPI.run",
         "peekOfCode": "app = create_app()\nif __name__ == '__main__':\n    app.run(debug=True)",
         "detail": "mechanicAPI.run",
+        "documentation": {}
+    },
+    {
+        "label": "TestMechanic",
+        "kind": 6,
+        "importPath": "tests.test_mechanic",
+        "description": "tests.test_mechanic",
+        "peekOfCode": "class TestMechanic(unittest.TestCase): # Define a test class inherit from unittest.TestCase\n    def setUp(self): # Create a test app instance\n        self.app = create_app(\"TestingConfig\")\n        self.mechanic = Mechanic(name='text_user',address='123 test st', email='test@email.com', password='123')\n        with self.app.app_context():\n            db.drop_all()\n            db.create_all()\n            db.session.add(self.mechanic)\n            db.session.commit()\n        self.token = encode_token(1, 'admin')",
+        "detail": "tests.test_mechanic",
+        "documentation": {}
+    },
+    {
+        "label": "test_invalid_creation",
+        "kind": 2,
+        "importPath": "tests.test_mechanic",
+        "description": "tests.test_mechanic",
+        "peekOfCode": "def test_invalid_creation(self):\n    mechanic_payload = {\n        'name': 'John Doe',\n        'address': '123 Main St',\n        'password': '123'\n    }\n    response = self.client.post('/mechanics/', json=mechanic_payload)\n    self.assertEqual(response.status.code, 400) # verify that invalid data returns a 400 status code\n    self.assertEqual(response.json['email'], ['Missing data for required field.']) \ndef test_login_mechanic(self):",
+        "detail": "tests.test_mechanic",
+        "documentation": {}
+    },
+    {
+        "label": "test_login_mechanic",
+        "kind": 2,
+        "importPath": "tests.test_mechanic",
+        "description": "tests.test_mechanic",
+        "peekOfCode": "def test_login_mechanic(self):\n    credentials = {\n        'email': 'test@email.com',\n        'password': '123'\n    }\n    response = self.client.post('/mechanics/login', json=credentials)\n    self.assertEqual(response.status_code, 200)\n    self.assertEqual(response.json['status'], 'success')\n    return response.json['token']",
+        "detail": "tests.test_mechanic",
         "documentation": {}
     }
 ]

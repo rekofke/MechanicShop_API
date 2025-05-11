@@ -31,13 +31,25 @@ def add_part_description():
 # get all part_descriptions
 @part_description_bp.route("/", methods=["GET"])
 @cache.cached(timeout=60)  # aded caching because assessing part_descriptions is a common operation
-def get_part_descriptions():
-    # Pagination (page/per_page)
-    page = int(request.args.get('page', 1))
-    per_page = int(request.args.get('per_page', 10))
-    query =select (PartDescription)
-    part_descriptions = db.paginate(query, page=page, per_page=per_page)
-    return part_descriptions_schema.jsonify(part_descriptions)
+def get_part_descriptions():  
+    page = request.args.get('page', type=int)
+    per_page = request.args.get('per_page', default=10, type=int)
+
+
+    if page:
+        pagination = db.paginate(select(PartDescription), page=page, per_page=per_page)
+        part_description = pagination.items
+
+        if not part_description:
+            return jsonify({"message": "No part_descriptions found"}), 404
+        return part_descriptions_schema.jsonify(part_description)
+    else:
+        part_descriptions = db.session.execute(select(PartDescription)). scalars().all()
+
+        if not part_desc:
+            return jsonify({"message": "No mechanics found"}), 404
+        
+        return part_descriptions_schema.jsonify(part_descriptions), 200
 
 # get part_description by id
 @part_description_bp.route("/<int:part_description_id>", methods=["GET"])

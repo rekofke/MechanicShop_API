@@ -38,11 +38,24 @@ def add_serialized_part():
 @cache.cached(timeout=60)  # aded caching because assessing serialized_parts is a common operation
 def get_serialized_parts():
     # Differnt way to paginate...
-    page = int(request.args.get('page'))
-    per_page = int(request.args.get('per_page'))
-    query =select (SerializedPart)
-    serialized_parts = db.paginate(query, page=page, per_page=per_page)
-    return serialized_parts_schema.jsonify(serialized_parts)
+    page = request.args.get('page', type=int)
+    per_page = request.args.get('per_page', default=10, type=int)
+
+
+    if page:
+        pagination = db.paginate(select(SerializedPart), page=page, per_page=per_page)
+        serialized_part = pagination.items
+
+        if not serialized_part:
+            return jsonify({"message": "No serialized_parts found"}), 404
+        return serialized_parts_schema.jsonify(serialized_part)
+    else:
+        serialized_parts = db.session.execute(select(SerializedPart)). scalars().all()
+
+        if not serialized_parts:
+            return jsonify({"message": "No mechanics found"}), 404
+        
+        return serialized_parts_schema.jsonify(serialized_parts), 200
 
 # get serialized_part by id
 @serialized_part_bp.route("/<int:serialized_part_id>", methods=["GET"])
@@ -102,10 +115,10 @@ def search_by_part_name():
 #* search for total inventory by part description
 @serialized_part_bp.route("/stock/<int:description_id>", methods=["GET"])
 def get_individual_stock(description_id):
-    part_description = db.session.get(PartDescription, description_id)
+    serialized_part = db.session.get(PartDescription, description_id)
     
     # get list of serialized parts
-    parts = part_description.serialized_parts
+    parts = serialized_part.serialized_parts
     
     count = 0
     for part in parts:
@@ -113,7 +126,7 @@ def get_individual_stock(description_id):
             count += 1
             
     return jsonify({
-        "item": part_description.part_name,
+        "item": serialized_part.part_name,
         "quantity": count
     })
 

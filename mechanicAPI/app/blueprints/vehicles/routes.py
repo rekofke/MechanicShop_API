@@ -11,7 +11,7 @@ from app.utils.utils import encode_token, token_required
 # Vehicle endpoints
 # Add vehicle
 @vehicles_bp.route("/", methods=['POST'])
-@token_required
+# @token_required
 @limiter.limit("3 per hour")  # no need to add more than 3 vehicles per hour
 def add_vehicle():
     try:
@@ -31,11 +31,24 @@ def add_vehicle():
 @cache.cached(timeout=60)  # added caching because assessing vehicles is a common operation
 def get_vehicles():
     # pagination (page/per_page)
-    page = int(request.args.get('page'))
-    per_page = int(request.args.get('per_page'))
-    query =select (Vehicle)
-    customers = db.paginate(query, page=page, per_page=per_page)
-    return vehicles_schema.jsonify(customers)
+    page = request.args.get('page', type=int)
+    per_page = request.args.get('per_page', default=10, type=int)
+
+
+    if page:
+        pagination = db.paginate(select(Vehicle), page=page, per_page=per_page)
+        vehicle = pagination.items
+
+        if not vehicle:
+            return jsonify({"message": "No vehicles found"}), 404
+        return vehicles_schema.jsonify(vehicle)
+    else:
+        vehicles = db.session.execute(select(Vehicle)). scalars().all()
+
+        if not vehicles:
+            return jsonify({"message": "No mechanics found"}), 404
+        
+        return vehicles_schema.jsonify(vehicles), 200
 
 # get vehicle by id
 @vehicles_bp.route('/<int:id>', methods=['GET'])

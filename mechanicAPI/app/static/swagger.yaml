@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
-  title: "Library API"
-  description: "This is a API to manage a Library"
+  title: "Mechanic Shop API"
+  description: "This is a API to manage a mechanic's shop"
   version: "1.0.0"
 host: "127.0.0.1:5000"
 schemes:
@@ -42,12 +42,12 @@ paths:
                 message: "Login successful"
                 status: "success"
 
-  /mechanics:
-    post:
+  /mechanics: # endpoint
+    post: # request type
         tags:
           - "Mechanics"
         summary: "Endpoint to create a new mechanic"
-        description: "Endpoint to create a new mechanic in our mechanic shop system, email must be unique"
+        description: "Send a JSON payload including mechanic information to create a new mechanic in our database, email must be unique"
         security: []
         parameters:
           - in: "body"
@@ -58,15 +58,15 @@ paths:
               $ref: "#/definitions/CreateMechanicPayload"
         responses:
           200:
-            description: "Created Mechanics Successfully"
+            description: "Created Mechanic Successfully"
             schema:
               $ref: "#/definitions/AllMechanics"
             examples:
               application/json:
-                id: 1
-                name: "John Doe"
                 address: "123 Main St"
                 email: "johndoe@gmail.com"
+                id: 1
+                name: "John Doe"
                 password: "password123"
 
     get:
@@ -92,10 +92,10 @@ paths:
               $ref: "#/definitions/AllMechanics"
             examples:
               application/json:
-                id: 1
-                name: "John Doe"
                 address: "123 Main St"
                 email: "johndoe@gmail.com"
+                id: 1
+                name: "John Doe"
                 password: "password123"
     put:
         tags:
@@ -118,10 +118,10 @@ paths:
               $ref: "#/definitions/UpdateMechanicResponse"
             examples:
               application/json:
+                address: "123 Main St"
+                email: "johndoe@gmail.com"
                 id: 1
-                name: "Dohn Joe"
-                address: "321 Main St"
-                email: "dohnjoe@gmail.com"
+                name: "John Doe"
                 password: "password123"
 
     delete:
@@ -146,7 +146,7 @@ paths:
         tags:
           - "Customers"
         summary: "Endpoint to create a new customer"
-        description: "Endpoint to create a new customer in our mechanic shop system, email must be unique"
+        description: "Send a JSON payload including customer information to create a new customer in our database, email must be unique"
         security: []
         parameters:
           - in: "body"
@@ -162,10 +162,12 @@ paths:
               $ref: "#/definitions/AllCustomers"
             examples:
               application/json:
+                email: "johndoe@gmail.com"
                 id: 1
                 name: "John Doe"
-                email: "johndoe@gmail.com"
                 phone: "1234567890"
+                tickets: []
+                vehicles: []
 
     get:
         tags:
@@ -190,10 +192,12 @@ paths:
               $ref: "#/definitions/AllCustomers"
             examples:
               application/json:
+                email: "johndoe@gmail.com"
                 id: 1
                 name: "John Doe"
-                email: "johndoe@gmail.com"
                 phone: "1234567890"
+                tickets: []
+                vehicles: []
     put:
         tags:
           - "Customers"
@@ -215,10 +219,12 @@ paths:
               $ref: "#/definitions/UpdateCustomerResponse"
             examples:
               application/json:
+                email: "johndoe@gmail.com"
                 id: 1
-                name: "Dohn Joe"
-                email: "dohnjoe@gmail.com"
-                phone: "0987654321"
+                name: "John Doe"
+                phone: "1234567890"
+                tickets: []
+                vehicles: []
 
     delete:
         tags:
@@ -242,7 +248,7 @@ paths:
         tags:
           - "Part Descriptions"
         summary: "Endpoint to create a new part description"
-        description: "Endpoint to create a new part description in our mechanic shop system."
+        description: "Send a JSON payload including part description information to create a new part description in our database, email must be unique."
         security: []
         parameters:
           - in: "body"
@@ -258,9 +264,9 @@ paths:
               $ref: "#/definitions/AllPart_Descriptions"
             examples:
               application/json:
+                brand: "Flowmaster"
                 id: 1
                 part name: "After Market Exhaust"
-                brand: "Flowmaster"
                 price: "599.99"
 
     get:
@@ -286,9 +292,9 @@ paths:
               $ref: "#/definitions/AllPart_Descriptions"
             examples:
               application/json:
+                brand: "Flowmaster"
                 id: 1
                 part name: "After Market Exhaust"
-                brand: "Flowmaster"
                 price: "599.99"
     put:
         tags:
@@ -311,10 +317,10 @@ paths:
               $ref: "#/definitions/UpdatePart_DescriptionResponse"
             examples:
               application/json:
+                brand: "Flowmaster"
                 id: 1
                 part name: "After Market Exhaust"
-                brand: "Evil Energy"
-                price: "34.99"
+                price: "599.99"
 
     delete:
         tags:
@@ -338,7 +344,7 @@ paths:
         tags:
           - "Serialized Parts"
         summary: "Endpoint to create a new serialized part"
-        description: "Endpoint to create a new serialized part in our mechanic shop system."
+        description: "Send a JSON payload including serialized part information to create a new serialized part in our database, email must be unique"
         security: []
         parameters:
           - in: "body"
@@ -354,8 +360,8 @@ paths:
               $ref: "#/definitions/AllSerialized_Parts"
             examples:
               application/json:
-                id: 1
                 desc id: 1
+                id: 1
                 ticket id: 1
     get:
         tags:
@@ -380,9 +386,9 @@ paths:
               $ref: "#/definitions/AllSerialized_Parts"
             examples:
               application/json:
-                id: 1
                 desc id: 1
-                ticket id: 1 
+                id: 1
+                ticket id: 1
     put:
         tags:
           - "Serialized Parts"
@@ -404,10 +410,9 @@ paths:
               $ref: "#/definitions/UpdateSerialized_PartResponse"
             examples:
               application/json:
-                id: 2
-                desc id: 2
-                ticket id: 1 
-
+                desc id: 1
+                id: 1
+                ticket id: 1
     delete:
         tags:
           - "Serialized Parts"
@@ -430,7 +435,7 @@ paths:
         tags:
           - "Service_Tickets"
         summary: "Endpoint to create a new service ticket"
-        description: "Endpoint to create a new service ticket in our mechanic shop system, email must be unique"
+        description: "Send a JSON payload including service ticket information to create a new service ticket in our database, email must be unique"
         security: []
         parameters:
           - in: "body"
@@ -446,11 +451,11 @@ paths:
               $ref: "#/definitions/AllService_Tickets"
             examples:
               application/json:
-                id: 1
-                date: "2023-10-01"
-                type: "Oil Change"
-                status: "Completed"
                 customer_id: 1
+                date: "2023-10-01"
+                id: 1
+                status: "Completed"
+                type: "Oil Change"
                 vehicle_id: 1
 
     get:
@@ -476,12 +481,13 @@ paths:
               $ref: "#/definitions/AllService_Tickets"
             examples:
               application/json:
-                id: 1
-                date: "2023-10-01"
-                type: "Oil Change"
-                status: "Completed"
                 customer_id: 1
+                date: "2023-10-01"
+                id: 1
+                status: "Completed"
+                type: "Oil Change"
                 vehicle_id: 1
+
     put:
         tags:
           - "Service_Tickets"
@@ -503,12 +509,13 @@ paths:
               $ref: "#/definitions/UpdateService_TicketResponse"
             examples:
               application/json:
-                id: 1
-                date: "2023-10-01"
-                type: "Oil Change"
-                status: "Completed"
                 customer_id: 1
+                date: "2023-10-01"
+                id: 1
+                status: "Completed"
+                type: "Oil Change"
                 vehicle_id: 1
+
 
     delete:
         tags:
@@ -533,7 +540,7 @@ paths:
         tags:
           - "Vehicles"
         summary: "Endpoint to create a new vehicle"
-        description: "Endpoint to create a new vehicle in our mechanic shop system, email must be unique"
+        description: "Send a JSON payload including vehicle information to create a new vehicle in our database, email must be unique"
         security: []
         parameters:
           - in: "body"
@@ -549,10 +556,11 @@ paths:
               $ref: "#/definitions/AllVehicles"
             examples:
               application/json:
+                customer_id: 1
                 id: 1
                 make: "Toyota"
                 model: "Camry"
-                customer_id: 1
+                
 
     get:
         tags:
@@ -577,10 +585,10 @@ paths:
               $ref: "#/definitions/AllVehicles"
             examples:
               application/json:
+                customer_id: 1
                 id: 1
                 make: "Toyota"
                 model: "Camry"
-                customer_id: 1
     put:
         tags:
           - "Vehicles"
@@ -602,11 +610,10 @@ paths:
               $ref: "#/definitions/UpdateVehicleResponse"
             examples:
               application/json:
+                customer_id: 1
                 id: 1
                 make: "Toyota"
                 model: "Camry"
-                customer_id: 1
-
     delete:
         tags:
           - "Vehicles"
@@ -654,30 +661,31 @@ definitions:
   CreateMechanicPayload:
     type: "object"
     properties:
-      name:
-        type: "string"
       address:
         type: "string"
       email:
         type: "string"
+      name:
+        type: "string"
       password:
         type: "string"
+      
     required:
-      - name
       - address
       - email
+      - name
       - password
 
   CreateMechanicResponse:
     type: "object"
     properties:
-      id:
-        type: "integer"
-      name:
-        type: "string"
       address:
         type: "string"
       email:
+        type: "string"
+      id:
+        type: "integer"
+      name:
         type: "string"
       password:
         type: "string"
@@ -686,13 +694,13 @@ definitions:
   AllMechanics:
     type: "array"
     properties:
-      id:
-        type: "integer"
-      name:
-        type: "string"
       address:
         type: "string"
       email:
+        type: "string"
+      id:
+        type: "integer"
+      name:
         type: "string"
       password:
         type: "string"
@@ -701,32 +709,36 @@ definitions:
   UpdateMechanicPayload:
     type: "object"
     properties:
-      name:
-        type: "string"
       address:
         type: "string"
       email:
         type: "string"
+      id:
+        type: "integer"
+      name:
+        type: "string"
       password:
         type: "string"
 
+
     required:
-      - name
       - address
       - email
+      - id
+      - name
       - password
 
 
   UpdateMechanicResponse:
     type: 'object'
     properties:
-      id:
-        type: "integer"
-      name:
-        type: "string"
       address:
         type: "string"
       email:
+        type: "string"
+      id:
+        type: "integer"
+      name:
         type: "string"
       password:
         type: "string"
@@ -742,46 +754,57 @@ definitions:
   CreateCustomerPayload:
     type: "object"
     properties:
-      name:
-        type: "string"
       email:
+        type: "string"
+      name:
         type: "string"
       phone:
         type: "string"
     required:
-      - name
       - email
+      - name
       - phone
 
 
   CreateCustomerResponse:
     type: "object"
     properties:
+      email:
+        type: "string"
       id:
         type: "integer"
       name:
         type: "string"
-      email:
-        type: "string"
       phone:
         type: "string"
+      tickets:
+        type: "array"
+        items:
+          type: "integer"
+      vehicles:
+        type: "array"
+        items:
+          type: "integer"
     required:
-      - name
       - email
+      - id
+      - name
       - phone
+      - tickets
+      - vehicles
 
 
   AllCustomers:
     type: "array"
     properties:
+      email:
+        type: "string"
       id:
         type: "integer"
       name:
         type: "string"
-      email:
-        type: "string"
       phone:
-        type: "string"  
+        type: "string"
 
 
   UpdateCustomerPayload:
@@ -806,16 +829,23 @@ definitions:
   UpdateCustomerResponse:
     type: "object"
     properties:
+      email:
+        type: "string"
       id:
         type: "integer"
       name:
-        type: 'string'
-      email:
-        type: 'string'
+        type: "string"
       phone:
-        type: 'string'
-
-    
+        type: "string"
+      tickets:
+        type: "array"
+        items:
+          type: "integer"
+      vehicles:
+        type: "array"
+        items:
+          type: "integer"
+ 
   DeleteCustomer:
     type: 'object'
     properties:
@@ -841,11 +871,11 @@ definitions:
   CreatePart_DescriptionResponse:
     type: "object"
     properties:
+      brand:
+        type: "string"
       id:
         type: "integer"
       part_name:
-        type: "string"
-      brand:
         type: "string"
       price:
         type: "string"
@@ -854,11 +884,11 @@ definitions:
   AllPart_Descriptions:
     type: "array"
     properties:
+      brand:
+        type: "string"
       id:
         type: "integer"
       part_name:
-        type: "string"
-      brand:
         type: "string"
       price:
         type: "string"
@@ -867,27 +897,30 @@ definitions:
   UpdatePart_DescriptionPayload:
     type: "object"
     properties:
-      part_name:
-        type: "string"
       brand:
+        type: "string"
+      id:
+        type: "integer"
+      part_name:
         type: "string"
       price:
         type: "string"
 
     required:
-      - part name
       - brand
+      - id
+      - part name
       - price
 
 
   UpdatePart_DescriptionResponse:
     type: 'object'
     properties:
-      id:
-        type: 'integer'
-      part_name:
-        type: "string"
       brand:
+        type: "string"
+      id:
+        type: "integer"
+      part_name:
         type: "string"
       price:
         type: "string"
@@ -985,16 +1018,16 @@ definitions:
   CreateService_TicketResponse:
     type: "object"
     properties:
-      id:
+      customer_id:
         type: "integer"
       date:
         type: "string"
-      type:
-        type: "string"
+      id:
+        type: "integer"
       status:
         type: "string"
-      customer_id:
-        type: "integer"
+      type:
+        type: "string"
       vehicle_id:
         type: "integer"
       
@@ -1002,19 +1035,18 @@ definitions:
   AllService_Tickets:
     type: "array"
     properties:
-      id:
+      customer_id:
         type: "integer"
       date:
         type: "string"
-      type:
-        type: "string"
+      id:
+        type: "integer"
       status:
         type: "string"
-      customer_id:
-        type: "integer"
+      type:
+        type: "string"
       vehicle_id:
         type: "integer"
-
 
 
   UpdateService_TicketPayload:
@@ -1046,16 +1078,16 @@ definitions:
   UpdateService_TicketResponse:
     type: "object"
     properties:
-      id:
+      customer_id:
         type: "integer"
       date:
         type: "string"
-      type:
-        type: "string"
+      id:
+        type: "integer"
       status:
         type: "string"
-      customer_id:
-        type: "integer"
+      type:
+        type: "string"
       vehicle_id:
         type: "integer"
       
@@ -1080,27 +1112,29 @@ definitions:
   CreateVehicleResponse:
     type: "object"
     properties:
+      customer_id:
+        type: "integer"
       id:
         type: "integer"
       make:
         type: "string"
       model:
         type: "string"
-      customer_id:
-        type: "integer"
+      
       
 
   AllVehicles:
     type: "array"
     properties:
+      customer_id:
+        type: "integer"
       id:
         type: "integer"
       make:
         type: "string"
       model:
         type: "string"
-      customer_id:
-        type: "integer"
+      
 
 
 
@@ -1127,14 +1161,15 @@ definitions:
   UpdateVehicleResponse:
     type: "object"
     properties:
+      customer_id:
+        type: "integer"
       id:
         type: "integer"
       make:
         type: "string"
       model:
         type: "string"
-      customer_id:
-        type: "integer"
+      
       
     
   DeleteVehicle:

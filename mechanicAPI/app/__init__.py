@@ -9,14 +9,14 @@ from app.blueprints.mechanics import mechanics_bp
 from app.blueprints.part_description import part_description_bp
 from app.blueprints.serialized_parts import serialized_part_bp
 
-SWAGGER_URL = '/api/docs' # URL for exposing swagger UI (without trailing '/')
-API_URL = '/static/swagger.yaml' # our API URL (can be local resource)
+SWAGGER_URL = '/api/docs' # Sets the endpoint for our documentation
+API_URL = '/static/swagger.yaml' # Grabs host URL from swagger file
 
-swaggerui_blueprint = get_swaggerui_blueprint(
+swagger_bp = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,
     config={
-        'app_name': "Mechanics API",
+        'app_name': "Mechanic API",
         'doc_expansion': 'none',
         'persistAuthorization': 'True',
     }
@@ -41,6 +41,6 @@ def create_app(config_class='DevelopmentConfig'):
     app.register_blueprint(mechanics_bp, url_prefix='/mechanics')
     app.register_blueprint(part_description_bp, url_prefix='/part-descriptions')
     app.register_blueprint(serialized_part_bp, url_prefix='/serialized-parts')
-    app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL) # Registering our swagger blueprint
+    app.register_blueprint(swagger_bp, url_prefix=SWAGGER_URL) # Registering our swagger blueprint
     
     return app
