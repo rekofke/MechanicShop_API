@@ -103,6 +103,7 @@ def delete_serialized_part(serialized_part_id):
     db.session.commit()
     return jsonify({"message": f"Successfully deleted serialized_part {serialized_part_id}"}), 200
 
+# search for like terms
 @serialized_part_bp.route("/search", methods=['GET'])
 def search_by_part_name():
     name = request.args.get('name')

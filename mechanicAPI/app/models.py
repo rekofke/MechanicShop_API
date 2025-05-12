@@ -80,7 +80,6 @@ class Service_Ticket(Base):
     
 class PartDescription(Base):
     __tablename__ = 'part_descriptions'
-    
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     part_name: Mapped[str] = mapped_column(String(200), nullable=False)
     brand: Mapped[str] = mapped_column(String(200), nullable=False)

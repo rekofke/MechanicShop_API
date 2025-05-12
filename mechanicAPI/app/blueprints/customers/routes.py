@@ -17,7 +17,8 @@ def add_customer():
         customer_data = customer_schema.load(request.json)
     except ValidationError as e:
         return jsonify(e.messages), 400
-
+    
+    query = select(Customer).where(Customer.email == customer_data['email'])
     # use data to create an instance of customer
     new_customer = Customer(**customer_data)
 
@@ -51,6 +52,15 @@ def get_customers():
         
         return customers_schema.jsonify(customers), 200
 
+# get single customer
+@customers_bp.route("/<int:customer_id>", methods=['GET'])
+def get_customer(customer_id):
+    customer = db.session.get(Customer, customer_id)
+
+    if customer:
+        return customer_schema.jsonify(customer), 200
+    
+    return jsonify({"error": "invalid customer ID"}), 400
 
 # update customer
 @customers_bp.route("/<int:customer_id>", methods=["PUT"])

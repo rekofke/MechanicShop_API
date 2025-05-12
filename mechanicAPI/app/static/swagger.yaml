@@ -22,7 +22,7 @@ paths:
     post:
         tags:
           - "Mechanics"
-        summary: "Login Endpoint, (generates token)"
+        summary: "POST login with credentials (email, password) if valid, login token will be minted and returned. (generates token)"
         description: "Validates mechanic credentials, generates and returns a number specific token"
         parameters:
           - in: "body"
@@ -243,7 +243,7 @@ paths:
                 message: "Successfully deleted customer <customer_id>"
 
 #* Part Description Endpoints
-  /part-descriptions/{id}:
+  /part-descriptions:
     post:
         tags:
           - "Part Descriptions"
@@ -339,7 +339,7 @@ paths:
                 message: "Successfully deleted part description"
 
 #* Serialized Parts Endpoints
-  /serialized-parts/{id}:
+  /serialized-parts:
     post:
         tags:
           - "Serialized Parts"
@@ -430,7 +430,7 @@ paths:
                 message: "Successfully deleted serialized part"
 
 #* Service Tickets Endpoints
-  /service-tickets/{id}:
+  /service-tickets:
     post:
         tags:
           - "Service_Tickets"
@@ -535,7 +535,7 @@ paths:
 
 
 #* Vehicles Endpoints
-  /vehicles/{id}:
+  /vehicles:
     post:
         tags:
           - "Vehicles"
@@ -693,17 +693,19 @@ definitions:
 
   AllMechanics:
     type: "array"
-    properties:
-      address:
-        type: "string"
-      email:
-        type: "string"
-      id:
-        type: "integer"
-      name:
-        type: "string"
-      password:
-        type: "string"
+    items:
+      type: "object"
+      properties:
+        address:
+          type: "string"
+        email:
+          type: "string"
+        id:
+          type: "integer"
+        name:
+          type: "string"
+        password:
+          type: "string"
 
 
   UpdateMechanicPayload:
