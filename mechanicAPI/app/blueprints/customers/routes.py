@@ -97,12 +97,25 @@ def delete_customer(customer_id):
     db.session.commit()
     return jsonify({"message": f"Successfully deleted customer {customer_id}"}), 200
 
+#* Query Parameters
+# Search for customer by name
 @customers_bp.route("/search", methods=['GET'])
-def search_by_part_name():
+def search_by_name():
     name = request.args.get('name')
-    query = select(customer).where(customer.name.like(f"%{name}%"))
-    customer = db.session.execute(query.scalars().first())
-    
+    print(name)
+    query = select(Customer).where(Customer.name.like(f"%{name}%"))
+    customer = db.session.execute(query).scalars().first()
+    print(customer)
+    return customer_schema.jsonify(customer), 200
+
+# Search for customer by email
+@customers_bp.route("/search", methods=['GET'])
+def search_by_email():
+    email = request.args.get('email')
+    print(email)
+    query = select(Customer).where(Customer.email.like(f"%{email}%"))
+    customer = db.session.execute(query).scalars().first()
+    print(customer)
     return customer_schema.jsonify(customer), 200
                             
 

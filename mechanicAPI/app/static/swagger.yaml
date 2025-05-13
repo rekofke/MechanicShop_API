@@ -97,6 +97,7 @@ paths:
                 id: 1
                 name: "John Doe"
                 password: "password123"
+    
     put:
         tags:
           - "Mechanics"
@@ -138,7 +139,29 @@ paths:
               $ref: "#/definitions/DeleteMechanicResponse"
             examples:
               application/json:
-                message: "Successfully deleted mechanic <mechanic_id>"
+                message: "Successfully deleted mechanic"
+
+  /mechanics/{id}:
+    get:
+        tags:
+          - "Mechanics"
+        summary: "Returns a specific Mechanic"
+        description: "Send a JSON payload including mechanic information to the path parameter coresponding to the mechanic id to retrieve a specific mechanic in the system"
+        security: []
+        parameters:
+          - in: "path"
+            name: id # Note thename is the same as in the path
+            required: true
+            schema:
+              type: "integer"
+              minimum: 1
+            description: "ID of the mechanic to retrieve" 
+        responses:
+          200:
+            description: "Successfully found mechanic"
+            schema:
+              $ref: "#/definitions/MechanicResponse" 
+
 #* Customers Endpoints
 
   /customers:
@@ -198,6 +221,7 @@ paths:
                 phone: "1234567890"
                 tickets: []
                 vehicles: []
+
     put:
         tags:
           - "Customers"
@@ -241,6 +265,28 @@ paths:
             examples:
               application/json:
                 message: "Successfully deleted customer <customer_id>"
+
+  /customers/{id}:
+    get:
+        tags:
+          - "Customers"
+        summary: "Returns a specific customer"
+        description: "Send a JSON payload including customer information to the path parameter coresponding to the customer id to retrieve a specific customer in the system"
+        security: []
+        parameters:
+          - in: "path"
+            name: id # Note thename is the same as in the path
+            required: true
+            schema:
+              type: "integer"
+              minimum: 1
+            description: "ID of the customer to retrieve" 
+        responses:
+          200:
+            description: "Successfully found customer"
+            schema:
+              $ref: "#/definitions/CustomerResponse" 
+
 
 #* Part Description Endpoints
   /part-descriptions:
@@ -433,7 +479,7 @@ paths:
   /service-tickets:
     post:
         tags:
-          - "Service_Tickets"
+          - "ServiceTickets"
         summary: "Endpoint to create a new service ticket"
         description: "Send a JSON payload including service ticket information to create a new service ticket in our database, email must be unique"
         security: []
@@ -752,6 +798,21 @@ definitions:
       message:
         type: "string"
 
+  MechanicResponse:
+    type: "object"
+    properties:
+      address:
+        type: "string"
+      email:
+        type: "string"
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      password:
+        type: "string"
+
+
 #* Customers
   CreateCustomerPayload:
     type: "object"
@@ -853,6 +914,24 @@ definitions:
     properties:
       message:
         type: "string"
+
+  CustomerResponse:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      phone:
+        type: "string"
+      tickets:
+        type: "array"
+        items:
+          type: "integer"
+      vehicles:
+        type: "array"
+        items:
+          type: "integer"
 
 #* Part Description
   CreatePart_DescriptionPayload:
