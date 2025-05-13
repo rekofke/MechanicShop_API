@@ -693,6 +693,34 @@ paths:
               schema:
                 $ref: "#/definitions/Mechanic_TicketResponse" 
 
+  /service-tickets/{ticket_id}/remove-mechanic/{mechanic_id}:
+      put:
+          tags:
+            - "Service Tickets"
+          summary: "Removes a mechanic to a service ticket"
+          description: "Send a PUT request to the path parameter to remove a mechanic from a service ticket"
+          security: []
+          parameters:
+            - in: "path"
+              name: ticket_id # Note thename is the same as in the path
+              required: true
+              schema:
+                type: "integer"
+                minimum: 1
+              description: "ID of the service ticket that the mechanic is being removed from." 
+            - in: "path"
+              name: mechanic_id # Note thename is the same as in the path
+              required: true
+              schema:
+                type: "integer"
+                minimum: 1
+              description: "ID of the mechanic that is being removed from the ticket." 
+          responses:
+            200:
+              description: "Successfully removed mechanic from this service ticket"
+              schema:
+                $ref: "#/definitions/RemoveMechanic_TicketResponse" 
+
 #* Vehicles Endpoints
   /vehicles:
     post:
@@ -1384,7 +1412,18 @@ definitions:
         items:
           $ref: "#/definitions/Mechanic"
               
-
+  RemoveMechanic_TicketResponse:
+    type: object
+    properties:
+      message:
+        type: string
+        example: "successfully removed Anton Barry from the ticket"
+      ticket:
+        $ref: "#/definitions/Service_TicketResponse"
+      mechanics:
+        type: array
+        items: 
+          $ref: "#/definitions/Mechanic" 
 
 
 #* Vehicles
