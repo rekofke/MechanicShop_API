@@ -412,7 +412,7 @@ paths:
           tags:
             - "Part Descriptions"
           summary: "Returns a specific part"
-          description: "Send a JSON payload including part information to the path parameter coresponding to the part id to retrieve a specific part in the system"
+          description: "Send a JSON payload including part id to the path parameter to retrieve a specific part in the system"
           security: []
           parameters:
             - in: "path"
@@ -519,12 +519,32 @@ paths:
               application/json:
                 message: "Successfully deleted serialized part"
 
+  /serialized-parts/{id}:
+      get:
+          tags:
+            - "Serialized Parts"
+          summary: "Returns a serialized part"
+          description: "Send a JSON payload including serialized part id to the path parameter to retrieve a specific serialized part in the system "
+          security: []
+          parameters:
+            - in: "path"
+              name: id # Note thename is the same as in the path
+              required: true
+              schema:
+                type: "integer"
+                minimum: 1
+              description: "ID of the serialized part to retrieve" 
+          responses:
+            200:
+              description: "Successfully found serialized part"
+              schema:
+                $ref: "#/definitions/Serialized_PartResponse" 
 
 #* Service Tickets Endpoints
   /service-tickets:
     post:
         tags:
-          - "ServiceTickets"
+          - "Service Tickets"
         summary: "Endpoint to create a new service ticket"
         description: "Send a JSON payload including service ticket information to create a new service ticket in our database, email must be unique"
         security: []
@@ -551,7 +571,7 @@ paths:
 
     get:
         tags:
-          - "Service_Tickets"
+          - "Service Tickets"
         summary: "Returns all Service Tickets"
         description: "Endpoint to retrieve an array of all service tickets in the system"
         security: []
@@ -581,7 +601,7 @@ paths:
 
     put:
         tags:
-          - "Service_Tickets"
+          - "Service Tickets"
         summary: "Endpoit to update a service ticket"
         description: "Endpoint to update a service ticket."
         security:
@@ -610,7 +630,7 @@ paths:
 
     delete:
         tags:
-          - "Service_Tickets"
+          - "Service Tickets"
         summary: "Endpoint to delete a service ticket"
         description: "Endpoint to delete a service ticket."
         security:
@@ -624,6 +644,54 @@ paths:
               application/json:
                 message: "Successfully deleted service ticket."
 
+  /service-tickets/{id}:
+      get:
+          tags:
+            - "Service Tickets"
+          summary: "Returns a service ticket"
+          description: "Send a JSON payload including service ticket id to the path parameter to retrieve a specific service ticket in the system "
+          security: []
+          parameters:
+            - in: "path"
+              name: id # Note thename is the same as in the path
+              required: true
+              schema:
+                type: "integer"
+                minimum: 1
+              description: "ID of the service ticket to retrieve" 
+          responses:
+            200:
+              description: "Successfully found service ticket"
+              schema:
+                $ref: "#/definitions/Service_TicketResponse" 
+
+  /service-tickets/{ticket_id}/add-mechanic/{mechanic_id}:
+      put:
+          tags:
+            - "Service Tickets"
+          summary: "Adds a mechanic to a service ticket"
+          description: "Send a PUT request to the path parameter to add a mechanic to a service ticket"
+          security: []
+          parameters:
+            - in: "path"
+              name: ticket_id # Note thename is the same as in the path
+              required: true
+              schema:
+                type: "integer"
+                minimum: 1
+              description: "ID of the service ticket that the mechanic is being added to." 
+            - in: "path"
+              name: mechanic_id # Note thename is the same as in the path
+              required: true
+              schema:
+                type: "integer"
+                minimum: 1
+              description: "ID of the mechanic that is being added to the ticket." 
+          responses:
+            200:
+              description: "Successfully added mechanic to this service ticket"
+              schema:
+                $ref: "#/definitions/Mechanic_TicketResponse" 
 
 #* Vehicles Endpoints
   /vehicles:
@@ -749,6 +817,20 @@ definitions:
       - message
       - status
 
+  Mechanic:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      address:
+        type: "string"
+      password:
+        type: "string"
+
   CreateMechanicPayload:
     type: "object"
     properties:
@@ -785,18 +867,18 @@ definitions:
   AllMechanics:
     type: "array"
     items:
-      type: "object"
-      properties:
-        address:
-          type: "string"
-        email:
-          type: "string"
-        id:
-          type: "integer"
-        name:
-          type: "string"
-        password:
-          type: "string"
+      $ref: "#/definitions/Mechanic"
+      # properties:
+      #   address:
+      #     type: "string"
+      #   email:
+      #     type: "string"
+      #   id:
+      #     type: "integer"
+      #   name:
+      #     type: "string"
+      #   password:
+      #     type: "string"
 
 
   UpdateMechanicPayload:
@@ -1162,6 +1244,16 @@ definitions:
       message:
         type: "string"
 
+  Serialized_PartResponse:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      desc_id:
+        type: "integer"
+      ticket_id:
+        type: "integer"
+
 #* Service Tickets
   CreateService_TicketPayload:
     type: "object"
@@ -1259,6 +1351,41 @@ definitions:
     properties:
       message:
         type: "string"
+
+  Service_TicketResponse:
+    type: "object"
+    properties:
+      customer_id:
+        type: "integer"
+      date:
+        type: "string"
+        format: "date-time"
+      mechanic:
+        type: "array"
+        items:
+          $ref: "#/definitions/Mechanic"
+        status:
+          type: "string"
+        service_type:
+          type: "string"
+        vehicle_id:
+          type: "integer"
+
+  Mechanic_TicketResponse:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        example: "successfully added mechanic to the ticket"
+      ticket:
+        $ref: "#/definitions/Service_TicketResponse"
+      mechanics:
+        type: "array"
+        items:
+          $ref: "#/definitions/Mechanic"
+              
+
+
 
 #* Vehicles
   CreateVehiclePayload:

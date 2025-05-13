@@ -31,34 +31,44 @@ def add_ticket():
 
 
 # get all tickets
-@service_tickets_bp.route("/", methods=["GET"])
-@cache.cached(timeout=60)  # added caching because assessing tickets is a common operation
-def get_all_tickets():
-    query = select(Service_Ticket)
-    service_tickets = db.session.execute(query).scalars().all()
+@service_tickets_bp.route('/', methods=['GET'])
+@cache.cached(timeout=60, query_string=True) # added caching because assessing service_tickets is a common operation
+def get_service_tickets():
+    page = request.args.get('page', type=int)
+    per_page = request.args.get('per_page', default=10, type=int)
 
-    # # pagination (page/per_page)
-    page = int(request.args.get('page', default=1, type=int))
-    per_page = int(request.args.get('per_page', default=10, type=int))
-    query =select (Service_Ticket)
-    service_tickets = db.paginate(query, page=page, per_page=per_page)
-    return service_ticket_schema.jsonify(service_tickets), 200
+
+    if page:
+        pagination = db.paginate(select(Service_Ticket), page=page, per_page=per_page)
+        service_tickets = pagination.items
+
+        if not service_tickets:
+            return jsonify({"message": "No service_tickets found"}), 404
+        return service_tickets_schema.jsonify(service_tickets)
+    else:
+        service_tickets = db.session.execute(select(Service_Ticket)). scalars().all()
+
+        if not service_tickets:
+            return jsonify({"message": "No service_tickets found"}), 404
+        
+        return service_tickets_schema.jsonify(service_tickets), 200
+
+
     
 # get ticket by id
-@service_tickets_bp.route("/<int:service_ticket_id>", methods=["GET"])
-def get_ticket(service_ticket_id):
-    query = select(Service_Ticket).where(Service_Ticket.id == id)
-    service_tickets = db.session.get(Service_Ticket, service_ticket_id)
+@service_tickets_bp.route("/<int:service_tickets_id>", methods=['GET'])
+def get_service_ticket(service_tickets_id):
+    service_tickets = db.session.get(Service_Ticket, service_tickets_id)
 
-    if service_tickets is None:
-        return jsonify({"message": "Invalid ticket ID"}), 404
-
-    return service_ticket_schema.jsonify(service_tickets), 200
+    if service_tickets:
+        return service_tickets_schema.jsonify(service_tickets), 200
+    
+    return jsonify({"error": "invalid service_tickets ID"}), 400
 
 
 # # Add mechanic to ticket
 @service_tickets_bp.route("/<int:ticket_id>/add-mechanic/<int:mechanic_id>", methods=["PUT"])
-@token_required
+# @token_required
 @limiter.limit("3 per hour") # no need to add more than 3 mechanics to a ticket per hour
 def add_mechanic(ticket_id, mechanic_id):
     ticket = db.session.get(Service_Ticket, ticket_id)
