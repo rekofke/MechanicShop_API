@@ -287,6 +287,29 @@ paths:
             schema:
               $ref: "#/definitions/CustomerResponse" 
 
+  /customers/search:
+    get:
+        tags:
+          - "Customers"
+        summary: Endpoint to search for a customer by name or email.
+        description: Pass in customer name or  email as query parameter and receive associated customer.
+        parameters:
+          - in: query
+            name: email
+            schema:
+              type: string
+            description: "Email of the customer to search for"
+          - in: query
+            name: name
+            schema:
+              type: string
+            description: "Name of the customer to search for"
+        responses:
+          200:
+            description: "Successfully found customer"
+            schema:
+              $ref: "#/definitions/CustomerListResponse"
+
 
 #* Part Description Endpoints
   /part-descriptions:
@@ -384,6 +407,27 @@ paths:
               application/json:
                 message: "Successfully deleted part description"
 
+  /part-descriptions/{id}:
+      get:
+          tags:
+            - "Part Descriptions"
+          summary: "Returns a specific part"
+          description: "Send a JSON payload including part information to the path parameter coresponding to the part id to retrieve a specific part in the system"
+          security: []
+          parameters:
+            - in: "path"
+              name: id # Note thename is the same as in the path
+              required: true
+              schema:
+                type: "integer"
+                minimum: 1
+              description: "ID of the part to retrieve" 
+          responses:
+            200:
+              description: "Successfully found part"
+              schema:
+                $ref: "#/definitions/Part_DescriptionResponse" 
+
 #* Serialized Parts Endpoints
   /serialized-parts:
     post:
@@ -474,6 +518,7 @@ paths:
             examples:
               application/json:
                 message: "Successfully deleted serialized part"
+
 
 #* Service Tickets Endpoints
   /service-tickets:
@@ -933,6 +978,26 @@ definitions:
         items:
           type: "integer"
 
+  CustomerListResponse:
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+        name:
+          type: "string"
+        phone:
+          type: "string"
+        tickets:
+          type: "array"
+          items:
+            type: "integer"
+        vehicles:
+          type: "array"
+          items:
+            type: "integer"
+
 #* Part Description
   CreatePart_DescriptionPayload:
     type: "object"
@@ -1012,6 +1077,22 @@ definitions:
     properties:
       message:
         type: "string"
+
+  Part_DescriptionResponse:
+    type: "object"
+    properties:
+      brand:
+        type: "string"
+      id:
+        type: "integer"
+      part_name:
+        type: "string"
+      price:
+        type: "string"
+      serialized_parts:
+        type: "array"
+        items:
+          type: "integer"
 
 #* Serialized Parts
   CreateSerialized_PartPayload:
