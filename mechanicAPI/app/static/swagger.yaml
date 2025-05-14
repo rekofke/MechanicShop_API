@@ -817,6 +817,50 @@ paths:
               application/json:
                 message: "Successfully deleted vehicle."
 
+  /vehicles/{id}:
+      get:
+          tags:
+            - "Vehicles"
+          summary: "Returns a specific vehicle"
+          description: "Send a JSON payload including vehicle id to the path parameter to retrieve a specific vehicle in the system "
+          security: []
+          parameters:
+            - in: "path"
+              name: id # Note thename is the same as in the path
+              required: true
+              schema:
+                type: "integer"
+                minimum: 1
+              description: "ID of the vehicle to retrieve" 
+          responses:
+            200:
+              description: "Successfully found vehicle"
+              schema:
+                $ref: "#/definitions/VehicleResponse" 
+
+  /vehicles/search:
+    get:
+        tags:
+          - "Vehicles"
+        summary: Endpoint to search for a vehicle by make or model.
+        description: Pass in vehicle make or model as query parameter and receive associated vehicle(s).
+        parameters:
+          - in: query
+            name: make
+            schema:
+              type: string
+            description: "Make of the vehicle to search for"
+          - in: query
+            name: model
+            schema:
+              type: string
+            description: "Model of the vehicle to search for"
+        responses:
+          200:
+            description: "Successfully found vehicle"
+            schema:
+              $ref: "#/definitions/VehicleListResponse"
+
 definitions: 
 
 #* Mechanics
@@ -1505,3 +1549,29 @@ definitions:
     properties:
       message:
         type: "string"
+
+  VehicleResponse:
+    type: "object"
+    properties:
+      customer_id:
+        type: "integer"
+      vehicle_id:
+        type: "integer"
+      make:
+        type: "string"
+      model:
+        type: "string"
+
+  VehicleListResponse:
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        customer_id:
+          type: "integer"
+        vehicle_id:
+          type: "integer"
+        make:
+          type: "string"
+        model:
+          type: "string"

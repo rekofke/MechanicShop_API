@@ -110,10 +110,26 @@ def popular_vehicles():
     
     return vehicles_schema.jsonify(vehicles), 200
 
-# query param to search for vehicles by make
-@vehicles_bp.route("/search", methods=["GET"])
-def search_vehicle():
-    make = request.args.get("make")
+# query param to search for vehicles by make or model
+@vehicles_bp.route("/search", methods=['GET'])
+def search_vehicles():
+    make = request.args.get('make')
+    model = request.args.get('model')
+
+    query = select(Vehicle)
+
+    if make:
+        query = query.where(Vehicle.make.ilike(f"%{make}%"))
+    if model:
+        query = query.where(Vehicle.model.ilike(f"%{model}%"))
+
+    vehicles = db.session.execute(query).scalars().all()
+
+    if not vehicles:
+        return jsonify({"message": "No vehicles found"}), 404
+    
+    return vehicles_schema.jsonify(vehicles), 200
+
     
     # query param to search for vehicle phrases LIKE
     query = select(Vehicle).where(Vehicle.make.like(make))
