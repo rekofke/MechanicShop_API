@@ -53,7 +53,7 @@ class TestService_Tickets(unittest.TestCase):
         self.assertGreaterEqual(len(response.json), 1)
 
     def test_service_ticket_not_found(self):
-        response = self.client.get('/service_tickets/999')
+        response = self.client.get('/service_tickets/')
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json['message'], 'No part descriptions found')
 
@@ -80,3 +80,44 @@ class TestService_Tickets(unittest.TestCase):
         response = self.client.delete(f'/service_tickets/{self.service_ticket.id}', headers=headers)
         self.assertEqual(response.status_code, 200)
         self.assertIn('message', response.json)
+
+    
+    def add_part_to_ticket(self):
+        headers = {'Authorization': f'Bearer {self.token}'}
+        response = self.client.put(f'/service_tickets/{self.service_ticket.id}/{self.serialized_part.id}', headers=headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json['part_name'], 'updated_part')
+
+    def remove_part_from_ticket(self):
+        headers = {'Authorization': f'Bearer {self.token}'}
+        response = self.client.put(f'/service_tickets/{self.service_ticket.id}/{self.serialized_part.id}', headers=headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('message', response.json)
+
+    def invalid_part(self):
+        response = self.client.get('/service_tickets/')
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json['message'], 'Invalid part or ticket')
+
+    def add_mechanic_to_ticket(self):
+        headers = {'Authorization': f'Bearer {self.token}'}
+        response = self.client.put(f'/service_tickets/{self.service_ticket.id}/{self.mechanic.id}', headers=headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json['name'], 'up')
+
+    def remove_mechanic_from_ticket(self):
+        headers = {'Authorization': f'Bearer {self.token}'}
+        response = self.client.put(f'/service_tickets/{self.service_ticket.id}/{self.mechanic.id}', headers=headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('message', response.json)
+
+    def invalid_mechanic(self):
+        response = self.client.get('/service_tickets/')
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json['message'], 'Invalid mechanic or ticket')
+
+    def add_unused_part_to_ticket(self):
+        headers = {'Authorization': f'Bearer {self.token}'}
+        response = self.client.put(f'/service_tickets/{self.service_ticket.id}/{self.mechanic.id}', headers=headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json['name'], 'updateupdated_name')

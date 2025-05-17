@@ -2,7 +2,7 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from sqlalchemy import select, delete
 from . import service_tickets_bp
-from .schemas import service_tickets_schema, service_ticket_schema, edit_mechanic_schema
+from .schemas import service_tickets_schema, service_ticket_schema, ReturnMechanicSchema
 from app.blueprints.mechanics.schemas import mechanics_schema, mechanic_schema
 from app.blueprints.serialized_parts.schemas import serialized_parts_schema, serialized_part_schema
 from app.models import db, Service_Ticket, Mechanic, SerializedPart, PartDescription
@@ -196,7 +196,7 @@ def popular_service():
 
 # add serialized part to sercice ticket
 @service_tickets_bp.route("/<int:ticket_id>/add-part/<int:part_id>", methods=["PUT"])
-# @token_required
+@token_required
 @limiter.limit("3 per hour") # no need to add more than 3 parts to a ticket per hour
 def add_part(ticket_id, part_id):
     ticket = db.session.get(Service_Ticket, ticket_id)
