@@ -3,7 +3,7 @@ name: Flask Cl
 
 on: # specify events that trigger the workflow
   push:
-  branches: [main, temp-work]
+  branches: [main, master]
 
   jobs: # defines the jobs that make up the workflow
     build:
