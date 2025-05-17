@@ -721,6 +721,53 @@ paths:
               schema:
                 $ref: "#/definitions/RemoveMechanic_TicketResponse" 
 
+  /service-tickets/{ticket_id}/add-part/{part_id}:
+      put:
+          tags:
+            - "Service Tickets"
+          summary: "Adds a part to a service ticket"
+          description: "Associates a serialized part with a current service ticket"
+          security: []
+          parameters:
+            - in: "path"
+              name: ticket_id # Note thename is the same as in the path
+              required: true
+              schema:
+                type: "integer"
+                minimum: 1
+              description: "ID of the service ticket that the part is being added to." 
+            - in: "path"
+              name: part_id # Note thename is the same as in the path
+              required: true
+              schema:
+                type: "integer"
+                minimum: 1
+              description: "ID of the part that is being added to the ticket." 
+          responses:
+            200:
+              description: "Successfully added part to this service ticket"
+              schema:
+                $ref: "#/definitions/Part_TicketResponse"
+              examples:
+                application/json:
+                  message: "Successfully added part to this service ticket"
+                  ticket:
+                    customer_id: 1
+                    date: "2023-10-01"
+                    id: 1
+                    status: "In Progress"
+                    type: "Oil Change"
+                    vehicle_id: 1
+                    serialized_parts:
+                      - id: 123
+                        desc_id: 456
+                        ticket_id: 1
+                  parts:
+                      - id: 123
+                        desc_id: 456
+                        ticket_id: 1
+                      
+
 #* Vehicles Endpoints
   /vehicles:
     post:
@@ -1425,23 +1472,30 @@ definitions:
         type: "string"
 
   Service_TicketResponse:
-    type: "object"
+    type: object
     properties:
       customer_id:
-        type: "integer"
+        type: integer
       date:
-        type: "string"
-        format: "date-time"
+        type: string
+        format: date-time
+      id:
+        type: integer
+      status:
+        type: string
+      type:
+        type: string
+      vehicle_id:
+        type: integer
       mechanic:
-        type: "array"
+        type: array
         items:
           $ref: "#/definitions/Mechanic"
-        status:
-          type: "string"
-        service_type:
-          type: "string"
-        vehicle_id:
-          type: "integer"
+      parts:
+        type: array
+        items:
+          $ref: "#/definitions/Serialized_PartResponse"
+
 
   Mechanic_TicketResponse:
     type: "object"
@@ -1469,6 +1523,18 @@ definitions:
         items: 
           $ref: "#/definitions/Mechanic" 
 
+  Part_TicketResponse:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        example: "successfully added part to the ticket"
+      ticket:
+        $ref: "#/definitions/Service_TicketResponse"
+      parts:
+        type: "array"
+        items:
+          $ref: "#/definitions/Serialized_PartResponse"
 
 #* Vehicles
   CreateVehiclePayload:

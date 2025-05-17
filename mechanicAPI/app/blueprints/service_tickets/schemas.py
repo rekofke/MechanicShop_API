@@ -1,5 +1,5 @@
 import re
-from app.models import Service_Ticket, Mechanic
+from app.models import Service_Ticket, Mechanic, SerializedPart
 from app.extensions import ma
 from marshmallow import fields, schema
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
