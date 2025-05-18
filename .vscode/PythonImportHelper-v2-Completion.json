@@ -488,6 +488,14 @@
         "documentation": {}
     },
     {
+        "label": "SerializedPart",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
         "label": "db",
         "importPath": "app.models",
         "description": "app.models",
@@ -505,6 +513,110 @@
     },
     {
         "label": "Vehicle",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Customer",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Mechanic",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "PartDescription",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "SerializedPart",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Service_Ticket",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Vehicle",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
         "importPath": "app.models",
         "description": "app.models",
         "isExtraImport": true,
@@ -913,6 +1025,14 @@
         "documentation": {}
     },
     {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "wraps",
         "importPath": "functools",
         "description": "functools",
@@ -927,6 +1047,15 @@
         "importPath": "jwt",
         "description": "jwt",
         "detail": "jwt",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
         "documentation": {}
     },
     {
@@ -1034,12 +1163,172 @@
         "documentation": {}
     },
     {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "marshmallow.exceptions",
+        "description": "marshmallow.exceptions",
+        "isExtraImport": true,
+        "detail": "marshmallow.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "marshmallow.exceptions",
+        "description": "marshmallow.exceptions",
+        "isExtraImport": true,
+        "detail": "marshmallow.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "marshmallow.exceptions",
+        "description": "marshmallow.exceptions",
+        "isExtraImport": true,
+        "detail": "marshmallow.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "marshmallow.exceptions",
+        "description": "marshmallow.exceptions",
+        "isExtraImport": true,
+        "detail": "marshmallow.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "marshmallow.exceptions",
+        "description": "marshmallow.exceptions",
+        "isExtraImport": true,
+        "detail": "marshmallow.exceptions",
+        "documentation": {}
+    },
+    {
         "label": "unittest",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "unittest",
         "description": "unittest",
         "detail": "unittest",
+        "documentation": {}
+    },
+    {
+        "label": "generate_password_hash",
+        "importPath": "werkzeug.security",
+        "description": "werkzeug.security",
+        "isExtraImport": true,
+        "detail": "werkzeug.security",
+        "documentation": {}
+    },
+    {
+        "label": "generate_password_hash",
+        "importPath": "werkzeug.security",
+        "description": "werkzeug.security",
+        "isExtraImport": true,
+        "detail": "werkzeug.security",
         "documentation": {}
     },
     {
@@ -1107,14 +1396,6 @@
         "documentation": {}
     },
     {
-        "label": "generate_password_hash",
-        "importPath": "werkzeug.security",
-        "description": "werkzeug.security",
-        "isExtraImport": true,
-        "detail": "werkzeug.security",
-        "documentation": {}
-    },
-    {
         "label": "add_customer",
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.customers.routes",
@@ -1155,16 +1436,25 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.customers.routes",
         "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def delete_customer(customer_id):\n    customer = db.session.get(Customer, customer_id)\n    if not customer:\n        return jsonify({\"message\": \"Invalid part id\"}), 404\n    db.session.delete(customer)\n    db.session.commit()\n    return jsonify({\"message\": f\"Successfully deleted customer {customer_id}\"}), 200\n@customers_bp.route(\"/search\", methods=['GET'])\ndef search_by_part_name():\n    name = request.args.get('name')",
+        "peekOfCode": "def delete_customer(customer_id):\n    customer = db.session.get(Customer, customer_id)\n    if not customer:\n        return jsonify({\"message\": \"Invalid part id\"}), 404\n    db.session.delete(customer)\n    db.session.commit()\n    return jsonify({\"message\": f\"Successfully deleted customer {customer_id}\"}), 200\n#* Query Parameters\n# Search for customer by name\n@customers_bp.route(\"/search\", methods=['GET'])",
         "detail": "mechanicAPI.app.blueprints.customers.routes",
         "documentation": {}
     },
     {
-        "label": "search_by_part_name",
+        "label": "search_by_name",
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.customers.routes",
         "description": "mechanicAPI.app.blueprints.customers.routes",
-        "peekOfCode": "def search_by_part_name():\n    name = request.args.get('name')\n    query = select(customer).where(customer.name.like(f\"%{name}%\"))\n    customer = db.session.execute(query.scalars().first())\n    return customer_schema.jsonify(customer), 200",
+        "peekOfCode": "def search_by_name():\n    name = request.args.get('name')\n    print(name)\n    query = select(Customer).where(Customer.name.like(f\"%{name}%\"))\n    customer = db.session.execute(query).scalars().first()\n    print(customer)\n    return customer_schema.jsonify(customer), 200\n# Search for customer by email\n@customers_bp.route(\"/search\", methods=['GET'])\ndef search_by_email():",
+        "detail": "mechanicAPI.app.blueprints.customers.routes",
+        "documentation": {}
+    },
+    {
+        "label": "search_by_email",
+        "kind": 2,
+        "importPath": "mechanicAPI.app.blueprints.customers.routes",
+        "description": "mechanicAPI.app.blueprints.customers.routes",
+        "peekOfCode": "def search_by_email():\n    email = request.args.get('email')\n    print(email)\n    query = select(Customer).where(Customer.email.like(f\"%{email}%\"))\n    customer = db.session.execute(query).scalars().first()\n    print(customer)\n    return customer_schema.jsonify(customer), 200",
         "detail": "mechanicAPI.app.blueprints.customers.routes",
         "documentation": {}
     },
@@ -1529,20 +1819,20 @@
         "documentation": {}
     },
     {
-        "label": "get_all_tickets",
+        "label": "get_service_tickets",
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.service_tickets.routes",
         "description": "mechanicAPI.app.blueprints.service_tickets.routes",
-        "peekOfCode": "def get_all_tickets():\n    query = select(Service_Ticket)\n    service_tickets = db.session.execute(query).scalars().all()\n    # # pagination (page/per_page)\n    page = int(request.args.get('page', default=1, type=int))\n    per_page = int(request.args.get('per_page', default=10, type=int))\n    query =select (Service_Ticket)\n    service_tickets = db.paginate(query, page=page, per_page=per_page)\n    return service_ticket_schema.jsonify(service_tickets), 200\n# get ticket by id",
+        "peekOfCode": "def get_service_tickets():\n    page = request.args.get('page', type=int)\n    per_page = request.args.get('per_page', default=10, type=int)\n    if page:\n        pagination = db.paginate(select(Service_Ticket), page=page, per_page=per_page)\n        service_tickets = pagination.items\n        if not service_tickets:\n            return jsonify({\"message\": \"No service_tickets found\"}), 404\n        return service_tickets_schema.jsonify(service_tickets)\n    else:",
         "detail": "mechanicAPI.app.blueprints.service_tickets.routes",
         "documentation": {}
     },
     {
-        "label": "get_ticket",
+        "label": "get_service_ticket",
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.service_tickets.routes",
         "description": "mechanicAPI.app.blueprints.service_tickets.routes",
-        "peekOfCode": "def get_ticket(service_ticket_id):\n    query = select(Service_Ticket).where(Service_Ticket.id == id)\n    service_tickets = db.session.get(Service_Ticket, service_ticket_id)\n    if service_tickets is None:\n        return jsonify({\"message\": \"Invalid ticket ID\"}), 404\n    return service_ticket_schema.jsonify(service_tickets), 200\n# # Add mechanic to ticket\n@service_tickets_bp.route(\"/<int:ticket_id>/add-mechanic/<int:mechanic_id>\", methods=[\"PUT\"])\n@token_required\n@limiter.limit(\"3 per hour\") # no need to add more than 3 mechanics to a ticket per hour",
+        "peekOfCode": "def get_service_ticket(service_tickets_id):\n    service_tickets = db.session.get(Service_Ticket, service_tickets_id)\n    if service_tickets:\n        return service_tickets_schema.jsonify(service_tickets), 200\n    return jsonify({\"error\": \"invalid service_tickets ID\"}), 400\n# # Add mechanic to ticket\n@service_tickets_bp.route(\"/<int:ticket_id>/add-mechanic/<int:mechanic_id>\", methods=[\"PUT\"])\n# @token_required\n@limiter.limit(\"3 per hour\") # no need to add more than 3 mechanics to a ticket per hour\ndef add_mechanic(ticket_id, mechanic_id):",
         "detail": "mechanicAPI.app.blueprints.service_tickets.routes",
         "documentation": {}
     },
@@ -1565,20 +1855,20 @@
         "documentation": {}
     },
     {
-        "label": "edit_ticket",
-        "kind": 2,
-        "importPath": "mechanicAPI.app.blueprints.service_tickets.routes",
-        "description": "mechanicAPI.app.blueprints.service_tickets.routes",
-        "peekOfCode": "def edit_ticket(id):\n    query = select(Service_Ticket).where(Service_Ticket.id == id)\n    ticket = db.session.execute(query).scalars().first()\n    if ticket is None:\n        return jsonify({\"message\": \"Invalid ticket ID\"}), 404\n    try:\n        ticket_data = service_ticket_schema.load(request.json)\n    except ValidationError as e:\n        return jsonify(e.messages), 400\n    for field, value in ticket_data.items():",
-        "detail": "mechanicAPI.app.blueprints.service_tickets.routes",
-        "documentation": {}
-    },
-    {
         "label": "delete_ticket",
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.service_tickets.routes",
         "description": "mechanicAPI.app.blueprints.service_tickets.routes",
-        "peekOfCode": "def delete_ticket(id):\n    query = select(Service_Ticket).where(Service_Ticket.id == id)\n    ticket = db.session.execute(query).scalars().first()\n    if ticket is None:\n        return jsonify({\"message\": \"Invalid ticket ID\"}), 404\n    db.session.delete(ticket)\n    db.session.commit()\n    return jsonify({\"message\": f\"Successfully deleted ticket {id}\"}), 200\n# Edit Tickets\n# @service_tickets_bp.route(\"/<int:ticket_id>\", methods=[\"PUT\"])",
+        "peekOfCode": "def delete_ticket(id):\n    query = select(Service_Ticket).where(Service_Ticket.id == id)\n    ticket = db.session.execute(query).scalars().first()\n    if ticket is None:\n        return jsonify({\"message\": \"Invalid ticket ID\"}), 404\n    db.session.delete(ticket)\n    db.session.commit()\n    return jsonify({\"message\": f\"Successfully deleted ticket {id}\"}), 200\n# Edit Tickets\n@service_tickets_bp.route(\"/<int:ticket_id>\", methods=[\"PUT\"])",
+        "detail": "mechanicAPI.app.blueprints.service_tickets.routes",
+        "documentation": {}
+    },
+    {
+        "label": "edit_ticket",
+        "kind": 2,
+        "importPath": "mechanicAPI.app.blueprints.service_tickets.routes",
+        "description": "mechanicAPI.app.blueprints.service_tickets.routes",
+        "peekOfCode": "def edit_ticket():\n    try:\n        mechanic_edits = edit_mechanic_schema(request.json)\n    except ValidationError as e:\n        return jsonify(e.messages), 400\n    query = select(Mechanic).where(Mechanic.id == id)\n    ticket = db.session.execute(query).scalars().first()\n    # ASK DYLAN IF THIS IS COORECT SETUP (NOT SURE HOW HIS LIBRARY TRANSLATES TO MY MECHANIC SHOP)\n    # set up for loop to edit tickets\n    for mechanic_id in mechanic_edits('add_mechanic_ids'):",
         "detail": "mechanicAPI.app.blueprints.service_tickets.routes",
         "documentation": {}
     },
@@ -1587,7 +1877,7 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.service_tickets.routes",
         "description": "mechanicAPI.app.blueprints.service_tickets.routes",
-        "peekOfCode": "def popular_service():\n    query = select(Service_Ticket)\n    service_tickets = db.session.execute(query).scalars().all()\n    for ticket in service_tickets:\n        print(ticket.type, ticket.service_ticket)\n    print(len(service_tickets))\n@service_tickets_bp.route(\"/<int:ticket_id>/add-part/<int:part_id>\", methods=[\"PUT\"])\n@token_required\n@limiter.limit(\"3 per hour\") # no need to add more than 3 parts to a ticket per hour\ndef add_part(ticket_id, part_id):",
+        "peekOfCode": "def popular_service():\n    query = select(Service_Ticket)\n    service_tickets = db.session.execute(query).scalars().all()\n    for ticket in service_tickets:\n        print(ticket.type, ticket.service_ticket)\n    print(len(service_tickets))\n# add serialized part to sercice ticket\n@service_tickets_bp.route(\"/<int:ticket_id>/add-part/<int:part_id>\", methods=[\"PUT\"])\n@token_required\n@limiter.limit(\"3 per hour\") # no need to add more than 3 parts to a ticket per hour",
         "detail": "mechanicAPI.app.blueprints.service_tickets.routes",
         "documentation": {}
     },
@@ -1722,16 +2012,16 @@
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.vehicles.routes",
         "description": "mechanicAPI.app.blueprints.vehicles.routes",
-        "peekOfCode": "def popular_vehicles():\n    query = select(Vehicle)\n    vehicles = db.session.execute(query).scalars().all()\n    vehicles.sort(key=lambda vehicle : vehicle.make)\n    for vehicle in vehicles:\n        print(vehicle.make, vehicle.model.count)\n    return vehicles_schema.jsonify(vehicles), 200\n# query param to search for vehicles by make\n@vehicles_bp.route(\"/search\", methods=[\"GET\"])\ndef search_vehicle():",
+        "peekOfCode": "def popular_vehicles():\n    query = select(Vehicle)\n    vehicles = db.session.execute(query).scalars().all()\n    vehicles.sort(key=lambda vehicle : vehicle.make)\n    for vehicle in vehicles:\n        print(vehicle.make, vehicle.model.count)\n    return vehicles_schema.jsonify(vehicles), 200\n# query param to search for vehicles by make or model\n@vehicles_bp.route(\"/search\", methods=['GET'])\ndef search_vehicles():",
         "detail": "mechanicAPI.app.blueprints.vehicles.routes",
         "documentation": {}
     },
     {
-        "label": "search_vehicle",
+        "label": "search_vehicles",
         "kind": 2,
         "importPath": "mechanicAPI.app.blueprints.vehicles.routes",
         "description": "mechanicAPI.app.blueprints.vehicles.routes",
-        "peekOfCode": "def search_vehicle():\n    make = request.args.get(\"make\")\n    # query param to search for vehicle phrases LIKE\n    query = select(Vehicle).where(Vehicle.make.like(make))",
+        "peekOfCode": "def search_vehicles():\n    make = request.args.get('make')\n    model = request.args.get('model')\n    query = select(Vehicle)\n    if make:\n        query = query.where(Vehicle.make.ilike(f\"%{make}%\"))\n    if model:\n        query = query.where(Vehicle.model.ilike(f\"%{model}%\"))\n    vehicles = db.session.execute(query).scalars().all()\n    if not vehicles:",
         "detail": "mechanicAPI.app.blueprints.vehicles.routes",
         "documentation": {}
     },
@@ -1785,7 +2075,7 @@
         "kind": 5,
         "importPath": "mechanicAPI.app.utils.utils",
         "description": "mechanicAPI.app.utils.utils",
-        "peekOfCode": "SECRET_KEY = \"super secret secrets\"\n# SECRET_KEY = ogdpro4ZVLwTMX/zUadt45GziZYMX81oKXHWf3Wq8pj6CPZ/beceSxUF00szUm7oeRbfuBByfEowRGMrR141kw==\ndef encode_token(mechanic_id):  # using unique pieces of info to make our tokens user specific\n    payload = {\n        \"exp\": datetime.now(timezone.utc) + timedelta(days=2, hours=0),  # setting the expiration time to an hour past now (change later)\n        \"iat\": datetime.now(timezone.utc),  # issued at time\n        \"sub\": str(mechanic_id) # This needs to be a string or the token will be malformd and wont be able to be decoded\n    }\n    token = jwt.encode(payload, SECRET_KEY, algorithm=\"HS256\")\n    return token",
+        "peekOfCode": "SECRET_KEY = os.environ.get(\"SECRET_KEY\") or \"super secret secrets\"\n# SECRET_KEY = ogdpro4ZVLwTMX/zUadt45GziZYMX81oKXHWf3Wq8pj6CPZ/beceSxUF00szUm7oeRbfuBByfEowRGMrR141kw==\ndef encode_token(mechanic_id):  # using unique pieces of info to make our tokens user specific\n    payload = {\n        \"exp\": datetime.now(timezone.utc) + timedelta(days=2, hours=0),  # setting the expiration time to an hour past now (change later)\n        \"iat\": datetime.now(timezone.utc),  # issued at time\n        \"sub\": str(mechanic_id) # This needs to be a string or the token will be malformd and wont be able to be decoded\n    }\n    token = jwt.encode(payload, SECRET_KEY, algorithm=\"HS256\")\n    return token",
         "detail": "mechanicAPI.app.utils.utils",
         "documentation": {}
     },
@@ -1916,6 +2206,87 @@
         "documentation": {}
     },
     {
+        "label": "TestCustomers",
+        "kind": 6,
+        "importPath": "mechanicAPI.tests.test_customers",
+        "description": "mechanicAPI.tests.test_customers",
+        "peekOfCode": "class TestCustomers(unittest.TestCase):\n    def setUp(self):\n        self.app = create_app('TestingConfig')\n        self.customer = Customer(\n            part_name=\"test_part\",\n            brand=\"test_brand\",\n            price=100.0\n        )\n        with self.app.app_context():\n            db.drop_all()",
+        "detail": "mechanicAPI.tests.test_customers",
+        "documentation": {}
+    },
+    {
+        "label": "TestMechanic",
+        "kind": 6,
+        "importPath": "mechanicAPI.tests.test_mechanics",
+        "description": "mechanicAPI.tests.test_mechanics",
+        "peekOfCode": "class TestMechanic(unittest.TestCase): # Define a test class inherit from unittest.TestCase\n    def setUp(self): # Create a test app instance\n        self.app = create_app(\"TestingConfig\")\n        self.mechanic = Mechanic(\n            name='text_user',\n            address='123 test st', \n            email='test@email.com', \n            password=generate_password_hash('123') # create hashed password since creating mechanic outside of route, need to have hash to reference\n            )\n        with self.app.app_context():",
+        "detail": "mechanicAPI.tests.test_mechanics",
+        "documentation": {}
+    },
+    {
+        "label": "test_invalid_creation",
+        "kind": 2,
+        "importPath": "mechanicAPI.tests.test_mechanics",
+        "description": "mechanicAPI.tests.test_mechanics",
+        "peekOfCode": "def test_invalid_creation(self):\n    mechanics_payload = {\n        'name': 'John Doe',\n        'address': '123 Main St',\n        'password': '123'\n    }\n    response = self.client.post('/mechanics/', json=mechanics_payload)\n    self.assertEqual(response.status_code, 400) # verify that invalid data returns a 400 status code\n    self.assertEqual(response.json['email'], ['Missing data for required field.']) \ndef test_login_mechanic(self):",
+        "detail": "mechanicAPI.tests.test_mechanics",
+        "documentation": {}
+    },
+    {
+        "label": "test_login_mechanic",
+        "kind": 2,
+        "importPath": "mechanicAPI.tests.test_mechanics",
+        "description": "mechanicAPI.tests.test_mechanics",
+        "peekOfCode": "def test_login_mechanic(self):\n    payload = {\n        'email': 'test@email.com',\n        'password': '123'\n    }\n    response = self.client.post('/mechanics/login', json=payload)\n    self.assertEqual(response.status_code, 200) # ensure correct response code\n    self.assertIn('token', response.json)\n    self.assertEqual(response.json['status'], 'success')\n    return response.json['token']",
+        "detail": "mechanicAPI.tests.test_mechanics",
+        "documentation": {}
+    },
+    {
+        "label": "test_mechanic_update",
+        "kind": 2,
+        "importPath": "mechanicAPI.tests.test_mechanics",
+        "description": "mechanicAPI.tests.test_mechanics",
+        "peekOfCode": "def test_mechanic_update(self):\n    update_payload = {\n        'name': 'John Doe',\n        'address': '456 Elm St',\n        'email': \"jd@email.com\",\n        'password': '123'\n    }\n    headers = {\n        'Authorization': 'Bearer ' + self.token\n    }",
+        "detail": "mechanicAPI.tests.test_mechanics",
+        "documentation": {}
+    },
+    {
+        "label": "TestPartDescriptions",
+        "kind": 6,
+        "importPath": "mechanicAPI.tests.test_part_descriptions",
+        "description": "mechanicAPI.tests.test_part_descriptions",
+        "peekOfCode": "class TestPartDescriptions(unittest.TestCase):\n    def setUp(self):\n        self.app = create_app('TestingConfig')\n        self.part_description = PartDescription(\n            part_name=\"test_part\",\n            brand=\"test_brand\",\n            price=100.0\n        )\n        with self.app.app_context():\n            db.drop_all()",
+        "detail": "mechanicAPI.tests.test_part_descriptions",
+        "documentation": {}
+    },
+    {
+        "label": "TestSerializedParts",
+        "kind": 6,
+        "importPath": "mechanicAPI.tests.test_serialized_parts",
+        "description": "mechanicAPI.tests.test_serialized_parts",
+        "peekOfCode": "class TestSerializedParts(unittest.TestCase):\n    def setUp(self):\n        self.app = create_app('TestingConfig')\n        self.serialized_part = SerializedPart(\n            part_name=\"test_part\",\n            brand=\"test_brand\",\n            price=100.0\n        )\n        with self.app.app_context():\n            db.drop_all()",
+        "detail": "mechanicAPI.tests.test_serialized_parts",
+        "documentation": {}
+    },
+    {
+        "label": "TestService_Tickets",
+        "kind": 6,
+        "importPath": "mechanicAPI.tests.test_service_tickets",
+        "description": "mechanicAPI.tests.test_service_tickets",
+        "peekOfCode": "class TestService_Tickets(unittest.TestCase):\n    def setUp(self):\n        self.app = create_app('TestingConfig')\n        self.service_ticket = Service_Ticket(\n            part_name=\"test_part\",\n            brand=\"test_brand\",\n            price=100.0\n        )\n        with self.app.app_context():\n            db.drop_all()",
+        "detail": "mechanicAPI.tests.test_service_tickets",
+        "documentation": {}
+    },
+    {
+        "label": "TestVehicles",
+        "kind": 6,
+        "importPath": "mechanicAPI.tests.test_vehicles",
+        "description": "mechanicAPI.tests.test_vehicles",
+        "peekOfCode": "class TestVehicles(unittest.TestCase):\n    def setUp(self):\n        self.app = create_app('TestingConfig')\n        self.vehicle = Vehicle(\n            part_name=\"test_part\",\n            brand=\"test_brand\",\n            price=100.0\n        )\n        with self.app.app_context():\n            db.drop_all()",
+        "detail": "mechanicAPI.tests.test_vehicles",
+        "documentation": {}
+    },
+    {
         "label": "app",
         "kind": 5,
         "importPath": "mechanicAPI.app",
@@ -1929,7 +2300,7 @@
         "kind": 6,
         "importPath": "mechanicAPI.config",
         "description": "mechanicAPI.config",
-        "peekOfCode": "class DevelopmentConfig:\n    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:C%40ntget1n@127.0.0.1/mechanic_db'\n    DEBUG = True\n    CACHE_TYPE = \"SimpleCache\"\nclass TestingConfig:\n    SQLALCHEMY_DATABASE_URI = 'sqlite://testing.db'\n    DEBUG = True\n    CACHE_TYPE = 'SimpleCache'\nclass ProductionConfig:\n    pass",
+        "peekOfCode": "class DevelopmentConfig:\n    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:C%40ntget1n@127.0.0.1/mechanic_db'\n    DEBUG = True\n    CACHE_TYPE = \"SimpleCache\"\nclass TestingConfig:\n    SQLALCHEMY_DATABASE_URI = 'sqlite://testing.db'\n    DEBUG = True\n    CACHE_TYPE = 'SimpleCache'\nclass ProductionConfig:\n    SQLALCHEMY_DATABASE_URI = os.environ.get(\"SQLALCHEMY_DATABASE_URI\") or \"sqlite:///mechanic.db\"",
         "detail": "mechanicAPI.config",
         "documentation": {}
     },
@@ -1938,7 +2309,7 @@
         "kind": 6,
         "importPath": "mechanicAPI.config",
         "description": "mechanicAPI.config",
-        "peekOfCode": "class TestingConfig:\n    SQLALCHEMY_DATABASE_URI = 'sqlite://testing.db'\n    DEBUG = True\n    CACHE_TYPE = 'SimpleCache'\nclass ProductionConfig:\n    pass",
+        "peekOfCode": "class TestingConfig:\n    SQLALCHEMY_DATABASE_URI = 'sqlite://testing.db'\n    DEBUG = True\n    CACHE_TYPE = 'SimpleCache'\nclass ProductionConfig:\n    SQLALCHEMY_DATABASE_URI = os.environ.get(\"SQLALCHEMY_DATABASE_URI\") or \"sqlite:///mechanic.db\"\n    CACHE = \"SimpleCache\"",
         "detail": "mechanicAPI.config",
         "documentation": {}
     },
@@ -1947,7 +2318,7 @@
         "kind": 6,
         "importPath": "mechanicAPI.config",
         "description": "mechanicAPI.config",
-        "peekOfCode": "class ProductionConfig:\n    pass",
+        "peekOfCode": "class ProductionConfig:\n    SQLALCHEMY_DATABASE_URI = os.environ.get(\"SQLALCHEMY_DATABASE_URI\") or \"sqlite:///mechanic.db\"\n    CACHE = \"SimpleCache\"",
         "detail": "mechanicAPI.config",
         "documentation": {}
     },
