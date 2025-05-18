@@ -184,14 +184,6 @@
         "documentation": {}
     },
     {
-        "label": "ValidationError",
-        "importPath": "marshmallow",
-        "description": "marshmallow",
-        "isExtraImport": true,
-        "detail": "marshmallow",
-        "documentation": {}
-    },
-    {
         "label": "select",
         "importPath": "sqlalchemy",
         "description": "sqlalchemy",
@@ -505,6 +497,102 @@
     },
     {
         "label": "Vehicle",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Vehicle",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Customer",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Mechanic",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "PartDescription",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "SerializedPart",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "Service_Ticket",
+        "importPath": "app.models",
+        "description": "app.models",
+        "isExtraImport": true,
+        "detail": "app.models",
+        "documentation": {}
+    },
+    {
+        "label": "db",
         "importPath": "app.models",
         "description": "app.models",
         "isExtraImport": true,
@@ -1307,92 +1395,164 @@
         "documentation": {}
     },
     {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "generate_password_hash",
+        "importPath": "werkzeug.security",
+        "description": "werkzeug.security",
+        "isExtraImport": true,
+        "detail": "werkzeug.security",
+        "documentation": {}
+    },
+    {
+        "label": "generate_password_hash",
+        "importPath": "werkzeug.security",
+        "description": "werkzeug.security",
+        "isExtraImport": true,
+        "detail": "werkzeug.security",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "create_app",
+        "importPath": "app",
+        "description": "app",
+        "isExtraImport": true,
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "encode_token",
+        "importPath": "app.utils",
+        "description": "app.utils",
+        "isExtraImport": true,
+        "detail": "app.utils",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "marshmallow.exceptions",
+        "description": "marshmallow.exceptions",
+        "isExtraImport": true,
+        "detail": "marshmallow.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "marshmallow.exceptions",
+        "description": "marshmallow.exceptions",
+        "isExtraImport": true,
+        "detail": "marshmallow.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "marshmallow.exceptions",
+        "description": "marshmallow.exceptions",
+        "isExtraImport": true,
+        "detail": "marshmallow.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "marshmallow.exceptions",
+        "description": "marshmallow.exceptions",
+        "isExtraImport": true,
+        "detail": "marshmallow.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "marshmallow.exceptions",
+        "description": "marshmallow.exceptions",
+        "isExtraImport": true,
+        "detail": "marshmallow.exceptions",
+        "documentation": {}
+    },
+    {
         "label": "unittest",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "unittest",
         "description": "unittest",
         "detail": "unittest",
-        "documentation": {}
-    },
-    {
-        "label": "generate_password_hash",
-        "importPath": "werkzeug.security",
-        "description": "werkzeug.security",
-        "isExtraImport": true,
-        "detail": "werkzeug.security",
-        "documentation": {}
-    },
-    {
-        "label": "generate_password_hash",
-        "importPath": "werkzeug.security",
-        "description": "werkzeug.security",
-        "isExtraImport": true,
-        "detail": "werkzeug.security",
-        "documentation": {}
-    },
-    {
-        "label": "create_app",
-        "importPath": "mechanicAPI.app",
-        "description": "mechanicAPI.app",
-        "isExtraImport": true,
-        "detail": "mechanicAPI.app",
-        "documentation": {}
-    },
-    {
-        "label": "create_app",
-        "importPath": "mechanicAPI.app",
-        "description": "mechanicAPI.app",
-        "isExtraImport": true,
-        "detail": "mechanicAPI.app",
-        "documentation": {}
-    },
-    {
-        "label": "create_app",
-        "importPath": "mechanicAPI.app",
-        "description": "mechanicAPI.app",
-        "isExtraImport": true,
-        "detail": "mechanicAPI.app",
-        "documentation": {}
-    },
-    {
-        "label": "db",
-        "importPath": "mechanicAPI.app.models",
-        "description": "mechanicAPI.app.models",
-        "isExtraImport": true,
-        "detail": "mechanicAPI.app.models",
-        "documentation": {}
-    },
-    {
-        "label": "Customer",
-        "importPath": "mechanicAPI.app.models",
-        "description": "mechanicAPI.app.models",
-        "isExtraImport": true,
-        "detail": "mechanicAPI.app.models",
-        "documentation": {}
-    },
-    {
-        "label": "db",
-        "importPath": "mechanicAPI.app.models",
-        "description": "mechanicAPI.app.models",
-        "isExtraImport": true,
-        "detail": "mechanicAPI.app.models",
-        "documentation": {}
-    },
-    {
-        "label": "Mechanic",
-        "importPath": "mechanicAPI.app.models",
-        "description": "mechanicAPI.app.models",
-        "isExtraImport": true,
-        "detail": "mechanicAPI.app.models",
-        "documentation": {}
-    },
-    {
-        "label": "encode_token",
-        "importPath": "mechanicAPI.app.utils",
-        "description": "mechanicAPI.app.utils",
-        "isExtraImport": true,
-        "detail": "mechanicAPI.app.utils",
         "documentation": {}
     },
     {
@@ -2329,51 +2489,6 @@
         "description": "mechanicAPI.run",
         "peekOfCode": "app = create_app()\nif __name__ == '__main__':\n    app.run(debug=True)",
         "detail": "mechanicAPI.run",
-        "documentation": {}
-    },
-    {
-        "label": "TestCustomer",
-        "kind": 6,
-        "importPath": "tests.test_customers",
-        "description": "tests.test_customers",
-        "peekOfCode": "class TestCustomer(unittest.TestCase):\n    def setup(self):\n        # define an instance of custer to test\n        self.app = create_app(\"TestingConfig\")\n        self.customer = Customer(name=\"Test\", email=\"test@test.com\", phone=\"123-456-7890\")\n        with self.app.app_context():\n            db.drop_all()\n            db.create_all()\n            db.session.add(self.customer)\n            db.session.commit()",
-        "detail": "tests.test_customers",
-        "documentation": {}
-    },
-    {
-        "label": "TestMechanic",
-        "kind": 6,
-        "importPath": "tests.test_mechanics",
-        "description": "tests.test_mechanics",
-        "peekOfCode": "class TestMechanic(unittest.TestCase): # Define a test class inherit from unittest.TestCase\n    def setUp(self): # Create a test app instance\n        self.app = create_app(\"TestingConfig\")\n        self.mechanics = Mechanic(\n            name='text_user',\n            address='123 test st', \n            email='test@email.com', \n            password=generate_password_hash('123') # create hashed password since creating mechanic outside of route, need to have hash to reference\n            )\n        with self.app.app_context():",
-        "detail": "tests.test_mechanics",
-        "documentation": {}
-    },
-    {
-        "label": "test_invalid_creation",
-        "kind": 2,
-        "importPath": "tests.test_mechanics",
-        "description": "tests.test_mechanics",
-        "peekOfCode": "def test_invalid_creation(self):\n    mechanics_payload = {\n        'name': 'John Doe',\n        'address': '123 Main St',\n        'password': '123'\n    }\n    response = self.client.post('/mechanics/', json=mechanics_payload)\n    self.assertEqual(response.status.code, 400) # verify that invalid data returns a 400 status code\n    self.assertEqual(response.json['email'], ['Missing data for required field.']) \ndef test_login_mechanic(self):",
-        "detail": "tests.test_mechanics",
-        "documentation": {}
-    },
-    {
-        "label": "test_login_mechanic",
-        "kind": 2,
-        "importPath": "tests.test_mechanics",
-        "description": "tests.test_mechanics",
-        "peekOfCode": "def test_login_mechanic(self):\n    payload = {\n        'email': 'test@email.com',\n        'password': '123'\n    }\n    response = self.client.post('/mechanics/login', json=payload)\n    self.assertEqual(response.status_code, 200) # ensure correct response code\n    self.assertIn('token', response.json)\n    self.assertEqual(response.json['status'], 'success')\n    return response.json['token']",
-        "detail": "tests.test_mechanics",
-        "documentation": {}
-    },
-    {
-        "label": "test_mechanic_update",
-        "kind": 2,
-        "importPath": "tests.test_mechanics",
-        "description": "tests.test_mechanics",
-        "peekOfCode": "def test_mechanic_update(self):\n    update_payload = {\n        'name': 'John Doe',\n        'address': '456 Elm St',\n        'email': \"jd@email.com\",\n        'password': '123'\n    }\n    headers = {\n        'Authorization': 'Bearer ' + self.token\n    }",
-        "detail": "tests.test_mechanics",
         "documentation": {}
     }
 ]

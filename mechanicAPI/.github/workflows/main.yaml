@@ -1,0 +1,43 @@
+name: Flask Cl
+
+
+on: # specify events that trigger the workflow
+  push:
+  branches: [main, master]
+
+  jobs: # defines the jobs that make up the workflow
+    build:
+      runs-on: ubuntu-latest # specifies the machine that will run the job
+
+      test:
+        needs: build
+        runs-on: ubuntu latest
+
+        steps: # define the list of steps that make up the job
+          - name: Checkeout code
+            uses: actions/checkout@v2 # specifies the action to use in the step
+
+          - name: Set up Python
+            uses: actions/setup-python@v2
+            with: # specifies input parameters for the action 
+              python-version: '3.12'
+
+          - name: Create virtual environment # specifies a shell command to run part of the step
+            run: |
+            python -m venv venv
+            source venv/bin/activate
+
+          - name: Install dependencies
+            run: | 
+              python -m pip install --upgrade pip
+              python -m pip install -r requirements.txt
+
+          - name: Print debugging information
+            run: |
+              echo "Python Version: $(python --version)"
+              echo "Working Derectory: $(pwd)"
+              echo "Contents of Working Directory: $(ls -l)"
+              echo "Contents of site-packages: $(ls -l venv/lib/python*/site-packages)"
+
+          - name: Run tests
+            run: python -m unittest discover -s tests -p "test_*.py"
